@@ -33,10 +33,11 @@ ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}a.lk{display:inline
 .dots{display:flex}.dots button{width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}.dots button::after{content:"";width:10px;height:10px;border-radius:50%;background:#d4d4d4}.dots button.on::after{background:#171717}
 .grid2{display:grid;gap:0 16px}
 @media(min-width:820px){main{padding:32px 24px 8px}h1{font-size:3.2rem}.status{grid-template-columns:repeat(4,1fr)}.grid2{grid-template-columns:1fr 1fr}.cols{display:grid;grid-template-columns:3fr 2fr;gap:20px}.cols h3:first-child{margin-top:16px}}
-@media(min-width:1400px){main{max-width:1240px}}
+@media(min-width:1400px){main{max-width:1320px}}
+@media(min-width:1100px){.track{overflow:visible;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;scroll-snap-type:none;transform:none}.panel{min-width:0}.panel.active{outline:3px solid #b4532a;outline-offset:-1px}.cols{display:block}.cnav{display:none}}
 @media(min-width:2400px){html{font-size:24px}}
 @media(min-width:1800px){html{font-size:20px}.eyebrow{font-size:.85rem}main{max-width:none;padding:5vh 5vw 4vh}.tab,.btn{font-size:1rem;min-height:56px}.arrow,.dots button{width:56px;height:56px}.dots button::after{width:14px;height:14px}h1{font-size:4rem}h2{font-size:1.9rem}section{padding:26px}
- .track{overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel.active{outline:3px solid #b4532a;outline-offset:-1px}.cols{display:block}.cnav .arrow{visibility:hidden}}
+}
 .sharebar{display:flex;justify-content:center;padding:24px 0 0}
 .btn{min-height:44px;padding:0 28px;border:2px solid var(--mw-primary);background:#fff;font:600 .85rem var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;cursor:pointer;color:var(--mw-primary)}
 footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(--mw-muted-text);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 12px}
@@ -93,7 +94,7 @@ PROPS.forEach((p,i)=>{
  const b=document.createElement('button');b.className='tab mw-hover';b.role='tab';b.textContent=p.name;b.onclick=()=>go(i);TB.appendChild(b);
  const d=document.createElement('button');d.setAttribute('aria-label',p.name);d.onclick=()=>go(i);D.appendChild(d);
 });
-const panels=[...T.children];let cur=0;const wide=()=>matchMedia('(min-width:1800px)').matches;
+const panels=[...T.children];let cur=0;const wide=()=>matchMedia('(min-width:1100px)').matches;
 function mark(i){cur=i;[...TB.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));[...D.children].forEach((b,j)=>b.classList.toggle('on',j===i));panels.forEach((p,j)=>p.classList.toggle('active',j===i));
  const h='#'+PROPS[i].id;if(location.hash!==h)history.replaceState(null,'',h)}
 function go(i,instant){i=(i+PROPS.length)%PROPS.length;mark(i);if(wide()){if(!instant)panels[i].scrollIntoView({block:'nearest',behavior:'smooth'})}else T.scrollTo({left:panels[i].offsetLeft-T.offsetLeft,behavior:instant?'instant':'smooth'})}
@@ -101,7 +102,7 @@ let st;T.addEventListener('scroll',()=>{clearTimeout(st);st=setTimeout(()=>{if(w
 document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
 addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1)});
 const fromHash=()=>{const i=PROPS.findIndex(p=>'#'+p.id===location.hash);return i<0?0:i};
-addEventListener('hashchange',()=>go(fromHash()));addEventListener('resize',()=>go(cur,true));
+addEventListener('hashchange',()=>go(fromHash()));const mq=matchMedia('(min-width:1100px)');mq.addEventListener('change',()=>{T.scrollLeft=0;if(!mq.matches)go(cur,true)});addEventListener('resize',()=>{if(wide())T.scrollLeft=0;else go(cur,true)});
 requestAnimationFrame(()=>go(fromHash(),true));
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
  const ty=/evening/i.test(r.type)?'Evening Report':'Morning Report';const R=document.getElementById('report');R.classList.toggle('evening',ty==='Evening Report');
