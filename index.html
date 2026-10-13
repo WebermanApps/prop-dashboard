@@ -1,0 +1,91 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><meta name="color-scheme" content="light"><title>Prop Command Center</title>
+<link rel="icon" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="brand-tokens.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
+main{max-width:1040px;margin:0 auto;padding:20px 16px 120px}
+h1,h2,h3{font-family:var(--mw-font-heading);font-weight:700;letter-spacing:-.01em;line-height:1.1;margin:0}
+h1{font-size:2.6rem}h2{font-size:1.6rem;margin:0 0 12px}h3{font-size:1.2rem}
+.eyebrow{font-size:.75rem;letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);font-weight:600}
+.accent{color:#b4532a}
+section{background:#fff;border:1px solid var(--mw-border);border-radius:.75rem;padding:18px;margin-top:16px}
+.status{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat{background:var(--mw-secondary);border-radius:.6rem;padding:12px}.stat b{display:block;font-family:var(--mw-font-heading);font-size:1.25rem}
+ol.dec{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+ol.dec li{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--mw-border);border-radius:.6rem;padding:10px 12px;background:#fff}
+.tag{flex:none;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--mw-secondary);margin-top:2px}
+.tag.mw{background:#eef3ec;color:#3d5a36}.tag.wf{background:#f6ece4;color:#8a4a24}
+.due{color:#b4532a;font-weight:600}
+.car{position:relative}.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none}.track::-webkit-scrollbar{display:none}
+.slide{flex:0 0 100%;scroll-snap-align:start;background:var(--mw-secondary);border-radius:.6rem;padding:16px;min-height:150px}
+.slide p{margin:8px 0 0}
+.cnav{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
+.arrow{width:44px;height:44px;border:2px solid var(--mw-primary);background:#fff;font-size:1.1rem;cursor:pointer}
+.dots{display:flex;gap:6px}.dots button{width:10px;height:10px;border-radius:50%;border:0;background:#d4d4d4;padding:0;cursor:pointer}.dots button.on{background:#171717}
+ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}
+.muted{color:var(--mw-muted-text)}
+.grid2{display:grid;gap:0 16px}
+@media(min-width:820px){main{padding:40px 24px 120px}h1{font-size:3.4rem}.status{grid-template-columns:repeat(4,1fr)}ol.dec{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr 1fr}.grid2 section{margin-top:16px}.slide{flex-basis:calc(50% - 6px)}}
+.sharebar{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(251,248,242,.95);border-top:1px solid var(--mw-border);display:flex;justify-content:center}
+.btn{min-height:44px;padding:0 28px;border:2px solid var(--mw-primary);background:#fff;font:600 .85rem var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;cursor:pointer;color:var(--mw-primary)}
+footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(--mw-muted-text);text-decoration:none;display:inline-block}
+</style></head><body><main>
+<p class="eyebrow">Agent Command Center</p>
+<h1>Prop <span class="accent">·</span> Property Management</h1>
+<p class="muted" style="margin:6px 0 0">Mellow Wood and Wickfield rentals: tenants, leases, site and compliance ops, rent receipts. Updated Oct 13, 2026.</p>
+
+<section><h2>Status</h2><div class="status">
+<div class="stat"><span class="eyebrow">Role</span><b>Property Management</b></div>
+<div class="stat"><span class="eyebrow">Reports To</span><b>Grok Bot</b></div>
+<div class="stat"><span class="eyebrow">Mellow Wood</span><b>Tenants In, Close-Out</b></div>
+<div class="stat"><span class="eyebrow">Wickfield</span><b>Receipts And Homestead</b></div>
+</div></section>
+
+<section><h2>Decisions Max Owes</h2><ol class="dec">
+<li><span class="tag mw">MW</span><span>Send the Steadily request to add the lender</span></li>
+<li><span class="tag mw">MW</span><span>Move Mellow Wood utilities out of your name (electric, trash, internet cancel)</span></li>
+<li><span class="tag wf">WF</span><span>Send the Wickfield 2026 receipts email</span></li>
+<li><span class="tag wf">WF</span><span>Wickfield Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited</span></li>
+<li><span class="tag wf">WF</span><span>Wickfield homestead exemption form: move-out date, signature, and assessor call</span></li>
+<li><span class="tag wf">WF</span><span>USPS Wickfield forwarding ID check <span class="due">due Oct 30</span></span></li>
+<li><span class="tag mw">MW</span><span>Pick the Mellow Wood walkthrough date</span></li>
+<li><span class="tag mw">MW</span><span>Township rental certificate follow-up call</span></li>
+<li><span class="tag mw">MW</span><span>Close out Arian? Keep or drop the last items</span></li>
+<li><span class="tag wf">WF</span><span>Wickfield tenant Dropbox folder docs, including uploading the signed lease extension amendment</span></li>
+</ol></section>
+
+<section><h2>Recent Work</h2><div class="car"><div class="track" id="track">
+<div class="slide"><span class="eyebrow">Oct 13</span><h3>Portfolio Handoff Filed</h3><p>Mellow Wood utility checklist and Wickfield lease copies filed in Prop records. Lease extension upload ask moved to Prop.</p></div>
+<div class="slide"><span class="eyebrow">Oct 10</span><h3>Mellow Wood Site Cleared</h3><p>Mirrors returned, lockbox removed, Lenny has keys. Mail forwarding filed.</p></div>
+<div class="slide"><span class="eyebrow">Oct 10</span><h3>Homestead Removal Prepped</h3><p>Wickfield exemption form prefilled and assessor email drafted, waiting on your details.</p></div>
+<div class="slide"><span class="eyebrow">Oct 6</span><h3>Wickfield 2026 Receipts</h3><p>Rent audit done, receipts packet and email drafted. Summer months on hold for your answer.</p></div>
+<div class="slide"><span class="eyebrow">Oct 5</span><h3>Mellow Wood Receipts Sent</h3><p>Deposit and first-month receipts emailed to tenants. Renters insurance certificate filed.</p></div>
+<div class="slide"><span class="eyebrow">Sep–Oct</span><h3>Mellow Wood Lease-Up</h3><p>Screening, executed lease, lead disclosure, move-in checklist, township registration, landlord policy. Tenants moved in Oct 1.</p></div>
+</div><div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next">&#8594;</button></div></div></section>
+
+<div class="grid2">
+<section><h2>Routines</h2><ul class="plain">
+<li><b>Monthly Rent Receipts</b>: 2nd and 4th of each month, 6:28 PM ICT</li>
+<li><b>USPS Wickfield Reminder</b>: Oct 24 (ahead of the Oct 30 deadline)</li>
+</ul></section>
+<section><h2>Apps And Links</h2><p class="muted" style="margin:0">None yet. Prop apps will be listed here as they ship.</p></section>
+</div>
+
+<footer><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></footer>
+</main>
+<div class="sharebar"><button class="btn mw-hover" id="share">Share</button></div>
+<script>
+const t=document.getElementById('track'),sl=[...t.children],d=document.getElementById('dots');
+sl.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Slide '+(i+1));b.onclick=()=>t.scrollTo({left:s.offsetLeft-t.offsetLeft,behavior:'smooth'});d.appendChild(b)});
+function cur(){let i=Math.round(t.scrollLeft/(sl[0].offsetWidth+12));[...d.children].forEach((b,j)=>b.classList.toggle('on',j===i))}
+t.addEventListener('scroll',cur);cur();
+const step=()=>sl[0].offsetWidth+12;
+document.getElementById('prev').onclick=()=>t.scrollBy({left:-step(),behavior:'smooth'});
+document.getElementById('next').onclick=()=>t.scrollBy({left:step(),behavior:'smooth'});
+document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
+ if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
+ if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
+ const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.textContent='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.textContent='Share',1800)};
+</script></body></html>
