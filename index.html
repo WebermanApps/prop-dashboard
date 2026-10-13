@@ -4,90 +4,104 @@
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand-tokens.css">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
-main{max-width:1040px;margin:0 auto;padding:20px 16px 8px}
+*{box-sizing:border-box}html,body{overflow-x:hidden}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
+main{max-width:1040px;margin:0 auto;padding:16px 16px 8px}
 h1,h2,h3{font-family:var(--mw-font-heading);font-weight:700;letter-spacing:-.01em;line-height:1.1;margin:0}
-h1{font-size:2.6rem}h2{font-size:1.6rem;margin:0 0 12px}h3{font-size:1.2rem}
-.eyebrow{font-size:.75rem;letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);font-weight:600}
-.accent{color:#b4532a}
+h1{font-size:2.4rem}h2{font-size:1.5rem;margin:0 0 10px}h3{font-size:1.15rem;margin:16px 0 8px}
+.eyebrow{font-size:.72rem;letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);font-weight:600}
+.accent{color:#b4532a}.muted{color:var(--mw-muted-text)}
+.report{background:#fff;border:1px solid var(--mw-border);border-left:4px solid #b4532a;border-radius:.6rem;padding:10px 14px;margin-bottom:16px}
+.report ul{margin:4px 0 0;padding-left:18px}.report li{margin:2px 0}
 section{background:#fff;border:1px solid var(--mw-border);border-radius:.75rem;padding:18px;margin-top:16px}
 .status{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-.stat{background:var(--mw-secondary);border-radius:.6rem;padding:12px}.stat b{display:block;font-family:var(--mw-font-heading);font-size:1.25rem}
+.stat{background:var(--mw-secondary);border-radius:.6rem;padding:12px}.stat b{display:block;font-family:var(--mw-font-heading);font-size:1.2rem}
+.tabs{display:flex;background:var(--mw-secondary);border:1px solid var(--mw-border);border-radius:.6rem;padding:4px;gap:4px;margin-top:16px;position:sticky;top:0;z-index:6}
+.tab{flex:1;min-height:44px;border:0;border-radius:.45rem;background:transparent;font:600 .85rem var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);cursor:pointer}
+.tab[aria-selected=true]{background:#fff;color:var(--mw-foreground);box-shadow:0 1px 4px rgba(10,10,10,.12)}
+.carousel{position:relative;margin-top:8px}
+.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;gap:16px;scrollbar-width:none;overscroll-behavior-x:contain}.track::-webkit-scrollbar{display:none}
+.panel{flex:0 0 100%;scroll-snap-align:start;scroll-snap-stop:always;margin-top:0}
+.panel .line{margin:4px 0 0;font-weight:500}
 ol.dec{list-style:none;margin:0;padding:0;display:grid;gap:8px}
-ol.dec li{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--mw-border);border-radius:.6rem;padding:10px 12px;background:#fff}
-.tag{flex:none;font-size:.7rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:999px;background:var(--mw-secondary);margin-top:2px}
-.tag.mw{background:#eef3ec;color:#3d5a36}.tag.wf{background:#f6ece4;color:#8a4a24}
+ol.dec li{border:1px solid var(--mw-border);border-radius:.6rem;padding:10px 12px}
 .due{color:#b4532a;font-weight:600}
-.car{position:relative}.track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:12px;scrollbar-width:none}.track::-webkit-scrollbar{display:none}
-.slide{flex:0 0 100%;scroll-snap-align:start;background:var(--mw-secondary);border-radius:.6rem;padding:16px;min-height:150px}
-.slide p{margin:8px 0 0}
+ul.work{list-style:none;margin:0;padding:0;display:grid;gap:8px}ul.work li{background:var(--mw-secondary);border-radius:.6rem;padding:10px 12px}
+ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}
 .cnav{display:flex;align-items:center;justify-content:space-between;margin-top:10px}
 .arrow{width:44px;height:44px;border:2px solid var(--mw-primary);background:#fff;font-size:1.1rem;cursor:pointer}
-.dots{display:flex;gap:6px}.dots{gap:0}.dots button{width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}.dots button::after{content:"";width:10px;height:10px;border-radius:50%;background:#d4d4d4;transition:background var(--mw-dur)}.dots button.on::after{background:#171717}
-@media(max-width:420px){.cnav{flex-wrap:wrap}.dots{order:-1;width:100%;justify-content:center}}
-ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}
-.muted{color:var(--mw-muted-text)}
+.dots{display:flex}.dots button{width:44px;height:44px;border:0;background:none;padding:0;cursor:pointer;display:grid;place-items:center}.dots button::after{content:"";width:10px;height:10px;border-radius:50%;background:#d4d4d4}.dots button.on::after{background:#171717}
 .grid2{display:grid;gap:0 16px}
-@media(min-width:820px){main{padding:40px 24px 8px}h1{font-size:3.4rem}.status{grid-template-columns:repeat(4,1fr)}ol.dec{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr 1fr}.grid2 section{margin-top:16px}.slide{flex-basis:calc(50% - 6px)}}
+@media(min-width:820px){main{padding:32px 24px 8px}h1{font-size:3.2rem}.status{grid-template-columns:repeat(4,1fr)}.grid2{grid-template-columns:1fr 1fr}.cols{display:grid;grid-template-columns:3fr 2fr;gap:20px}.cols h3:first-child{margin-top:16px}}
+@media(min-width:1400px){main{max-width:1240px}}
+@media(min-width:1800px){html{font-size:18px}main{max-width:1760px;padding:48px 48px 8px}h1{font-size:4rem}h2{font-size:1.9rem}section{padding:26px}
+ .track{overflow:visible;display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel.active{outline:3px solid #b4532a;outline-offset:-1px}.cols{display:block}.cnav .arrow{visibility:hidden}}
 .sharebar{position:sticky;bottom:0;z-index:5;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:rgba(251,248,242,.95);border-top:1px solid var(--mw-border);display:flex;justify-content:center}
 .btn{min-height:44px;padding:0 28px;border:2px solid var(--mw-primary);background:#fff;font:600 .85rem var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;cursor:pointer;color:var(--mw-primary)}
 footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(--mw-muted-text);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 12px}
-@media(min-width:1400px){main{max-width:1240px}}
-@media(min-width:1800px){html{font-size:18px}main{max-width:1760px;padding:56px 48px 8px}h1{font-size:4.2rem}h2{font-size:1.9rem}section{padding:26px}ol.dec{grid-template-columns:repeat(3,1fr)}.slide{flex-basis:calc((100% - 24px)/3)}.btn{min-height:52px}}
+:focus-visible{outline:3px solid #b4532a;outline-offset:2px}
 </style></head><body><main>
+<div class="report" id="report"><span class="eyebrow" id="rtype">Morning Report</span><ul id="ritems"><li>Dashboard now swipes between Mellow Wood and Wickfield</li></ul></div>
 <p class="eyebrow">Agent Command Center</p>
 <h1>Prop <span class="accent">·</span> Property Management</h1>
-<p class="muted" style="margin:6px 0 0">Mellow Wood and Wickfield rentals: tenants, leases, site and compliance ops, rent receipts. Updated Oct 13, 2026.</p>
+<p class="muted" style="margin:6px 0 0">Tenants, leases, site and compliance ops, and rent receipts for each rental.</p>
 
-<section><h2>Status</h2><div class="status">
+<section><h2>Overall Status</h2><div class="status">
 <div class="stat"><span class="eyebrow">Role</span><b>Property Management</b></div>
 <div class="stat"><span class="eyebrow">Reports To</span><b>Grok Bot</b></div>
-<div class="stat"><span class="eyebrow">Mellow Wood</span><b>Tenants In, Close-Out</b></div>
-<div class="stat"><span class="eyebrow">Wickfield</span><b>Receipts And Homestead</b></div>
+<div class="stat"><span class="eyebrow">Properties</span><b id="pcount">2 Rentals</b></div>
+<div class="stat"><span class="eyebrow">Decisions Open</span><b id="dcount">11</b></div>
 </div></section>
 
-<section><h2>Decisions Max Owes</h2><ol class="dec">
-<li><span class="tag mw">MW</span><span>Send the Steadily request to add the lender</span></li>
-<li><span class="tag mw">MW</span><span>Move Mellow Wood utilities out of your name (electric, trash, internet cancel)</span></li>
-<li><span class="tag wf">WF</span><span>Send the Wickfield 2026 receipts email</span></li>
-<li><span class="tag wf">WF</span><span>Wickfield Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited</span></li>
-<li><span class="tag wf">WF</span><span>Wickfield homestead exemption form: move-out date, signature, and assessor call</span></li>
-<li><span class="tag wf">WF</span><span>USPS Wickfield forwarding ID check <span class="due">due Oct 30</span></span></li>
-<li><span class="tag mw">MW</span><span>Pick the Mellow Wood walkthrough date</span></li>
-<li><span class="tag mw">MW</span><span>Township rental certificate follow-up call</span></li>
-<li><span class="tag mw">MW</span><span>Close out Arian? Keep or drop the last items</span></li>
-<li><span class="tag wf">WF</span><span>Wickfield tenant Dropbox folder docs, including uploading the signed lease extension amendment</span></li>
-<li><span class="tag wf">WF</span><span>Wickfield soffit repair: Prop handles it, or hand it to Weberman Construction?</span></li>
-</ol></section>
-
-<section><h2>Recent Work</h2><div class="car"><div class="track" id="track">
-<div class="slide"><span class="eyebrow">Oct 13</span><h3>Portfolio Handoff Filed</h3><p>Mellow Wood utility checklist and Wickfield lease copies filed in Prop records. Lease extension upload ask moved to Prop.</p></div>
-<div class="slide"><span class="eyebrow">Oct 10</span><h3>Mellow Wood Site Cleared</h3><p>Mirrors returned, lockbox removed, Lenny has keys. Mail forwarding filed.</p></div>
-<div class="slide"><span class="eyebrow">Oct 10</span><h3>Homestead Removal Prepped</h3><p>Wickfield exemption form prefilled and assessor email drafted, waiting on your details.</p></div>
-<div class="slide"><span class="eyebrow">Oct 6</span><h3>Wickfield 2026 Receipts</h3><p>Rent audit done, receipts packet and email drafted. Summer months on hold for your answer.</p></div>
-<div class="slide"><span class="eyebrow">Oct 5</span><h3>Mellow Wood Receipts Sent</h3><p>Deposit and first-month receipts emailed to tenants. Renters insurance certificate filed.</p></div>
-<div class="slide"><span class="eyebrow">Sep–Oct</span><h3>Mellow Wood Lease-Up</h3><p>Screening, executed lease, lead disclosure, move-in checklist, township registration, landlord policy. Tenants moved in Oct 1.</p></div>
-</div><div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next">&#8594;</button></div></div></section>
+<div class="tabs" role="tablist" id="tabs" aria-label="Properties"></div>
+<div class="carousel" aria-roledescription="carousel"><div class="track" id="track"></div>
+<div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous property">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next property">&#8594;</button></div></div>
 
 <div class="grid2">
 <section><h2>Routines</h2><ul class="plain">
 <li><b>Monthly Rent Receipts</b>: 2nd and 4th of each month, 6:28 PM ICT</li>
 <li><b>USPS Wickfield Reminder</b>: Oct 24 (ahead of the Oct 30 deadline)</li>
 </ul></section>
-<section><h2>Apps And Links</h2><p class="muted" style="margin:0">None yet. Prop apps will be listed here as they ship.</p></section>
+<section><h2>Shared Links</h2><p class="muted" style="margin:0">None yet. Prop apps will be listed here as they ship.</p></section>
 </div>
-
 <footer><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></footer>
 </main>
 <div class="sharebar"><button class="btn mw-hover" id="share">Share</button></div>
 <script>
-const t=document.getElementById('track'),sl=[...t.children],d=document.getElementById('dots');
-sl.forEach((s,i)=>{const b=document.createElement('button');b.setAttribute('aria-label','Slide '+(i+1));b.onclick=()=>t.scrollTo({left:s.offsetLeft-t.offsetLeft,behavior:'smooth'});d.appendChild(b)});
-function cur(){let i=Math.min(sl.length-1,Math.round(t.scrollLeft/(sl[0].offsetWidth+12)));if(t.scrollLeft+t.clientWidth>=t.scrollWidth-2)i=sl.length-1;[...d.children].forEach((b,j)=>b.classList.toggle('on',j===i))}
-t.addEventListener('scroll',cur);cur();
-const step=()=>sl[0].offsetWidth+12;
-document.getElementById('prev').onclick=()=>t.scrollBy({left:-step(),behavior:'smooth'});
-document.getElementById('next').onclick=()=>t.scrollBy({left:step(),behavior:'smooth'});
+/* Add a property: append one object here. id becomes the URL hash. */
+const PROPS=[
+{id:"mellow-wood",name:"Mellow Wood",line:"Tenants in since Oct 1. Close-out in progress.",
+ decisions:["Send the Steadily request to add the lender","Move the utilities out of your name (electric, trash, internet cancel)","Pick the walkthrough date","Township rental certificate follow-up call","Close out Arian? Keep or drop the last items"],
+ work:[["Oct 13","Utility transfer checklist filed from Portfolio"],["Oct 10","Site cleared: mirrors returned, lockbox removed, Lenny has keys; mail forwarding filed"],["Oct 5","Deposit and first-month receipts sent; renters insurance certificate filed"],["Sep–Oct","Lease-up: screening, executed lease, lead disclosure, move-in checklist, township registration"]],
+ links:[]},
+{id:"wickfield",name:"Wickfield",line:"Rented. Receipts, homestead removal and mail forwarding in progress.",
+ decisions:["Send the 2026 receipts email","Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited","Homestead exemption form: move-out date, signature, and assessor call",'USPS forwarding ID check <span class="due">due Oct 30</span>',"Tenant Dropbox folder docs, including uploading the signed lease extension amendment","Soffit repair: Prop handles it, or hand it to Weberman Construction?"],
+ work:[["Oct 13","Lease copies filed from Portfolio; lease extension upload now with Prop"],["Oct 10","Homestead removal form prefilled and assessor email drafted"],["Oct 10","HOA contacts saved"],["Oct 6","2026 rent audit done; receipts packet and email drafted"]],
+ links:[]}
+];
+const T=document.getElementById('track'),TB=document.getElementById('tabs'),D=document.getElementById('dots');
+document.getElementById('pcount').textContent=PROPS.length+' Rentals';
+document.getElementById('dcount').textContent=PROPS.reduce((n,p)=>n+p.decisions.length,0);
+PROPS.forEach((p,i)=>{
+ const s=document.createElement('section');s.className='panel';s.id='panel-'+p.id;s.setAttribute('role','tabpanel');s.setAttribute('aria-label',p.name);
+ s.innerHTML=`<span class="eyebrow">Property ${i+1} of ${PROPS.length}</span><h2 style="margin:2px 0 0">${p.name}</h2><p class="line">${p.line}</p>
+ <div class="cols"><div><h3>Decisions Max Owes</h3><ol class="dec">${p.decisions.map(d=>`<li>${d}</li>`).join('')}</ol></div>
+ <div><h3>Recent Work</h3><ul class="work">${p.work.map(w=>`<li><span class="eyebrow">${w[0]}</span><br>${w[1]}</li>`).join('')}</ul>
+ <h3>Links</h3>${p.links.length?`<ul class="plain">${p.links.map(l=>`<li><a class="mw-hover" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:'<p class="muted" style="margin:0">None yet.</p>'}</div></div>`;
+ T.appendChild(s);
+ const b=document.createElement('button');b.className='tab mw-hover';b.role='tab';b.textContent=p.name;b.onclick=()=>go(i);TB.appendChild(b);
+ const d=document.createElement('button');d.setAttribute('aria-label',p.name);d.onclick=()=>go(i);D.appendChild(d);
+});
+const panels=[...T.children];let cur=0;const wide=()=>matchMedia('(min-width:1800px)').matches;
+function mark(i){cur=i;[...TB.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));[...D.children].forEach((b,j)=>b.classList.toggle('on',j===i));panels.forEach((p,j)=>p.classList.toggle('active',j===i));
+ const h='#'+PROPS[i].id;if(location.hash!==h)history.replaceState(null,'',h)}
+function go(i,instant){i=(i+PROPS.length)%PROPS.length;mark(i);if(wide()){if(!instant)panels[i].scrollIntoView({block:'nearest',behavior:'smooth'})}else T.scrollTo({left:panels[i].offsetLeft-T.offsetLeft,behavior:instant?'instant':'smooth'})}
+let st;T.addEventListener('scroll',()=>{clearTimeout(st);st=setTimeout(()=>{if(wide())return;const i=Math.round(T.scrollLeft/T.clientWidth);if(i!==cur)mark(i)},60)});
+document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('next').onclick=()=>go(cur+1);
+addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1)});
+const fromHash=()=>{const i=PROPS.findIndex(p=>'#'+p.id===location.hash);return i<0?0:i};
+addEventListener('hashchange',()=>go(fromHash()));addEventListener('resize',()=>go(cur,true));
+requestAnimationFrame(()=>go(fromHash(),true));
+fetch('report.json',{cache:'no-store'}).then(r=>r.json()).then(r=>{document.getElementById('rtype').textContent=r.type+' · '+r.date;document.getElementById('ritems').innerHTML=r.items.map(x=>`<li>${x}</li>`).join('')}).catch(()=>{});
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
