@@ -125,7 +125,7 @@ function urgent(list){const U=document.getElementById('urgent');if(!list.length)
 urgent(URGENT);
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
  if(Array.isArray(r.urgent))urgent(r.urgent);
- const ty=/evening/i.test(r.type)?'Evening Report':'Morning Report';const R=document.getElementById('report');R.classList.toggle('evening',ty==='Evening Report');
+ const ty=/evening/i.test(r.type)?'Evening Report':/fresh/i.test(r.type)?'Fresh Start':'Morning Report';const R=document.getElementById('report');R.classList.toggle('evening',ty==='Evening Report');
  document.getElementById('rtype').textContent=ty+(r.date?' · '+fmt(r.date):'');
  const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='',n=0;
  if(r.text){h+=`<p style="margin:4px 0 0">${r.text}</p>`;n++}if(r.items){h+=li(r.items);n+=r.items.length}
