@@ -4,7 +4,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand-tokens.css">
 <style>
-*{box-sizing:border-box}html,body{overflow-x:hidden}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
+*{box-sizing:border-box}html,body{overflow-x:clip}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
 main{max-width:1040px;margin:0 auto;padding:16px 16px 8px}
 h1,h2,h3{font-family:var(--mw-font-heading);font-weight:700;letter-spacing:-.01em;line-height:1.1;margin:0}
 h1{font-size:2.4rem}h2{font-size:1.5rem;margin:0 0 10px}h3{font-size:1.15rem;margin:16px 0 8px}
@@ -82,17 +82,48 @@ ol.dec li{border-color:var(--lines)}
 .apps{display:flex;align-items:center;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 0 10px;white-space:nowrap}.apps::-webkit-scrollbar{display:none}
 .appslbl{font-size:.72rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mw-muted-text)}
 .chip{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border-radius:999px;border:1.5px solid var(--lagoon);color:var(--lagoon);background:#fff;font-weight:600;text-decoration:none;font-size:.9rem}
+
+/* Dashboard Layout Deck round 1 (Max, Oct 13 23:34): shared sticky top bar, title before report, one-line report, notifications under report, condensed rows, 5 then See All, right dates, 2-line clamp, tighter rhythm, stat strip */
+main{padding-top:0}
+.topnav{position:sticky;top:0;z-index:8;margin:0 -16px 8px;border-radius:0 0 .6rem .6rem;padding:0 12px;flex-wrap:nowrap;gap:10px;min-height:46px;box-shadow:0 1px 6px rgba(10,10,10,.12)}
+.navtitle{margin-left:0;flex:none}.upd{margin-left:auto;font-size:.78rem;color:#e3f0f5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+h1.title{font-size:1.9rem;margin:2px 0 8px}
+.tabs{top:46px}
+.drop{margin-bottom:8px}.drop.report{border-left-color:var(--saffron);background:#fffdf6}.drop.report .rep{border-top:1px solid var(--lines)}
+section{padding:14px;margin-top:10px}
+.panel h2{font-size:1.4rem}.panel .line{margin:2px 0 0}
+.panel{min-width:0}.strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:10px 0 0}
+.strip div{min-width:0;overflow:hidden;background:#f2f8fa;border-radius:.5rem;padding:6px 10px;font-size:.78rem;color:var(--mw-muted-text);font-weight:600;letter-spacing:.06em;text-transform:uppercase}.strip b{display:block;font-family:var(--mw-font-heading);font-size:1.2rem;letter-spacing:0;color:var(--mw-foreground);text-transform:none;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+h3.owed{margin:12px 0 6px}h3.caps{margin:12px 0 6px}
+ul.rows{list-style:none;margin:0;padding:0;border:1px solid var(--lines);border-radius:.5rem;overflow:hidden;background:#fff}
+ul.rows>li{border-top:1px solid var(--lines)}ul.rows>li:first-child{border-top:0}ul.rows.wk>li{border-left:4px solid var(--jungle)}
+.row{display:flex;align-items:flex-start;gap:10px;width:100%;min-height:44px;padding:9px 12px;border:0;background:none;text-align:left;font:500 .95rem/1.4 var(--mw-font-body);color:var(--mw-foreground);cursor:pointer}
+.row:hover{background:rgba(10,10,10,.03)}.row .rt{flex:1;min-width:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.row[aria-expanded=true] .rt{display:block;-webkit-line-clamp:unset}.row .rd{flex:none;margin-left:auto;text-align:right;white-space:nowrap;font-size:.8rem;font-weight:600;color:var(--mw-muted-text);padding-top:2px}
+.row .rd.pill{color:#7a5a00;padding:1px 10px}
+ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
+.seeall{display:block;width:100%;min-height:44px;margin-top:6px;border:1.5px solid var(--lagoon);background:#fff;color:var(--lagoon);font:600 .8rem var(--mw-font-body);letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.sharebar{padding-top:16px}footer{padding-top:12px}
+@media(min-width:820px){main{padding-top:0}.topnav{margin:0 0 10px;border-radius:0 0 .6rem .6rem}h1.title{font-size:2.4rem}}
+@media(min-width:1800px){.topnav{min-height:56px}.tabs{top:56px}h1.title{font-size:3rem}.row{font-size:1rem}}
+@media(max-width:380px){.upd{display:none}}
+@media(max-width:500px){.strip div{padding:6px 8px;font-size:.68rem;letter-spacing:.04em}.strip b{font-size:1.05rem}}
 </style></head><body><main>
-<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop · Property Management</span></nav>
+<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop</span><span class="upd" id="upd"></span></nav>
+<h1 class="title">Prop Command Center</h1>
 <nav class="apps" aria-label="Prop apps"><span class="appslbl">Apps</span><a class="chip mw-hover" href="https://webermanapps.github.io/style-swipe/?date=prop-1&amp;from=https%3A%2F%2Fwebermanapps.github.io%2Fprop-dashboard%2F">Prop Style Swipe Deck</a></nav>
+<details class="drop report" id="report" hidden><summary><span class="sumtxt"><b id="rtype">Report</b><span class="muted" id="rsum"></span></span><span class="chev" aria-hidden="true"></span></summary>
+<div class="rep" id="rep"><div id="rbody"></div></div></details>
 <details class="drop notif" id="notif" hidden><summary><span class="sumtxt"><b id="ncount">Notifications</b><span class="muted" id="nfirst"></span></span><span class="chev" aria-hidden="true"></span></summary>
-<ol class="nlist" id="nlist"></ol><div class="rep" id="rep" hidden><span class="eyebrow" id="rtype">Report</span><div id="rbody"></div></div></details>
+<ol class="nlist" id="nlist"></ol></details>
 <div class="tabs" role="tablist" id="tabs" aria-label="Properties"></div>
 <div class="carousel" aria-roledescription="carousel"><div class="track" id="track"></div>
 <div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous property">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next property">&#8594;</button></div></div>
 
 <details class="drop more" id="more"><summary><span class="sumtxt"><b>More</b><span class="muted">Routines</span></span><span class="chev" aria-hidden="true"></span></summary>
 <div><h3>Routines</h3><ul class="plain">
+<li><b>Morning Report</b>: every day, live by 5:00 AM ICT</li>
+<li><b>Evening Report</b>: every day at 6:03 PM ICT</li>
 <li><b>Monthly Rent Receipts</b>: 2nd and 4th of each month, 6:28 PM ICT</li>
 <li><b>USPS Wickfield Reminder</b>: Oct 24 (ahead of the Oct 30 deadline)</li>
 </ul></div></details>
@@ -100,24 +131,35 @@ ol.dec li{border-color:var(--lines)}
 <footer><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></footer>
 </main>
 <script>
-/* Add a property: append one object here. id becomes the URL hash. */
+/* Page build time; the top bar shows the later of this and report.json "updated". */
+const BUILT="2026-10-14T00:25:00+07:00";
+/* Add a property: append one object here. id becomes the URL hash.
+   decisions: "text" or ["text","YYYY-MM-DD due"]. work: ["date label","text"], newest first. */
 const PROPS=[
-{id:"mellow-wood",name:"Mellow Wood",line:"Tenants in since Oct 1. Site work cleared; paperwork and utilities left to close out.",
+{id:"mellow-wood",name:"Mellow Wood",status:"Rented",line:"Tenants in since Oct 1. Site work cleared; paperwork and utilities left to close out.",
  decisions:["Send the Steadily request to add the lender","Move the utilities out of your name (electric, trash, internet cancel)","Pick the walkthrough date","Township rental certificate follow-up call","Close out Arian? Keep or drop the last items"],
  work:[["Oct 13","Utility transfer checklist filed from Portfolio"],["Oct 10","Site cleared: mirrors returned, lockbox removed, Lenny has keys; mail forwarding filed"],["Oct 5","Deposit and first-month receipts sent; renters insurance certificate filed"],["Sep–Oct","Lease-up: screening, executed lease, lead disclosure, move-in checklist, township registration"]],
  links:[]},
-{id:"wickfield",name:"Wickfield",line:"Rented. Receipts, homestead removal, mail forwarding and soffit repair open.",
- decisions:["Send the 2026 receipts email","Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited","Homestead exemption form: move-out date, signature, and assessor call",'USPS forwarding ID check <span class="pill due">Due Oct 30</span>',"Tenant Dropbox folder: add the signed lease and renters insurance (receipts ready to go in)","Soffit repair: Prop handles it, or hand it to Weberman Construction?","Lease extension amendment (to about 2027): upload the signed copy if you have it"],
+{id:"wickfield",name:"Wickfield",status:"Rented",line:"Rented. Receipts, homestead removal, mail forwarding and soffit repair open.",
+ decisions:[["USPS forwarding ID check","2026-10-30"],"Send the 2026 receipts email","Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited","Homestead exemption form: move-out date, signature, and assessor call","Tenant Dropbox folder: add the signed lease and renters insurance (receipts ready to go in)","Soffit repair: Prop handles it, or hand it to Weberman Construction?","Lease extension amendment (to about 2027): upload the signed copy if you have it"],
  work:[["Oct 13","Lease copies filed from Portfolio; lease extension upload now with Prop"],["Oct 10","Homestead removal form prefilled and assessor email drafted"],["Oct 10","HOA contacts saved"],["Oct 6","2026 rent audit done; receipts packet and email drafted"]],
  links:[]}
 ];
+const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const esc=t=>String(t);
+/* Condensed rows: one compact row each (2-line clamp, tap to expand), right-aligned date, first 5 then See All. */
+function rows(items,cls){const n=items.length;return `<ul class="rows ${cls||''}">${items.map((it,i)=>`<li${i>=5?' class="extra"':''}><button class="row" aria-expanded="false"><span class="rt">${it[0]}</span>${it[1]?`<span class="rd${it[2]?' pill due':''}">${it[1]}</span>`:''}</button></li>`).join('')}</ul>${n>5?`<button class="seeall mw-hover" aria-expanded="false" data-n="${n}">See All ${n}</button>`:''}`}
+document.addEventListener('click',e=>{const r=e.target.closest('.row');if(r){r.setAttribute('aria-expanded',r.getAttribute('aria-expanded')!=='true');return}
+ const a=e.target.closest('.seeall');if(a){const u=a.previousElementSibling,on=u.classList.toggle('all');a.setAttribute('aria-expanded',on);a.textContent=on?'Show Fewer':'See All '+a.dataset.n}});
 const T=document.getElementById('track'),TB=document.getElementById('tabs'),D=document.getElementById('dots');
 PROPS.forEach((p,i)=>{
+ const dec=p.decisions.map(d=>Array.isArray(d)?[d[0],'Due '+fmt(d[1]),1]:[d]);const due=p.decisions.filter(Array.isArray).length;
  const s=document.createElement('section');s.className='panel';s.id='panel-'+p.id;s.setAttribute('role','tabpanel');s.setAttribute('aria-label',p.name);
  s.innerHTML=`<span class="eyebrow">Property ${i+1} of ${PROPS.length}</span><h2 style="margin:2px 0 0">${p.name}</h2><p class="line">${p.line}</p>
- <div class="cols"><div><h3 class="owed">Decisions Max Owes</h3><ol class="dec">${p.decisions.map(d=>`<li>${d}</li>`).join('')}</ol></div>
- <div class="rw"><h3 class="caps">Recent Work</h3><ul class="work">${p.work.map(w=>`<li><span class="eyebrow">${w[0]}</span><br>${w[1]}</li>`).join('')}</ul>
- <h3 class="caps">Links</h3>${p.links.length?`<ul class="plain">${p.links.map(l=>`<li><a class="mw-hover" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:'<p class="muted" style="margin:0">None yet.</p>'}</div></div>`;
+ <div class="strip"><div><b>${p.status}</b>Status</div><div><b>${p.decisions.length}</b>Decisions</div><div><b>${due}</b>Due Soon</div><div><b>${p.work[0][0]}</b>Latest</div></div>
+ <div class="cols"><div><h3 class="owed">Decisions Max Owes</h3>${rows(dec)}</div>
+ <div class="rw"><h3 class="caps">Recent Work</h3>${rows(p.work.map(w=>[w[1],w[0]]),'wk')}
+ ${p.links.length?`<h3 class="caps">Links</h3><ul class="plain">${p.links.map(l=>`<li><a class="mw-hover lk" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:''}</div></div>`;
  T.appendChild(s);
  const b=document.createElement('button');b.className='tab mw-hover';b.role='tab';b.textContent=p.name;b.onclick=()=>go(i);TB.appendChild(b);
  const d=document.createElement('button');d.setAttribute('aria-label',p.name);d.onclick=()=>go(i);D.appendChild(d);
@@ -131,15 +173,19 @@ document.getElementById('prev').onclick=()=>go(cur-1);document.getElementById('n
 addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e.key==='ArrowLeft')go(cur-1);if(e.key==='ArrowRight')go(cur+1)});
 const fromHash=()=>{const i=PROPS.findIndex(p=>'#'+p.id===location.hash);return i<0?0:i};
 addEventListener('hashchange',()=>go(fromHash()));const mq=matchMedia('(min-width:1100px)');mq.addEventListener('change',()=>{T.scrollLeft=0;if(!mq.matches)go(cur,true)});addEventListener('resize',()=>{if(wide())T.scrollLeft=0;else go(cur,true)});
-requestAnimationFrame(()=>go(fromHash(),true));
-/* Notifications: report.json "notifications" (max 2, most important first). Empty or missing = dropdown hidden. */
-const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+const init=fromHash();requestAnimationFrame(()=>go(init,true));addEventListener('load',()=>{if(cur===0&&init!==0)go(init,true)});
+/* Updated time in the shared top bar */
+const setUpd=iso=>{const d=new Date(iso);document.getElementById('upd').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'Asia/Bangkok'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Bangkok'})};
+setUpd(BUILT);
+/* Report: one summary line that expands (report.json). Notifications: report.json "notifications", max 2, right under the report. Empty = hidden. */
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
- const N=(r.notifications||[]).slice(0,2),box=document.getElementById('notif');
- const li=a=>`<ol class="num">${a.map(x=>`<li>${x}</li>`).join('')}</ol>`;let h='';
+ if(r.updated&&new Date(r.updated)>new Date(BUILT))setUpd(r.updated);
+ const li=a=>rows(a.map(x=>[x]));let h='';
  if(r.text)h+=`<p>${r.text}</p>`;if(r.items)h+=li(r.items);if(r.groups)h+=r.groups.map(g=>`<details class="fold"><summary>${g.title} <span class="cnt">${g.items.length}</span></summary>${li(g.items)}</details>`).join('');
- if(h){document.getElementById('rtype').textContent=(r.type||'Report')+(r.date?' · '+fmt(r.date):'');document.getElementById('rbody').innerHTML=h;document.getElementById('rep').hidden=false}
- if(!N.length)return;box.hidden=false;
+ if(h){document.getElementById('rtype').textContent=(r.type||'Report')+(r.date?' · '+fmt(r.date):'');
+  document.getElementById('rsum').textContent=r.summary||(r.groups?r.groups.map(g=>g.items.length+' '+g.title.toLowerCase()).join(' · '):r.items?r.items.length+' items':'');
+  document.getElementById('rbody').innerHTML=h;document.getElementById('report').hidden=false}
+ const N=(r.notifications||[]).slice(0,2),box=document.getElementById('notif');if(!N.length)return;box.hidden=false;
  document.getElementById('ncount').textContent='Notifications · '+N.length;
  document.getElementById('nfirst').textContent=N[0].short||N[0].text;
  const ic=n=>n.due?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>';
