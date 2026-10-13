@@ -11,7 +11,7 @@ h1{font-size:2.4rem}h2{font-size:1.5rem;margin:0 0 10px}h3{font-size:1.15rem;mar
 .eyebrow{font-size:.72rem;letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);font-weight:600}
 .accent{color:#b4532a}.muted{color:var(--mw-muted-text)}
 .drop{background:#fff;border:1px solid var(--mw-border);border-left:4px solid #b4532a;border-radius:.6rem;margin-bottom:10px}
-.drop.urgent{border-left-color:#c2410c;background:#fff8f3}
+.drop.notif{border-left-color:#c2410c;background:#fff8f3}
 .drop summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 14px;cursor:pointer;border-radius:.6rem}.drop summary::-webkit-details-marker{display:none}
 .drop summary:hover{background:rgba(10,10,10,.03)}.sumtxt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sumtxt b{font-family:var(--mw-font-heading);font-size:1.1rem;margin-right:10px}
 .chev{width:10px;height:10px;border-right:2px solid #171717;border-bottom:2px solid #171717;transform:rotate(45deg);transition:transform var(--mw-dur) var(--mw-ease);margin:0 4px 4px}.drop[open] .chev{transform:rotate(225deg);margin-bottom:-4px}
@@ -50,32 +50,24 @@ ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}a.lk{display:inline
 footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(--mw-muted-text);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 12px}
 :focus-visible{outline:3px solid #b4532a;outline-offset:2px}
 .topnav{margin:-6px 0 6px}.homelink{color:var(--mw-foreground);font-weight:600;text-decoration:none;padding:0 4px;font-size:.95rem}
+.topnav{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.navtitle{font-family:var(--mw-font-heading);font-weight:700;font-size:1.25rem;margin-left:auto}
+.nlist{margin:0;padding:0 14px 8px 34px}.nlist li{margin:4px 0;font-weight:500}
+.rep{border-top:1px solid var(--mw-border);margin:0 14px;padding:8px 0 12px;font-size:.9rem}.rep ul{margin:2px 0 6px;padding-left:18px}.rep p{margin:2px 0}.rep .rg{font-family:var(--mw-font-heading);font-size:1rem;display:block;margin-top:4px}
+.tabs{margin-top:6px}.tab{font-size:.95rem;min-height:52px}
+.drop.more{margin-top:16px}.drop.more h3{margin:6px 0 4px}
 </style></head><body><main>
-<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a></nav>
-<details class="drop urgent" id="urgent"><summary><span class="sumtxt"><b id="ucount">1 Urgent</b><span class="muted" id="unext"></span></span><span class="chev" aria-hidden="true"></span></summary><ul id="ulist"></ul></details>
-<details class="drop report" id="report"><summary><span class="sumtxt"><b id="rtype">Morning Report</b><span class="muted" id="rsum">Loading</span></span><span class="chev" aria-hidden="true"></span></summary><div id="rbody"></div></details>
-<p class="eyebrow">Agent Command Center</p>
-<h1>Prop <span class="accent">·</span> Property Management</h1>
-<p class="muted" style="margin:6px 0 0">Tenants, leases, site and compliance ops, and rent receipts for each rental.</p>
-
-<section><h2>Overall Status</h2><div class="status">
-<div class="stat"><span class="eyebrow">Role</span><b>Property Management</b></div>
-<div class="stat"><span class="eyebrow">Reports To</span><b>Grok Bot</b></div>
-<div class="stat"><span class="eyebrow">Properties</span><b id="pcount">2 Rentals</b></div>
-<div class="stat"><span class="eyebrow">Decisions Open</span><b id="dcount">11</b></div>
-</div></section>
-
+<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop <span class="accent">·</span> Property Management</span></nav>
+<details class="drop notif" id="notif" hidden><summary><span class="sumtxt"><b id="ncount">Notifications</b><span class="muted" id="nfirst"></span></span><span class="chev" aria-hidden="true"></span></summary>
+<ol class="nlist" id="nlist"></ol><div class="rep" id="rep" hidden><span class="eyebrow" id="rtype">Report</span><div id="rbody"></div></div></details>
 <div class="tabs" role="tablist" id="tabs" aria-label="Properties"></div>
 <div class="carousel" aria-roledescription="carousel"><div class="track" id="track"></div>
 <div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous property">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next property">&#8594;</button></div></div>
 
-<div class="grid2">
-<section><h2>Routines</h2><ul class="plain">
+<details class="drop more" id="more"><summary><span class="sumtxt"><b>More</b><span class="muted">Routines and links</span></span><span class="chev" aria-hidden="true"></span></summary>
+<div><h3>Routines</h3><ul class="plain">
 <li><b>Monthly Rent Receipts</b>: 2nd and 4th of each month, 6:28 PM ICT</li>
 <li><b>USPS Wickfield Reminder</b>: Oct 24 (ahead of the Oct 30 deadline)</li>
-</ul></section>
-<section><h2>Shared Links</h2><ul class="plain"><li><a class="mw-hover lk" href="https://webermanapps.github.io/style-swipe/?date=prop-1&amp;from=https%3A%2F%2Fwebermanapps.github.io%2Fprop-dashboard%2F">Prop Style Swipe Deck</a> <span class="muted">(Branding, dashboard look picks)</span></li></ul></section>
-</div>
+</ul><h3>Shared Links</h3><ul class="plain"><li><a class="mw-hover lk" href="https://webermanapps.github.io/style-swipe/?date=prop-1&amp;from=https%3A%2F%2Fwebermanapps.github.io%2Fprop-dashboard%2F">Prop Style Swipe Deck</a> <span class="muted">(Branding, dashboard look picks)</span></li></ul></div></details>
 <div class="sharebar"><button class="btn mw-hover" id="share">Share</button></div>
 <footer><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></footer>
 </main>
@@ -92,8 +84,6 @@ const PROPS=[
  links:[]}
 ];
 const T=document.getElementById('track'),TB=document.getElementById('tabs'),D=document.getElementById('dots');
-document.getElementById('pcount').textContent=PROPS.length+' Rentals';
-document.getElementById('dcount').textContent=PROPS.reduce((n,p)=>n+p.decisions.length,0);
 PROPS.forEach((p,i)=>{
  const s=document.createElement('section');s.className='panel';s.id='panel-'+p.id;s.setAttribute('role','tabpanel');s.setAttribute('aria-label',p.name);
  s.innerHTML=`<span class="eyebrow">Property ${i+1} of ${PROPS.length}</span><h2 style="margin:2px 0 0">${p.name}</h2><p class="line">${p.line}</p>
@@ -114,24 +104,18 @@ addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e
 const fromHash=()=>{const i=PROPS.findIndex(p=>'#'+p.id===location.hash);return i<0?0:i};
 addEventListener('hashchange',()=>go(fromHash()));const mq=matchMedia('(min-width:1100px)');mq.addEventListener('change',()=>{T.scrollLeft=0;if(!mq.matches)go(cur,true)});addEventListener('resize',()=>{if(wide())T.scrollLeft=0;else go(cur,true)});
 requestAnimationFrame(()=>go(fromHash(),true));
-/* Urgent items: default list; report.json "urgent" overrides. Each: {text, due:"YYYY-MM-DD"} */
-const URGENT=[{text:"Wickfield: USPS forwarding ID check (reminder Oct 24)",due:"2026-10-30"}];
+/* Notifications: report.json "notifications" (max 2, most important first). Empty or missing = dropdown hidden. */
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
-function urgent(list){const U=document.getElementById('urgent');if(!list.length){U.hidden=true;return}U.hidden=false;
- list.sort((a,b)=>(a.due||'9').localeCompare(b.due||'9'));
- document.getElementById('ucount').textContent=list.length+' Urgent';
- document.getElementById('unext').textContent=list[0].due?'Next due '+fmt(list[0].due):'';
- document.getElementById('ulist').innerHTML=list.map(u=>`<li>${u.text}${u.due?` <span class="due">due ${fmt(u.due)}</span>`:''}</li>`).join('')}
-urgent(URGENT);
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
- if(Array.isArray(r.urgent))urgent(r.urgent);
- const ty=/evening/i.test(r.type)?'Evening Report':/fresh/i.test(r.type)?'Fresh Start':'Morning Report';const R=document.getElementById('report');R.classList.toggle('evening',ty==='Evening Report');
- document.getElementById('rtype').textContent=ty+(r.date?' · '+fmt(r.date):'');
- const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='',n=0;
- if(r.text){h+=`<p style="margin:4px 0 0">${r.text}</p>`;n++}if(r.items){h+=li(r.items);n+=r.items.length}
- if(r.groups){h+='<div class="rgroups">'+r.groups.map(g=>`<div><b class="rg">${g.title}</b>${li(g.items)}</div>`).join('')+'</div>';n+=r.groups.reduce((a,g)=>a+g.items.length,0)}
- document.getElementById('rsum').textContent=r.summary||(r.groups?r.groups.map(g=>g.title).join(' and ')+' · '+n+' updates':n+' updates');
- document.getElementById('rbody').innerHTML=h}).catch(()=>{document.getElementById('rsum').textContent='Report unavailable'});
+ const N=(r.notifications||[]).slice(0,2),box=document.getElementById('notif');
+ const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='';
+ if(r.text)h+=`<p>${r.text}</p>`;if(r.items)h+=li(r.items);if(r.groups)h+=r.groups.map(g=>`<b class="rg">${g.title}</b>${li(g.items)}`).join('');
+ if(h){document.getElementById('rtype').textContent=(r.type||'Report')+(r.date?' · '+fmt(r.date):'');document.getElementById('rbody').innerHTML=h;document.getElementById('rep').hidden=false}
+ if(!N.length)return;box.hidden=false;
+ document.getElementById('ncount').textContent='Notifications · '+N.length;
+ document.getElementById('nfirst').textContent=N[0].short||N[0].text;
+ document.getElementById('nlist').innerHTML=N.map(n=>`<li>${n.text}${n.due?` <span class="due">due ${fmt(n.due)}</span>`:''}</li>`).join('');
+}).catch(()=>{});
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}

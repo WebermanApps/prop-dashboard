@@ -9,8 +9,9 @@ const bg=getComputedStyle(document.body).backgroundColor.match(/\d+/g).map(Numbe
 r.emoji=/\p{Extended_Pictographic}/u.test(document.body.innerText);
 const sh=document.getElementById('share'),sb=sh.getBoundingClientRect();r.shareFixed=['fixed','sticky'].includes(getComputedStyle(sh.parentElement).position);
 r.minFont=Math.min(...[...document.querySelectorAll('main li,main p,main b,.tab')].filter(e=>e.offsetParent).map(e=>parseFloat(getComputedStyle(e).fontSize)));
-r.report=document.getElementById('rtype').textContent;r.panels=[...document.querySelectorAll('.panel')].map(e=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.width>0});r.trackScroll=document.getElementById('track').scrollLeft;r.drops=[...document.querySelectorAll('details.drop')].filter(d=>!d.hidden).map(d=>d.open+':'+Math.round(d.querySelector('summary').getBoundingClientRect().height)+':'+d.querySelector('summary').innerText.replace(/\s+/g,' ').trim());const H=document.querySelector('nav.topnav a.homelink'),hb=H&&H.getBoundingClientRect();r.home=!!H&&H.href==='https://webermanapps.github.io/a-2sipntzsp385oxy3/'&&!H.hasAttribute('target')&&hb.width>=44&&hb.height>=44&&hb.top<120&&hb.left<80;
-r.noBack=!/history\.back|history\.go\(-/.test(document.documentElement.outerHTML);r.tab=[...document.querySelectorAll('.tab')].map(t=>t.getAttribute('aria-selected')).join(',');r.hash=location.hash;return r}"""
+r.report=document.getElementById('rtype').textContent;r.panels=[...document.querySelectorAll('.panel')].map(e=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.width>0});r.trackScroll=document.getElementById('track').scrollLeft;r.drops=[...document.querySelectorAll('details.drop')].filter(d=>!d.hidden).map(d=>d.open+':'+Math.round(d.querySelector('summary').getBoundingClientRect().height)+':'+d.querySelector('summary').innerText.replace(/\s+/g,' ').trim());const H=document.querySelector('nav.topnav a.homelink'),hb=H&&H.getBoundingClientRect();r.home=!!H&&H.href==='https://webermanapps.github.io/a-2sipntzsp385oxy3/'&&!H.hasAttribute('target')&&hb.width>=44&&hb.height>=44&&hb.top<120&&hb.left<=document.querySelector('main').getBoundingClientRect().left+parseFloat(getComputedStyle(document.querySelector('main')).paddingLeft)+8;
+r.noBack=!/history\.back|history\.go\(-/.test(document.documentElement.outerHTML);r.notif=(()=>{const n=document.getElementById('notif');return n.hidden?'hidden':n.querySelectorAll('#nlist li').length+' items, open='+n.open+', summary='+n.querySelector('summary').innerText.replace(/\s+/g,' ').trim()})();
+r.order=[...document.querySelectorAll('main > *')].slice(0,4).map(e=>e.id||e.className.split(' ')[0]).join('>');r.noStatus=!/Overall Status/.test(document.body.innerText);r.tab=[...document.querySelectorAll('.tab')].map(t=>t.getAttribute('aria-selected')).join(',');r.hash=location.hash;return r}"""
 with sync_playwright() as p:
   b=p.chromium.launch()
   for n,w,h,s,m in S:
@@ -24,7 +25,7 @@ with sync_playwright() as p:
       pg.click(".tab >> nth=0");pg.wait_for_timeout(800);print(" tab->",pg.evaluate("location.hash"))
     else:
       pg.keyboard.press("ArrowRight");pg.wait_for_timeout(800);print(" key->",pg.evaluate("location.hash"));pg.keyboard.press("ArrowLeft");pg.wait_for_timeout(800)
-    pg.focus("#urgent summary");pg.keyboard.press("Enter");pg.wait_for_timeout(200);print(" enter->open",pg.evaluate("document.getElementById('urgent').open"));pg.keyboard.press("Enter");pg.wait_for_timeout(200)
+    pg.focus("#notif summary");pg.keyboard.press("Enter");pg.wait_for_timeout(200);print(" enter->open",pg.evaluate("document.getElementById('notif').open"));pg.keyboard.press("Enter");pg.wait_for_timeout(200)
     if not m:
       pg.set_viewport_size({"width":900,"height":h});pg.wait_for_timeout(500);pg.set_viewport_size({"width":w,"height":h});pg.wait_for_timeout(500)
       print(" resize->",pg.evaluate("()=>[document.getElementById('track').scrollLeft,[...document.querySelectorAll('.panel')].map(e=>Math.round(e.getBoundingClientRect().left))]"))
