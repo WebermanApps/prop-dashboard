@@ -4,3 +4,4 @@ Redeploy after edits:
   cd /workspace/ops/prop/dashboard && git add -A && git commit -m "Update" && git push
 (gh is authenticated on the box.) Pages rebuilds in ~1 min: https://webermanapps.github.io/prop-dashboard/
 Rules: no tenant names, money, account/loan/phone numbers. Use nicknames Mellow Wood / Wickfield.
+Check before publish (3 screens per spec): python3 check.py https://webermanapps.github.io/prop-dashboard/ screens
