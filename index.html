@@ -10,9 +10,15 @@ h1,h2,h3{font-family:var(--mw-font-heading);font-weight:700;letter-spacing:-.01e
 h1{font-size:2.4rem}h2{font-size:1.5rem;margin:0 0 10px}h3{font-size:1.15rem;margin:16px 0 8px}
 .eyebrow{font-size:.72rem;letter-spacing:var(--mw-tracking-label);text-transform:uppercase;color:var(--mw-muted-text);font-weight:600}
 .accent{color:#b4532a}.muted{color:var(--mw-muted-text)}
-.report{background:#fff;border:1px solid var(--mw-border);border-left:4px solid #b4532a;border-radius:.6rem;padding:10px 14px;margin-bottom:16px}
+.drop{background:#fff;border:1px solid var(--mw-border);border-left:4px solid #b4532a;border-radius:.6rem;margin-bottom:10px}
+.drop.urgent{border-left-color:#c2410c;background:#fff8f3}
+.drop summary{list-style:none;display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 14px;cursor:pointer;border-radius:.6rem}.drop summary::-webkit-details-marker{display:none}
+.drop summary:hover{background:rgba(10,10,10,.03)}.sumtxt{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.sumtxt b{font-family:var(--mw-font-heading);font-size:1.1rem;margin-right:10px}
+.chev{width:10px;height:10px;border-right:2px solid #171717;border-bottom:2px solid #171717;transform:rotate(45deg);transition:transform var(--mw-dur) var(--mw-ease);margin:0 4px 4px}.drop[open] .chev{transform:rotate(225deg);margin-bottom:-4px}
+.drop>ul,.drop>div{padding:0 14px 12px;margin:0}.drop>ul{padding-left:32px}
+@media(prefers-reduced-motion:reduce){.chev{transition:none}}
 .report.evening{border-left-color:#3d5a36}.rgroups{display:grid;gap:6px 24px;margin-top:4px}.rg{font-family:var(--mw-font-heading);font-size:1.1rem}@media(min-width:820px){.rgroups{grid-template-columns:1fr 1fr}}
-.report ul{margin:4px 0 0;padding-left:18px}.report li{margin:2px 0}
+.report ul{margin:4px 0 0;padding-left:18px}.report>div{padding-bottom:12px}.report li{margin:2px 0}
 section{background:#fff;border:1px solid var(--mw-border);border-radius:.75rem;padding:18px;margin-top:16px}
 .status{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .stat{background:var(--mw-secondary);border-radius:.6rem;padding:12px}.stat b{display:block;font-family:var(--mw-font-heading);font-size:1.2rem}
@@ -36,14 +42,15 @@ ul.plain{margin:0;padding-left:18px}ul.plain li{margin:4px 0}a.lk{display:inline
 @media(min-width:1400px){main{max-width:1320px}}
 @media(min-width:1100px){.track{overflow:visible;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;scroll-snap-type:none;transform:none}.panel{min-width:0}.panel.active{outline:3px solid #b4532a;outline-offset:-1px}.cols{display:block}.cnav{display:none}}
 @media(min-width:2400px){html{font-size:24px}}
-@media(min-width:1800px){html{font-size:20px}.eyebrow{font-size:.85rem}main{max-width:none;padding:5vh 5vw 4vh}.tab,.btn{font-size:1rem;min-height:56px}.arrow,.dots button{width:56px;height:56px}.dots button::after{width:14px;height:14px}h1{font-size:4rem}h2{font-size:1.9rem}section{padding:26px}
+@media(min-width:1800px){html{font-size:20px}.drop summary{min-height:56px}.eyebrow{font-size:.85rem}main{max-width:none;padding:5vh 5vw 4vh}.tab,.btn{font-size:1rem;min-height:56px}.arrow,.dots button{width:56px;height:56px}.dots button::after{width:14px;height:14px}h1{font-size:4rem}h2{font-size:1.9rem}section{padding:26px}
 }
 .sharebar{display:flex;justify-content:center;padding:24px 0 0}
 .btn{min-height:44px;padding:0 28px;border:2px solid var(--mw-primary);background:#fff;font:600 .85rem var(--mw-font-body);letter-spacing:var(--mw-tracking-label);text-transform:uppercase;cursor:pointer;color:var(--mw-primary)}
 footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(--mw-muted-text);text-decoration:none;display:inline-flex;align-items:center;min-height:44px;padding:0 12px}
 :focus-visible{outline:3px solid #b4532a;outline-offset:2px}
 </style></head><body><main>
-<div class="report" id="report" aria-live="polite"><span class="eyebrow" id="rtype">Morning Report</span><div id="rbody"><p class="muted" style="margin:4px 0 0">Loading today's report.</p></div></div>
+<details class="drop urgent" id="urgent"><summary><span class="sumtxt"><b id="ucount">1 Urgent</b><span class="muted" id="unext"></span></span><span class="chev" aria-hidden="true"></span></summary><ul id="ulist"></ul></details>
+<details class="drop report" id="report"><summary><span class="sumtxt"><b id="rtype">Morning Report</b><span class="muted" id="rsum">Loading</span></span><span class="chev" aria-hidden="true"></span></summary><div id="rbody"></div></details>
 <p class="eyebrow">Agent Command Center</p>
 <h1>Prop <span class="accent">·</span> Property Management</h1>
 <p class="muted" style="margin:6px 0 0">Tenants, leases, site and compliance ops, and rent receipts for each rental.</p>
@@ -104,13 +111,24 @@ addEventListener('keydown',e=>{if(e.target.closest('input,textarea'))return;if(e
 const fromHash=()=>{const i=PROPS.findIndex(p=>'#'+p.id===location.hash);return i<0?0:i};
 addEventListener('hashchange',()=>go(fromHash()));const mq=matchMedia('(min-width:1100px)');mq.addEventListener('change',()=>{T.scrollLeft=0;if(!mq.matches)go(cur,true)});addEventListener('resize',()=>{if(wide())T.scrollLeft=0;else go(cur,true)});
 requestAnimationFrame(()=>go(fromHash(),true));
+/* Urgent items: default list; report.json "urgent" overrides. Each: {text, due:"YYYY-MM-DD"} */
+const URGENT=[{text:"Wickfield: USPS forwarding ID check (reminder Oct 24)",due:"2026-10-30"}];
+const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
+function urgent(list){const U=document.getElementById('urgent');if(!list.length){U.hidden=true;return}U.hidden=false;
+ list.sort((a,b)=>(a.due||'9').localeCompare(b.due||'9'));
+ document.getElementById('ucount').textContent=list.length+' Urgent';
+ document.getElementById('unext').textContent=list[0].due?'Next due '+fmt(list[0].due):'';
+ document.getElementById('ulist').innerHTML=list.map(u=>`<li>${u.text}${u.due?` <span class="due">due ${fmt(u.due)}</span>`:''}</li>`).join('')}
+urgent(URGENT);
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
+ if(Array.isArray(r.urgent))urgent(r.urgent);
  const ty=/evening/i.test(r.type)?'Evening Report':'Morning Report';const R=document.getElementById('report');R.classList.toggle('evening',ty==='Evening Report');
- document.getElementById('rtype').textContent=ty+(r.date?' · '+new Date(r.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'}):'');
- const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='';
- if(r.text)h+=`<p style="margin:4px 0 0">${r.text}</p>`;if(r.items)h+=li(r.items);
- if(r.groups)h+='<div class="rgroups">'+r.groups.map(g=>`<div><b class="rg">${g.title}</b>${li(g.items)}</div>`).join('')+'</div>';
- document.getElementById('rbody').innerHTML=h}).catch(()=>{document.getElementById('rbody').innerHTML='<p class="muted" style="margin:4px 0 0">Report unavailable.</p>'});
+ document.getElementById('rtype').textContent=ty+(r.date?' · '+fmt(r.date):'');
+ const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='',n=0;
+ if(r.text){h+=`<p style="margin:4px 0 0">${r.text}</p>`;n++}if(r.items){h+=li(r.items);n+=r.items.length}
+ if(r.groups){h+='<div class="rgroups">'+r.groups.map(g=>`<div><b class="rg">${g.title}</b>${li(g.items)}</div>`).join('')+'</div>';n+=r.groups.reduce((a,g)=>a+g.items.length,0)}
+ document.getElementById('rsum').textContent=r.summary||(r.groups?r.groups.map(g=>g.title).join(' and ')+' · '+n+' updates':n+' updates');
+ document.getElementById('rbody').innerHTML=h}).catch(()=>{document.getElementById('rsum').textContent='Report unavailable'});
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
