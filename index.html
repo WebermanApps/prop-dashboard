@@ -55,8 +55,32 @@ footer{text-align:center;padding:24px 0 8px;font-size:.85rem}footer a{color:var(
 .rep{border-top:1px solid var(--mw-border);margin:0 14px;padding:8px 0 12px;font-size:.9rem}.rep ul{margin:2px 0 6px;padding-left:18px}.rep p{margin:2px 0}.rep .rg{font-family:var(--mw-font-heading);font-size:1rem;display:block;margin-top:4px}
 .tabs{margin-top:6px}.tab{font-size:.95rem;min-height:52px}
 .drop.more{margin-top:16px}.drop.more h3{margin:6px 0 4px}
+
+/* Dashboard style deck picks (Oct 13 23:06): Lagoon accent band, spaced caps, tinted side-rule owed box, pill chips, color-edge square cards, numbered saffron report rows */
+:root{--lagoon:#05668D;--saffron:#D4A017;--jungle:#0B6E4F;--terra:#C1502E;--lines:#E5E0D8;--mw-muted-text:#525252;--mw-border:#E5E0D8}
+.topnav{background:var(--lagoon);color:#fff;border-radius:.6rem;padding:2px 10px;margin:0 0 10px}
+.topnav .homelink{color:#fff}.navtitle{font-family:var(--mw-font-body);font-weight:600;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.drop{border-color:var(--lines);border-left-color:var(--lagoon)}.drop.notif{background:#f2f8fa;border-left-color:var(--lagoon)}
+.nlist{list-style:none;padding:0 14px 10px;display:grid;gap:8px}.ntile{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--lines);border-radius:.6rem;padding:10px}
+.ico{flex:none;width:36px;height:36px;border-radius:8px;background:#e3f0f5;display:grid;place-items:center}.ico svg{width:20px;height:20px;fill:none;stroke:var(--lagoon);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.pill{display:inline-block;border-radius:999px;padding:1px 10px;font-size:.78rem;font-weight:600;letter-spacing:.04em}.pill.due{background:#fbf1d6;color:#7a5a00;border:1px solid var(--saffron)}
+.rep .eyebrow{font-family:var(--mw-font-heading);font-size:1.2rem;letter-spacing:0;text-transform:none;color:var(--mw-foreground);font-weight:700}
+.fold{border-top:1px solid var(--lines)}.fold summary{min-height:44px;display:flex;align-items:center;gap:8px;cursor:pointer;font-weight:600;list-style:none}.fold summary::-webkit-details-marker{display:none}
+.fold summary::after{content:"+";margin-left:auto;font-size:1.2rem;color:var(--lagoon)}.fold[open] summary::after{content:"\2212"}
+.cnt{background:var(--saffron);color:#0a0a0a;border-radius:999px;font-size:.72rem;padding:0 8px}
+ol.num{list-style:none;counter-reset:n;padding:0;margin:0 0 8px}ol.num li{counter-increment:n;display:flex;gap:10px;padding:6px 0;border-bottom:1px dashed var(--lines)}
+ol.num li::before{content:counter(n);flex:none;width:22px;height:22px;border-radius:50%;background:var(--saffron);color:#0a0a0a;font-weight:700;font-size:.75rem;display:grid;place-items:center;margin-top:1px}
+.tabs{background:#fff;border-color:var(--lines);border-radius:999px;padding:4px}.tab{border-radius:999px}.tab[aria-selected=true]{background:var(--lagoon);color:#fff;box-shadow:none}
+.panel.active{outline-color:var(--lagoon)}
+h3.owed{background:#f2f8fa;border-left:4px solid var(--lagoon);padding:8px 12px;margin:16px 0 10px;font-family:var(--mw-font-body);font-size:.8rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--lagoon)}
+h3.caps{font-family:var(--mw-font-body);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--mw-muted-text)}
+ul.work{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}ul.work li{background:#fff;border:1px solid var(--lines);border-left:4px solid var(--jungle);border-radius:0;padding:12px}
+ol.dec li{border-color:var(--lines)}
+.drop.more{background:#fff;border:1px solid var(--lines);border-left:1px solid var(--lines)}.drop.more a.lk{color:var(--lagoon);text-decoration:underline;text-underline-offset:3px}
+.dots button.on::after{background:var(--lagoon)}.arrow{border-color:var(--lagoon);color:var(--lagoon)}
+:focus-visible{outline-color:var(--lagoon)}
 </style></head><body><main>
-<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop <span class="accent">·</span> Property Management</span></nav>
+<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-2sipntzsp385oxy3/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop · Property Management</span></nav>
 <details class="drop notif" id="notif" hidden><summary><span class="sumtxt"><b id="ncount">Notifications</b><span class="muted" id="nfirst"></span></span><span class="chev" aria-hidden="true"></span></summary>
 <ol class="nlist" id="nlist"></ol><div class="rep" id="rep" hidden><span class="eyebrow" id="rtype">Report</span><div id="rbody"></div></div></details>
 <div class="tabs" role="tablist" id="tabs" aria-label="Properties"></div>
@@ -79,7 +103,7 @@ const PROPS=[
  work:[["Oct 13","Utility transfer checklist filed from Portfolio"],["Oct 10","Site cleared: mirrors returned, lockbox removed, Lenny has keys; mail forwarding filed"],["Oct 5","Deposit and first-month receipts sent; renters insurance certificate filed"],["Sep–Oct","Lease-up: screening, executed lease, lead disclosure, move-in checklist, township registration"]],
  links:[]},
 {id:"wickfield",name:"Wickfield",line:"Rented. Receipts, homestead removal, mail forwarding and soffit repair open.",
- decisions:["Send the 2026 receipts email","Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited","Homestead exemption form: move-out date, signature, and assessor call",'USPS forwarding ID check <span class="due">due Oct 30</span>',"Tenant Dropbox folder: add the signed lease and renters insurance (receipts ready to go in)","Soffit repair: Prop handles it, or hand it to Weberman Construction?","Lease extension amendment (to about 2027): upload the signed copy if you have it"],
+ decisions:["Send the 2026 receipts email","Jun–Aug: which months the summer deposits covered, and whether dad's check was deposited","Homestead exemption form: move-out date, signature, and assessor call",'USPS forwarding ID check <span class="pill due">Due Oct 30</span>',"Tenant Dropbox folder: add the signed lease and renters insurance (receipts ready to go in)","Soffit repair: Prop handles it, or hand it to Weberman Construction?","Lease extension amendment (to about 2027): upload the signed copy if you have it"],
  work:[["Oct 13","Lease copies filed from Portfolio; lease extension upload now with Prop"],["Oct 10","Homestead removal form prefilled and assessor email drafted"],["Oct 10","HOA contacts saved"],["Oct 6","2026 rent audit done; receipts packet and email drafted"]],
  links:[]}
 ];
@@ -87,9 +111,9 @@ const T=document.getElementById('track'),TB=document.getElementById('tabs'),D=do
 PROPS.forEach((p,i)=>{
  const s=document.createElement('section');s.className='panel';s.id='panel-'+p.id;s.setAttribute('role','tabpanel');s.setAttribute('aria-label',p.name);
  s.innerHTML=`<span class="eyebrow">Property ${i+1} of ${PROPS.length}</span><h2 style="margin:2px 0 0">${p.name}</h2><p class="line">${p.line}</p>
- <div class="cols"><div><h3>Decisions Max Owes</h3><ol class="dec">${p.decisions.map(d=>`<li>${d}</li>`).join('')}</ol></div>
- <div><h3>Recent Work</h3><ul class="work">${p.work.map(w=>`<li><span class="eyebrow">${w[0]}</span><br>${w[1]}</li>`).join('')}</ul>
- <h3>Links</h3>${p.links.length?`<ul class="plain">${p.links.map(l=>`<li><a class="mw-hover" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:'<p class="muted" style="margin:0">None yet.</p>'}</div></div>`;
+ <div class="cols"><div><h3 class="owed">Decisions Max Owes</h3><ol class="dec">${p.decisions.map(d=>`<li>${d}</li>`).join('')}</ol></div>
+ <div class="rw"><h3 class="caps">Recent Work</h3><ul class="work">${p.work.map(w=>`<li><span class="eyebrow">${w[0]}</span><br>${w[1]}</li>`).join('')}</ul>
+ <h3 class="caps">Links</h3>${p.links.length?`<ul class="plain">${p.links.map(l=>`<li><a class="mw-hover" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:'<p class="muted" style="margin:0">None yet.</p>'}</div></div>`;
  T.appendChild(s);
  const b=document.createElement('button');b.className='tab mw-hover';b.role='tab';b.textContent=p.name;b.onclick=()=>go(i);TB.appendChild(b);
  const d=document.createElement('button');d.setAttribute('aria-label',p.name);d.onclick=()=>go(i);D.appendChild(d);
@@ -108,13 +132,14 @@ requestAnimationFrame(()=>go(fromHash(),true));
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>{
  const N=(r.notifications||[]).slice(0,2),box=document.getElementById('notif');
- const li=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;let h='';
- if(r.text)h+=`<p>${r.text}</p>`;if(r.items)h+=li(r.items);if(r.groups)h+=r.groups.map(g=>`<b class="rg">${g.title}</b>${li(g.items)}`).join('');
+ const li=a=>`<ol class="num">${a.map(x=>`<li>${x}</li>`).join('')}</ol>`;let h='';
+ if(r.text)h+=`<p>${r.text}</p>`;if(r.items)h+=li(r.items);if(r.groups)h+=r.groups.map(g=>`<details class="fold"><summary>${g.title} <span class="cnt">${g.items.length}</span></summary>${li(g.items)}</details>`).join('');
  if(h){document.getElementById('rtype').textContent=(r.type||'Report')+(r.date?' · '+fmt(r.date):'');document.getElementById('rbody').innerHTML=h;document.getElementById('rep').hidden=false}
  if(!N.length)return;box.hidden=false;
  document.getElementById('ncount').textContent='Notifications · '+N.length;
  document.getElementById('nfirst').textContent=N[0].short||N[0].text;
- document.getElementById('nlist').innerHTML=N.map(n=>`<li>${n.text}${n.due?` <span class="due">due ${fmt(n.due)}</span>`:''}</li>`).join('');
+ const ic=n=>n.due?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>';
+ document.getElementById('nlist').innerHTML=N.map(n=>`<li class="ntile"><span class="ico">${ic(n)}</span><span>${n.text}${n.due?` <span class="pill due">Due ${fmt(n.due)}</span>`:''}</span></li>`).join('');
 }).catch(()=>{});
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
