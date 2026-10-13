@@ -136,4 +136,5 @@ document.getElementById('share').onclick=async()=>{const url=location.href,text=
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
  const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.textContent='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.textContent='Share',1800)};
-</script></body></html>
+</script><script src="ptr.js" defer></script>
+</body></html>
