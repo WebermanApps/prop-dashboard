@@ -4,6 +4,7 @@ Static site, hosted on GitHub Pages: repo WebermanApps/prop-dashboard -> https:/
 - Top of page (Max 10:34 PM layout + Layout Deck round 1, Oct 13): sticky shared top bar (Apps Home, Prop, Updated time) > title > Apps row > report as ONE line that expands > collapsed "Notifications" dropdown (max 2) > Mellow Wood | Wickfield switcher (sticky under the bar). No Overall Status section. Routines live in a collapsed "More" at the bottom.
 - Panels: stat strip (Status, Decisions, Due Soon, Latest), then condensed rows (2-line clamp, tap to expand, dates right-aligned, first 5 then See All). Decisions with a due date: ["text","YYYY-MM-DD"].
 - Updated time = later of BUILT (index.html, bump on each edit) and report.json "updated".
+- Morning/Evening Report runs: first read MORNING-NOTES.md and PENDING.md in this folder if present (local only, gitignored), fold them in, then delete them.
 - Routines edit report.json only:
   {"type": "Morning Report" | "Evening Report" | "Fresh Start", "date": "YYYY-MM-DD",
    "notifications": [ {"text": "full line", "short": "summary-line text", "due": "YYYY-MM-DD" (optional)} ],   <- MAX 2, most important first; [] hides the dropdown
