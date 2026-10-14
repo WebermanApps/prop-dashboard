@@ -1,0 +1,6 @@
+{"updated":"2026-10-14 15:18 ICT","routines":[
+ {"name":"Prop Morning Report","group":"Reports","schedule_plain":"Daily At 4:43 AM ICT","status":"on","last_run":"Today 4:49 AM"},
+ {"name":"Prop Evening Report","group":"Reports","schedule_plain":"Daily At 6:03 PM ICT","status":"on","last_run":"Yesterday 6:13 PM"},
+ {"name":"Monthly Rent Receipts (Mellow Wood + Wickfield)","group":"Monthly","schedule_plain":"2nd And 4th Of Each Month At 6:28 PM ICT","status":"on","last_run":"Not Yet Run"},
+ {"name":"USPS Wickfield Change Of Address Check","group":"One-Time","schedule_plain":"Once On Oct 24 At 5:23 PM ICT","status":"on","last_run":"Not Yet Run"}
+]}
