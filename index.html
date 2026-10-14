@@ -3,7 +3,7 @@
 <link rel="icon" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand-tokens.css">
-<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/deck-launcher.css?v=1">
+<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/deck-shelf.css?v=2">
 <link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/routines-section.css?v=2">
 <style>
 *{box-sizing:border-box}html,body{overflow-x:clip}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
@@ -115,15 +115,14 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 .wd b{display:block;font-family:var(--mw-font-heading);font-size:1rem}.wd small{display:block;font-size:.72rem;color:var(--mw-muted-text);text-transform:uppercase;letter-spacing:.08em}
 .wd i{display:inline-block;width:7px;height:7px;border-radius:50%;margin:3px 1px 0}.wd i.r{background:var(--lagoon)}.wd i.m{background:var(--saffron)}.wd i.e{background:var(--terra)}
 .wkey{grid-column:1/-1;font-size:.75rem;color:var(--mw-muted-text);display:flex;gap:12px;flex-wrap:wrap;padding:2px 2px 0}.wkey i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
-#deck-launcher{margin:4px 0 10px}.week-wrap{margin-top:12px}.week-wrap h2{font-size:1.25rem;margin:0 0 8px}
+.week-wrap{margin-top:12px}.week-wrap h2{font-size:1.25rem;margin:0 0 8px}
 .shareico{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:8px;background:transparent;border:1px solid #171717;color:#171717;border-radius:0;cursor:pointer}
 </style></head><body><main>
 <nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-o956qercs5ubd57y/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>
 <h1 class="title">Prop Command Center</h1>
-<div data-launcher="launcher.json" id="deck-launcher"></div>
+<section data-shelf="shelf.json" id="ready-shelf"></section>
 <script src="https://webermanapps.github.io/style-swipe/submit.js" defer></script>
-<script src="https://webermanapps.github.io/style-swipe/kit/deck-launcher.js?v=1" defer></script>
-<nav class="apps" aria-label="Prop apps"><span class="appslbl">Apps</span><a class="chip mw-hover" href="https://webermanapps.github.io/style-swipe/?date=prop-1&amp;from=https%3A%2F%2Fwebermanapps.github.io%2Fprop-dashboard%2F">Prop Style Swipe Deck</a></nav>
+<script src="https://webermanapps.github.io/style-swipe/kit/deck-shelf.js?v=2" defer></script>
 <details class="drop report" id="report" hidden><summary><span class="sumtxt"><b id="rtype">Report</b><span class="muted" id="rsum"></span></span><span class="chev" aria-hidden="true"></span></summary>
 <div class="rep" id="rep"><div id="rbody"></div></div></details>
 <details class="drop notif" id="notif" hidden><summary><span class="sumtxt"><b id="ncount">Notifications</b><span class="muted" id="nfirst"></span></span><span class="chev" aria-hidden="true"></span></summary>
@@ -142,7 +141,7 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 </main>
 <script>
 /* Page build time; the top bar shows the later of this and report.json "updated". */
-const BUILT="2026-10-14T15:18:00+07:00";
+const BUILT="2026-10-14T20:12:00+07:00";
 /* Add a property: append one object here. id becomes the URL hash.
    decisions: "text" or ["text","YYYY-MM-DD due"]. work: ["date label","text"], newest first. */
 const PROPS=[

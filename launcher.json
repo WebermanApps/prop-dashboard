@@ -1,9 +1,0 @@
-{"agent":"prop",
-"categories":[
- {"id":"properties","label":"Properties Deck","blurb":"Mellow Wood and Wickfield decisions"},
- {"id":"tenant-lease","label":"Tenant & Lease Deck","blurb":"Lease, walkthrough and renters insurance"},
- {"id":"maintenance","label":"Maintenance & Contractors Deck","blurb":"Repairs, vendors and site work"},
- {"id":"paperwork","label":"Paperwork & Moves Deck","blurb":"Address change, township and HOA"},
- {"id":"dashboard","label":"Dashboard Deck","blurb":"Layout and board sections"}],
-"unfinished":[],
-"ready":{"name":"Properties, Lease, Maintenance And Paperwork","url":"deck/?d=prop-q1","total":20,"categories":["Properties Deck","Tenant & Lease Deck","Maintenance & Contractors Deck","Paperwork & Moves Deck","Dashboard Deck"]}}

@@ -1,0 +1,58 @@
+{
+ "agent": "prop",
+ "decks": [
+  {
+   "id": "prop-properties-properties-deck",
+   "name": "Properties Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-properties-properties-deck-eupl06/",
+   "total": 20,
+   "topic": "prop-properties",
+   "added": "2026-10-14T20:09:23+07:00",
+   "tag": "Properties",
+   "blurb": "20 cards, ready now"
+  },
+  {
+   "id": "prop-tenant-lease-tenant-and-lease-deck",
+   "name": "Tenant And Lease Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-tenant-lease-tenant-and-lease-deck-txbzz0/",
+   "total": 20,
+   "topic": "prop-tenant-lease",
+   "added": "2026-10-14T20:09:24+07:00",
+   "tag": "Tenant And Lease",
+   "blurb": "20 cards, ready now"
+  },
+  {
+   "id": "prop-maintenance-maintenance-and-contractors-deck",
+   "name": "Maintenance And Contractors Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-maintenance-maintenance-and-contractors-deck-gx2g8r/",
+   "total": 20,
+   "topic": "prop-maintenance",
+   "added": "2026-10-14T20:09:24+07:00",
+   "tag": "Maintenance",
+   "blurb": "20 cards, ready now"
+  },
+  {
+   "id": "prop-paperwork-paperwork-and-moves-deck",
+   "name": "Paperwork And Moves Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-paperwork-paperwork-and-moves-deck-f2v7tn/",
+   "total": 20,
+   "topic": "prop-paperwork",
+   "added": "2026-10-14T20:09:25+07:00",
+   "tag": "Paperwork",
+   "blurb": "20 cards, ready now"
+  },
+  {
+   "id": "prop-dashboard-dashboard-deck",
+   "name": "Dashboard Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-dashboard-dashboard-deck-46vt4h/",
+   "total": 20,
+   "topic": "prop-dashboard",
+   "added": "2026-10-14T20:09:25+07:00",
+   "tag": "Dashboard",
+   "blurb": "20 cards, ready now"
+  }
+ ],
+ "updated": "2026-10-14T20:09:25+07:00",
+ "pinned": [],
+ "done": []
+}
