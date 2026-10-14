@@ -3,6 +3,7 @@
 <link rel="icon" href="favicon-32.png"><link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand-tokens.css">
+<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/routines-section.css?v=1">
 <style>
 *{box-sizing:border-box}html,body{overflow-x:clip}body{margin:0;background:#fbf8f2;color:var(--mw-foreground);font-family:var(--mw-font-body);line-height:1.5}
 main{max-width:1040px;margin:0 auto;padding:16px 16px 8px}
@@ -108,8 +109,14 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 @media(min-width:1800px){.topnav{min-height:56px}.tabs{top:56px}h1.title{font-size:3rem}.row{font-size:1rem}}
 @media(max-width:380px){.upd{display:none}}
 @media(max-width:500px){.strip div{padding:6px 8px;font-size:.68rem;letter-spacing:.04em}.strip b{font-size:1.05rem}}
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:16px}
+.wd{background:#fff;border:1px solid var(--lines);border-radius:.5rem;padding:6px 2px;text-align:center;min-height:64px}.wd.today{border-color:var(--lagoon);box-shadow:inset 0 0 0 1px var(--lagoon)}
+.wd b{display:block;font-family:var(--mw-font-heading);font-size:1rem}.wd small{display:block;font-size:.68rem;color:var(--mw-muted-text);text-transform:uppercase;letter-spacing:.08em}
+.wd i{display:inline-block;width:7px;height:7px;border-radius:50%;margin:3px 1px 0}.wd i.r{background:var(--lagoon)}.wd i.m{background:var(--saffron)}.wd i.e{background:var(--terra)}
+.wkey{grid-column:1/-1;font-size:.75rem;color:var(--mw-muted-text);display:flex;gap:12px;flex-wrap:wrap;padding:2px 2px 0}.wkey i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
+.shareico{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:8px;background:transparent;border:1px solid #171717;color:#171717;border-radius:0;cursor:pointer}
 </style></head><body><main>
-<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-o956qercs5ubd57y/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop</span><span class="upd" id="upd"></span></nav>
+<nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-o956qercs5ubd57y/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>
 <h1 class="title">Prop Command Center</h1>
 <nav class="apps" aria-label="Prop apps"><span class="appslbl">Apps</span><a class="chip mw-hover" href="https://webermanapps.github.io/style-swipe/?date=prop-1&amp;from=https%3A%2F%2Fwebermanapps.github.io%2Fprop-dashboard%2F">Prop Style Swipe Deck</a></nav>
 <details class="drop report" id="report" hidden><summary><span class="sumtxt"><b id="rtype">Report</b><span class="muted" id="rsum"></span></span><span class="chev" aria-hidden="true"></span></summary>
@@ -120,14 +127,8 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 <div class="carousel" aria-roledescription="carousel"><div class="track" id="track"></div>
 <div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous property">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next property">&#8594;</button></div></div>
 
-<details class="drop more" id="more"><summary><span class="sumtxt"><b>More</b><span class="muted">Routines</span></span><span class="chev" aria-hidden="true"></span></summary>
-<div><h3>Routines</h3><ul class="plain">
-<li><b>Morning Report</b>: every day, live by 5:00 AM ICT</li>
-<li><b>Evening Report</b>: every day at 6:03 PM ICT</li>
-<li><b>Monthly Rent Receipts</b>: 2nd and 4th of each month, 6:28 PM ICT</li>
-<li><b>USPS Wickfield Reminder</b>: Oct 24 (ahead of the Oct 30 deadline)</li>
-</ul></div></details>
-<div class="sharebar"><button class="btn mw-hover" id="share">Share</button></div>
+<div class="week" id="week" aria-label="Routines this week"></div>
+<section data-routines="routines.json" id="routines"></section><script src="https://webermanapps.github.io/style-swipe/kit/routines-section.js?v=1" defer></script>
 <footer><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></footer>
 </main>
 <script>
@@ -191,9 +192,17 @@ fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>
  const ic=n=>n.due?'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>':'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>';
  document.getElementById('nlist').innerHTML=N.map(n=>`<li class="ntile"><span class="ico">${ic(n)}</span><span>${n.text}${n.due?` <span class="pill due">Due ${fmt(n.due)}</span>`:''}</span></li>`).join('');
 }).catch(()=>{});
+/* Week strip (deck pick 16 A): next 7 days, dots = routines that run that day. Built from the same schedule. */
+(function(){const W=document.getElementById('week');if(!W)return;const now=new Date();let h='';
+ for(let k=0;k<7;k++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+k),dm=d.getDate(),t=[];
+  t.push('<i class="r" title="Morning and Evening Report"></i>');
+  if(dm===2||dm===4)t.push('<i class="m" title="Rent receipts 6:28 PM"></i>');
+  if(d.getMonth()===9&&dm===24&&d.getFullYear()===2026)t.push('<i class="e" title="USPS Wickfield check 5:23 PM"></i>');
+  h+=`<div class="wd${k?'':' today'}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${dm}</b>${t.join('')}</div>`}
+ W.innerHTML=h+'<div class="wkey"><span><i class="r" style="background:var(--lagoon)"></i>Reports</span><span><i style="background:var(--saffron)"></i>Rent Receipts</span><span><i style="background:var(--terra)"></i>USPS Check</span></div>'})();
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
- const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.textContent='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.textContent='Share',1800)};
+ const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.title='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.title='Share',1800)};
 </script><script src="ptr.js" defer></script>
 </body></html>
