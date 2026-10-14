@@ -7,9 +7,9 @@ Static site, hosted on GitHub Pages: repo WebermanApps/prop-dashboard -> https:/
 - Ready To Swipe shelf (R66, Oct 14 19:55): `<section data-shelf="shelf.json">` at the very top + shared kit `deck-shelf.js?v=2` / `.css?v=2` (+ `submit.js`). `shelf.json` holds 3-5 ready 20-card decks (agent `prop`), `pinned` unfinished decks count toward the 5-deck cap. Decks never appear anywhere lower on the page (no Apps-row deck chips). Banks: `style-swipe/banks/prop-{properties,tenant-lease,maintenance,paperwork,dashboard}.json`, built by `/workspace/ops/prop/shelf/make_banks.py`.
 - **Refill after submit (every Prop deck submission):** after the results are saved (and `carry_over.py record` run), run `cd /workspace/style-swipe && python3 tools/ready_shelf.py refill <deck_id> --shelf /workspace/ops/prop/dashboard/shelf.json --agent prop` (keeps the slot, logs it in `done`, skipped cards reworded/dropped per R64), then commit + push style-swipe and this repo. If a bank runs low, add pairs in make_banks.py and rerun it. Answered/noted cards disappear; only unanswered remain.
 - Updated time = later of BUILT (index.html, bump on each edit) and report.json "updated".
-- Morning/Evening Report runs: first read MORNING-NOTES.md and PENDING.md in this folder if present (local only, gitignored), fold them in, then delete them.
+- Morning Report run (Evening Report retired Oct 14, Max 20:00): first read MORNING-NOTES.md and PENDING.md in this folder if present (local only, gitignored), fold them in, then delete them.
 - Routines edit report.json only:
-  {"type": "Morning Report" | "Evening Report" | "Fresh Start", "date": "YYYY-MM-DD",
+  {"type": "Morning Report" (only; due by 5:00 AM ICT), "date": "YYYY-MM-DD",
    "notifications": [ {"text": "full line", "short": "summary-line text", "due": "YYYY-MM-DD" (optional)} ],   <- MAX 2, most important first; [] hides the dropdown
    optional "summary": "one-line text for the collapsed report bar" (default: group counts), "updated": ISO time,
    optional "text" / "items": [...] / "groups": [{"title","items"}]  <- report text shown small inside the dropdown under the notifications}

@@ -20,7 +20,7 @@ h1{font-size:2.4rem}h2{font-size:1.5rem;margin:0 0 10px}h3{font-size:1.15rem;mar
 .drop>ul,.drop>div{padding:0 14px 12px;margin:0}.drop>ul{padding-left:32px}
 @media(prefers-reduced-motion:reduce){.chev{transition:none}}
 @media(max-width:500px){.sumtxt{white-space:normal}.sumtxt .muted{display:block;font-size:.85rem;line-height:1.25}}
-.report.evening{border-left-color:#3d5a36}.rgroups{display:grid;gap:6px 24px;margin-top:4px}.rg{font-family:var(--mw-font-heading);font-size:1.1rem}@media(min-width:820px){.rgroups{grid-template-columns:1fr 1fr}}
+.rgroups{display:grid;gap:6px 24px;margin-top:4px}.rg{font-family:var(--mw-font-heading);font-size:1.1rem}@media(min-width:820px){.rgroups{grid-template-columns:1fr 1fr}}
 .report ul{margin:4px 0 0;padding-left:18px}.report>div{padding-bottom:12px}.report li{margin:2px 0}
 section{background:#fff;border:1px solid var(--mw-border);border-radius:.75rem;padding:18px;margin-top:16px}
 .status{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -191,7 +191,7 @@ fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>
  if(r.updated&&new Date(r.updated)>new Date(BUILT))setUpd(r.updated);
  const li=a=>rows(a.map(x=>[x]));let h='';
  if(r.text)h+=`<p>${r.text}</p>`;if(r.items)h+=li(r.items);if(r.groups)h+=r.groups.map(g=>`<details class="fold"><summary>${g.title} <span class="cnt">${g.items.length}</span></summary>${li(g.items)}</details>`).join('');
- if(h){document.getElementById('rtype').textContent=(r.type||'Report')+(r.date?' · '+fmt(r.date):'');
+ if(h){document.getElementById('rtype').textContent='Morning Report'+(r.date?' · '+fmt(r.date):'');
   document.getElementById('rsum').textContent=r.summary||(r.groups?r.groups.map(g=>g.items.length+' '+g.title.toLowerCase()).join(' · '):r.items?r.items.length+' items':'');
   document.getElementById('rbody').innerHTML=h;document.getElementById('report').hidden=false}
  const N=(r.notifications||[]).slice(0,2),box=document.getElementById('notif');if(!N.length)return;box.hidden=false;
@@ -203,11 +203,11 @@ fetch('report.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(r=>
 /* Week strip (deck pick 16 A): next 7 days, dots = routines that run that day. Built from the same schedule. */
 (function(){const W=document.getElementById('week');if(!W)return;const now=new Date();let h='';
  for(let k=0;k<7;k++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+k),dm=d.getDate(),t=[];
-  t.push('<i class="r" title="Morning and Evening Report"></i>');
+  t.push('<i class="r" title="Morning Report 4:43 AM"></i>');
   if(dm===2||dm===4)t.push('<i class="m" title="Rent receipts 6:28 PM"></i>');
   if(d.getMonth()===9&&dm===24&&d.getFullYear()===2026)t.push('<i class="e" title="USPS Wickfield check 5:23 PM"></i>');
   h+=`<div class="wd${k?'':' today'}"><small>${d.toLocaleDateString('en-US',{weekday:'short'})}</small><b>${dm}</b>${t.join('')}</div>`}
- W.innerHTML=h+'<div class="wkey"><span><i class="r" style="background:var(--lagoon)"></i>Reports</span><span><i style="background:var(--saffron)"></i>Rent Receipts</span><span><i style="background:var(--terra)"></i>USPS Check</span></div>'})();
+ W.innerHTML=h+'<div class="wkey"><span><i class="r" style="background:var(--lagoon)"></i>Morning Report</span><span><i style="background:var(--saffron)"></i>Rent Receipts</span><span><i style="background:var(--terra)"></i>USPS Check</span></div>'})();
 document.getElementById('share').onclick=async()=>{const url=location.href,text='Prop Command Center';
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
