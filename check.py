@@ -37,4 +37,10 @@ with sync_playwright() as p:
         pg.set_viewport_size({"width":w,"height":max(h,H)});pg.wait_for_timeout(400)
         nm=f"{n}-{hs.split('-')[0]}" if hs else n
         pg.screenshot(path=f"{out}/{nm}.png",full_page=True)
+    if m and out:
+      pg.set_viewport_size({"width":w,"height":h});pg.goto(url+"?v=d#mellow-wood",wait_until="networkidle");pg.wait_for_timeout(900)
+      pg.locator("#panel-mellow-wood").screenshot(path=f"{out}/phone-393-panel.png")
+      pg.click("#panel-mellow-wood .findet summary");pg.wait_for_timeout(400)
+      print(" details sw",pg.evaluate("document.documentElement.scrollWidth"))
+      pg.locator("#panel-mellow-wood .findet").screenshot(path=f"{out}/phone-393-details.png")
   b.close()

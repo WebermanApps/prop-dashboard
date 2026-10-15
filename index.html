@@ -117,6 +117,19 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 .wkey{grid-column:1/-1;font-size:.75rem;color:var(--mw-muted-text);display:flex;gap:12px;flex-wrap:wrap;padding:2px 2px 0}.wkey i{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
 .week-wrap{margin-top:12px}.week-wrap h2{font-size:1.25rem;margin:0 0 8px}
 .shareico{display:inline-flex;align-items:center;justify-content:center;min-width:44px;min-height:44px;margin-left:8px;background:transparent;border:1px solid #171717;color:#171717;border-radius:0;cursor:pointer}
+
+.phead{display:flex;align-items:center;gap:10px;justify-content:space-between}.phead h2{margin:0}.pill.st{background:#e7f2ec;color:var(--jungle);border:1px solid var(--jungle)}
+.bign{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 10px}.bign div{background:var(--mw-secondary);border-radius:.6rem;padding:10px}
+.bign span{display:block;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mw-muted-text)}
+.bign b{display:block;font-family:var(--mw-font-heading);font-size:1.6rem;line-height:1.1;margin-top:2px;white-space:nowrap}.bign b.pos{color:var(--jungle)}
+.split{display:flex;height:14px;border-radius:999px;overflow:hidden;background:var(--lines)}.split i{display:block;height:100%}.ex{background:var(--terra)}.cf{background:var(--jungle)}
+.splitkey{display:flex;gap:14px;flex-wrap:wrap;font-size:.85rem;margin:6px 0 10px}.splitkey i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.star{color:#b4532a;font-weight:700;font-size:.7em;margin-left:1px}
+.findet,.items{margin:8px 0 0}.findet>div,.items>div{padding:0 14px 12px}
+table.ft{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:4px}table.ft th{text-align:left;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mw-muted-text);padding:4px 4px}
+table.ft td{padding:7px 4px;border-top:1px solid var(--lines);vertical-align:top}table.ft td:nth-child(2){text-align:right;white-space:nowrap;font-weight:600}table.ft td:nth-child(3){color:var(--mw-muted-text);font-size:.8rem}table.ft tr.tot td{font-weight:700}
+.src{display:none}.fp{margin:4px 0;font-size:.9rem}.legend{font-size:.8rem;color:var(--mw-muted-text);margin:10px 0 0}
+@media(max-width:420px){.bign b{font-size:1.3rem}table.ft td:nth-child(3){display:none}table.ft th:nth-child(3){display:none}.src{display:block;font-size:.75rem;color:var(--mw-muted-text);font-weight:400}}
 </style></head><body><main>
 <nav class="topnav"><a class="mw-hover homelink" href="https://webermanapps.github.io/a-o956qercs5ubd57y/" style="display:inline-flex;align-items:center;min-height:44px;min-width:44px">← Apps Home</a><span class="navtitle">Prop</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>
 <h1 class="title">Prop Command Center</h1>
@@ -129,6 +142,7 @@ ul.rows>li.extra{display:none}ul.rows.all>li.extra{display:block}
 <ol class="nlist" id="nlist"></ol></details>
 <div class="tabs" role="tablist" id="tabs" aria-label="Properties"></div>
 <div class="carousel" aria-roledescription="carousel"><div class="track" id="track"></div>
+<p class="legend" style="margin:8px 2px 0">* Estimated or waiting for records</p>
 <div class="cnav"><button class="arrow mw-hover" id="prev" aria-label="Previous property">&#8592;</button><div class="dots" id="dots"></div><button class="arrow mw-hover" id="next" aria-label="Next property">&#8594;</button></div></div>
 
 <div class="week-wrap" id="routines-block">
@@ -164,15 +178,37 @@ const T=document.getElementById('track'),TB=document.getElementById('tabs'),D=do
 PROPS.forEach((p,i)=>{
  const dec=p.decisions.map(d=>Array.isArray(d)?[d[0],'Due '+fmt(d[1]),1]:[d]);const due=p.decisions.filter(Array.isArray).length;
  const s=document.createElement('section');s.className='panel';s.id='panel-'+p.id;s.setAttribute('role','tabpanel');s.setAttribute('aria-label',p.name);
- s.innerHTML=`<span class="eyebrow">Property ${i+1} of ${PROPS.length}</span><h2 style="margin:2px 0 0">${p.name}</h2><p class="line">${p.line}</p>
- <div class="strip"><div><b>${p.status}</b>Status</div><div><b>${p.decisions.length}</b>Decisions</div><div><b>${due}</b>Due Soon</div><div><b>${p.work[0][0]}</b>Latest</div></div>
- <div class="cols"><div><h3 class="owed">Decisions Max Owes</h3>${rows(dec)}</div>
- <div class="rw"><h3 class="caps">Recent Work</h3>${rows(p.work.map(w=>[w[1],w[0]]),'wk')}
- ${p.links.length?`<h3 class="caps">Links</h3><ul class="plain">${p.links.map(l=>`<li><a class="mw-hover lk" href="${l[1]}">${l[0]}</a></li>`).join('')}</ul>`:''}</div></div>`;
+ s.innerHTML=`<div class="phead"><h2>${p.name}</h2><span class="pill st">${p.status}</span></div>
+ <div class="fin" id="fin-${p.id}"><p class="muted">Loading numbers</p></div>
+ <details class="drop items"><summary><span class="sumtxt"><b>Open Items · ${p.decisions.length}</b><span class="muted">${due?due+' due soon':'Tasks and recent work'}</span></span><span class="chev" aria-hidden="true"></span></summary>
+ <div><h3 class="caps">To Do</h3>${rows(dec.slice(0,3).concat(dec.slice(3)))}<h3 class="caps">Recent Work</h3>${rows(p.work.map(w=>[w[1],w[0]]),'wk')}</div></details>`;
  T.appendChild(s);
  const b=document.createElement('button');b.className='tab mw-hover';b.role='tab';b.textContent=p.name;b.onclick=()=>go(i);TB.appendChild(b);
  const d=document.createElement('button');d.setAttribute('aria-label',p.name);d.onclick=()=>go(i);D.appendChild(d);
 });
+
+/* Finance (finance.json): big numbers, split bar, details view. est:true = star. */
+const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
+const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
+fetch('finance.json?t='+Date.now(),{cache:'no-store'}).then(r=>r.json()).then(F=>{for(const p of PROPS){const f=F.properties[p.id],el=document.getElementById('fin-'+p.id);if(!f||!el)continue;
+ const exp=Math.min(100,Math.round(f.known_total/f.rent*100)),cf=100-exp,anyEst=f.expenses.some(x=>x.est);
+ el.innerHTML=`<div class="bign"><div><span>Rent / Mo</span><b>${usd(f.rent)}</b></div><div><span>Cash Flow / Mo</span><b class="pos">${usd(f.cash_flow)}${star(f.cash_flow_est)}</b></div><div><span>Last Rent</span><b>${fmt(f.last_rent.date)}${star(f.last_rent.est)}</b></div></div>
+ <div class="split" role="img" aria-label="Of ${usd(f.rent)} rent, known expenses ${usd(f.known_total)}, cash flow ${usd(f.cash_flow)}"><i class="ex" style="width:${exp}%"></i><i class="cf" style="width:${cf}%"></i></div>
+ <div class="splitkey"><span><i class="ex"></i>Expenses ${usd(f.known_total)}${star(anyEst)}</span><span><i class="cf"></i>Cash Flow ${usd(f.cash_flow)}${star(f.cash_flow_est)}</span></div>
+ <details class="drop findet"><summary><span class="sumtxt"><b>Financial Details</b><span class="muted">Expenses, sources, annual</span></span><span class="chev" aria-hidden="true"></span></summary><div>
+ <table class="ft"><thead><tr><th>Monthly</th><th>Amount</th><th>Source</th></tr></thead><tbody>
+ <tr><td>Rent</td><td>${usd(f.rent)}</td><td>Lease</td></tr>
+ ${f.expenses.map(x=>`<tr><td>${x.label}<small class="src">${x.source}${x.as_of?' · '+fmt(x.as_of):''}</small></td><td>${usd(x.amount)}${star(x.est)}</td><td>${x.source}${x.as_of?' · '+fmt(x.as_of):''}</td></tr>`).join('')}
+ <tr class="tot"><td>Known Expenses</td><td>${usd(f.known_total)}${star(anyEst)}</td><td></td></tr>
+ <tr class="tot"><td>Cash Flow</td><td>${usd(f.cash_flow)}${star(f.cash_flow_est)}</td><td>Rent minus known expenses</td></tr></tbody></table>
+ <h3 class="caps">Annual</h3><table class="ft"><tbody>
+ <tr><td>Rent</td><td>${usd(f.rent*12)}</td><td>Monthly × 12</td></tr>
+ <tr><td>Known Expenses</td><td>${usd(+(f.known_total*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr>
+ <tr class="tot"><td>Cash Flow</td><td>${usd(+(f.cash_flow*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr></tbody></table>
+ <h3 class="caps">Last Rent</h3><p class="fp">${f.last_rent.label}, ${fmt(f.last_rent.date)}${star(f.last_rent.est)}: ${f.last_rent.detail}</p>
+ ${f.extra.map(x=>`<p class="fp"><b>${x.label}:</b> ${x.value} <span class="pill">${x.note}</span></p>`).join('')}
+ ${f.notes.map(n=>`<p class="fp muted">${n}</p>`).join('')}
+ <p class="legend">* Estimated or waiting for records</p></div></details>`}}).catch(()=>{});
 const panels=[...T.children];let cur=0;const wide=()=>matchMedia('(min-width:1100px)').matches;
 function mark(i){cur=i;[...TB.children].forEach((b,j)=>b.setAttribute('aria-selected',j===i));[...D.children].forEach((b,j)=>b.classList.toggle('on',j===i));panels.forEach((p,j)=>p.classList.toggle('active',j===i));
  const h='#'+PROPS[i].id;if(location.hash!==h)history.replaceState(null,'',h)}
