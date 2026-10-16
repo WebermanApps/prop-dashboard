@@ -20,3 +20,7 @@ Static site, hosted on GitHub Pages: repo WebermanApps/prop-dashboard -> https:/
 - URL for Apps Home lives in /workspace/ops/apps-home/agents.d/prop.json (url field only).
 - Layout: below 1100px = swipe carousel; 1100px+ = both panels side by side (tabs jump/highlight only).
 - Money (Max approved public figures Oct 15): edit finance.json only (rent, last_rent, expenses with est:true for a star, known_total, cash_flow). Never add investor share, tenant names, or account/loan numbers. finance-inventory.md is local research and is gitignored (it has names and account numbers).
+
+## Oct 16 (R81): data is embedded, not published
+- finance.json and report.json are LOCAL ONLY (gitignored); they were public before.
+- Routines still edit those local files, then run `python3 tools/build.py`, which embeds them into index.html, mellow-wood.html and wickfield.html. Then follow page-lock-rule.md (relock, check, add only the html, commit, push).
