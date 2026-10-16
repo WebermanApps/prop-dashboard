@@ -1,46 +1,38 @@
+"""Layout check (R80). Usage: python3 check.py <file:// or https URL to index.html> [screens_dir]
+Checks every size: no horizontal overflow, 44px targets, light bg, no emoji, Apps Home link, section order,
+no Notifications, report dropdown closed, property cards link to their pages; then each property page."""
 import sys,json
 from playwright.sync_api import sync_playwright
-url=sys.argv[1].split('#')[0]; out=sys.argv[2] if len(sys.argv)>2 else None
+url=sys.argv[1].split('#')[0].split('?')[0]; out=sys.argv[2] if len(sys.argv)>2 else None
+base=url.rsplit('/',1)[0]+'/'
 S=[("phone-393",393,852,3,True),("lap-1100",1100,800,2,False),("mba-1280",1280,800,2,False),("mba-1470",1470,956,2,False),("tv-1920",1920,1080,1,False),("monitor-2560",2560,1440,1,False)]
-js=r"""()=>{const r={sw:document.documentElement.scrollWidth,iw:innerWidth,small:[],overflow:[]};
-document.querySelectorAll('a,button').forEach(e=>{const b=e.getBoundingClientRect();if(b.width&&getComputedStyle(e).visibility!='hidden'&&(b.width<44||b.height<44))r.small.push((e.textContent.trim().slice(0,20)||e.getAttribute('aria-label'))+' '+Math.round(b.width)+'x'+Math.round(b.height))});
-document.querySelectorAll('main *').forEach(e=>{if(e.closest('.track'))return;const b=e.getBoundingClientRect();if(b.right>innerWidth+1)r.overflow.push(e.tagName+'.'+e.className)});
+JS=r"""()=>{const r={sw:document.documentElement.scrollWidth,iw:innerWidth,small:[],overflow:[]};
+document.querySelectorAll('a,button,summary').forEach(e=>{if(e.closest('.mw-chat,[class*=chat]'))return;const b=e.getBoundingClientRect();if(b.width&&e.offsetParent&&(b.width<44||b.height<44))r.small.push((e.textContent.trim().slice(0,20)||e.getAttribute('aria-label'))+' '+Math.round(b.width)+'x'+Math.round(b.height))});
+document.querySelectorAll('main *').forEach(e=>{if(e.closest('.ptrack,.track,[data-shelf]'))return;const b=e.getBoundingClientRect();if(b.width&&b.right>innerWidth+1)r.overflow.push(e.tagName+'.'+e.className)});
 const bg=getComputedStyle(document.body).backgroundColor.match(/\d+/g).map(Number);r.light=bg.slice(0,3).every(v=>v>200);
 r.emoji=/\p{Extended_Pictographic}/u.test(document.body.innerText);
-const sh=document.getElementById('share'),sb=sh.getBoundingClientRect();r.shareFixed=['fixed','sticky'].includes(getComputedStyle(sh.parentElement).position);
-r.minFont=Math.min(...[...document.querySelectorAll('main li,main p,main b,.tab')].filter(e=>e.offsetParent).map(e=>parseFloat(getComputedStyle(e).fontSize)));
-r.report=document.getElementById('rtype').textContent;r.panels=[...document.querySelectorAll('.panel')].map(e=>{const b=e.getBoundingClientRect();return b.left>=0&&b.right<=innerWidth&&b.width>0});r.trackScroll=document.getElementById('track').scrollLeft;r.drops=[...document.querySelectorAll('details.drop')].filter(d=>!d.hidden).map(d=>d.open+':'+Math.round(d.querySelector('summary').getBoundingClientRect().height)+':'+d.querySelector('summary').innerText.replace(/\s+/g,' ').trim());const H=document.querySelector('nav.topnav a.homelink'),hb=H&&H.getBoundingClientRect();r.home=!!H&&H.href==='https://webermanapps.github.io/a-o956qercs5ubd57y/'&&!H.hasAttribute('target')&&hb.width>=44&&hb.height>=44&&hb.top<120&&hb.left<=document.querySelector('main').getBoundingClientRect().left+parseFloat(getComputedStyle(document.querySelector('main')).paddingLeft)+24;
-r.noBack=!/history\.back|history\.go\(-/.test(document.documentElement.outerHTML);r.notif=(()=>{const n=document.getElementById('notif');return n.hidden?'hidden':n.querySelectorAll('#nlist li').length+' items, open='+n.open+', summary='+n.querySelector('summary').innerText.replace(/\s+/g,' ').trim()})();
-r.order=[...document.querySelectorAll('main > *')].slice(0,4).map(e=>e.id||e.className.split(' ')[0]).join('>');r.noStatus=!/Overall Status/.test(document.body.innerText);r.tab=[...document.querySelectorAll('.tab')].map(t=>t.getAttribute('aria-selected')).join(',');r.hash=location.hash;return r}"""
+const H=[...document.querySelectorAll('a')].find(a=>a.href==='https://webermanapps.github.io/a-o956qercs5ubd57y/');r.home=!!H&&!H.target;
+r.footer=!!document.querySelector('footer a[href^="https://maxweberman.com"]')&&!!document.getElementById('share2');
+r.order=[...document.querySelectorAll('.mw-sections > section, footer')].map(e=>e.id||e.tagName).join('>');
+r.notif=!!document.getElementById('notif')||/Notifications/.test(document.body.innerText);
+const R=document.getElementById('report');r.report=R?(R.hidden?'hidden':'closed='+!R.open):'n/a';
+r.cards=[...document.querySelectorAll('.pc')].map(a=>a.getAttribute('href')+':'+/\$/.test(a.innerText));
+r.stars=document.querySelectorAll('.star').length;return r}"""
+bad=0
 with sync_playwright() as p:
-  b=p.chromium.launch()
-  for n,w,h,s,m in S:
-    pg=b.new_page(viewport={"width":w,"height":h},device_scale_factor=s,is_mobile=m,has_touch=m,color_scheme="dark")
-    pg.goto(url+"?v="+n,wait_until="networkidle");pg.wait_for_timeout(600)
-    print(n,json.dumps(pg.evaluate(js)))
-    if m:
-      # simulate a swipe: scroll the snap track like a finger drag, then check the tab follows
-      pg.evaluate("()=>{const t=document.getElementById('track');t.style.scrollBehavior='auto';t.scrollLeft=t.clientWidth*0.7}");pg.wait_for_timeout(900)
-      print(" swipe->",pg.evaluate("()=>[location.hash,document.querySelector('.tab[aria-selected=true]').textContent,document.getElementById('track').scrollLeft]"))
-      pg.click(".tab >> nth=0");pg.wait_for_timeout(800);print(" tab->",pg.evaluate("location.hash"))
-    else:
-      pg.keyboard.press("ArrowRight");pg.wait_for_timeout(800);print(" key->",pg.evaluate("location.hash"));pg.keyboard.press("ArrowLeft");pg.wait_for_timeout(800)
-    pg.focus("#notif summary");pg.keyboard.press("Enter");pg.wait_for_timeout(200);print(" enter->open",pg.evaluate("document.getElementById('notif').open"));pg.keyboard.press("Enter");pg.wait_for_timeout(200)
-    if not m:
-      pg.set_viewport_size({"width":900,"height":h});pg.wait_for_timeout(500);pg.set_viewport_size({"width":w,"height":h});pg.wait_for_timeout(500)
-      print(" resize->",pg.evaluate("()=>[document.getElementById('track').scrollLeft,[...document.querySelectorAll('.panel')].map(e=>Math.round(e.getBoundingClientRect().left))]"))
-      pg.goto(url+"?v=h#wickfield",wait_until="networkidle");pg.wait_for_timeout(500);print(" hash->",pg.evaluate("document.querySelector('.tab[aria-selected=true]').textContent"))
-    if out:
-      for hs in (["mellow-wood","wickfield"] if m else [None]):
-        if hs: pg.goto(url+"?v="+n+"#"+hs,wait_until="networkidle");pg.wait_for_timeout(700)
-        pg.set_viewport_size({"width":w,"height":h});H=pg.evaluate("document.documentElement.scrollHeight")
-        pg.set_viewport_size({"width":w,"height":max(h,H)});pg.wait_for_timeout(400)
-        nm=f"{n}-{hs.split('-')[0]}" if hs else n
-        pg.screenshot(path=f"{out}/{nm}.png",full_page=True)
-    if m and out:
-      pg.set_viewport_size({"width":w,"height":h});pg.goto(url+"?v=d#mellow-wood",wait_until="networkidle");pg.wait_for_timeout(900)
-      pg.locator("#panel-mellow-wood").screenshot(path=f"{out}/phone-393-panel.png")
-      pg.click("#panel-mellow-wood .findet summary");pg.wait_for_timeout(400)
-      print(" details sw",pg.evaluate("document.documentElement.scrollWidth"))
-      pg.locator("#panel-mellow-wood .findet").screenshot(path=f"{out}/phone-393-details.png")
+  b=p.chromium.launch(args=["--allow-file-access-from-files"])  # file:// needs this for the json fetches
+  for page in ["index.html","mellow-wood.html","wickfield.html"]:
+    u=base+page
+    for n,w,h,s,m in S:
+      pg=b.new_page(viewport={"width":w,"height":h},device_scale_factor=s,is_mobile=m,has_touch=m,color_scheme="dark")
+      pg.goto(u+"?v="+n,wait_until="networkidle");pg.wait_for_timeout(700)
+      r=pg.evaluate(JS);ok=r['sw']<=r['iw'] and not r['overflow'] and not r['small'] and r['light'] and not r['emoji'] and r['home'] and r['footer'] and not r['notif']
+      if page=="index.html": ok=ok and r['order']=="decks-sec>todo-sec>props-sec>routines-sec" and len(r['cards'])==2 and all(c.endswith('true') for c in r['cards'])
+      bad+=not ok;print(("OK  " if ok else "FAIL"),page,n,json.dumps(r))
+      if out and n in("phone-393","mba-1470"):
+        pg.screenshot(path=f"{out}/{page[:-5]}-{n}.png",full_page=True)
+      if page=="index.html" and m:
+        pg.click(".pc >> nth=1");pg.wait_for_load_state("networkidle");print("  card tap ->",pg.url.split('/')[-1])
+      pg.close()
   b.close()
+sys.exit(1 if bad else 0)
