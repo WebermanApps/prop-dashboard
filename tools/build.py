@@ -6,7 +6,7 @@ D=os.path.dirname(os.path.abspath(__file__))+'/..'
 style=open(D+'/tools/style.css').read()
 FIN=json.load(open(D+'/finance.json'));REP=json.load(open(D+'/report.json'))
 DATA='const FIN='+json.dumps(FIN)+';const REP='+json.dumps(REP)+';'
-HEAD_LINKS='''<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/dash-theme.css?v=cc6"><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/mw-layout.css?v=ly3"><script src="https://webermanapps.github.io/style-swipe/kit/mw-layout.js?v=ly3" defer></script>'''
+HEAD_LINKS='''<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/dash-theme.css?v=cc6"><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/mw-layout.css?v=ly8"><script src="https://webermanapps.github.io/style-swipe/kit/mw-layout.js?v=ly8" defer></script>'''
 OVR='''
 /* R80 (Max Oct 16 12:44): Apps Home colors, white with light beige accents, light only */
 :root{--beige:#FAF6EE;--beige2:#F1E9DA;--ink:#171717;--lagoon:#8a6d3b;--bd:#E5E0D8;--r:.75rem;--mut:#525252}
