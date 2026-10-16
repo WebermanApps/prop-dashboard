@@ -46,7 +46,7 @@ def head(title):
 NAV=lambda name,extra='':f'''<nav class="topnav">{extra}<span class="navtitle">{name}</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>'''
 LOGO='<div class="mw-cc-logo" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="24" r="2.5" fill="#8a6d3b" stroke="none"/><circle cx="16" cy="24" r="7"/><circle cx="16" cy="24" r="2.5"/><path d="M23 24 H40 M34 24 v5 M39 24 v4"/></svg></div>'
 def CCH(t,d): return f'<div class="mw-cc-header">{LOGO}<div class="mw-cc-text"><h1 class="mw-cc-title">{t}</h1><p class="mw-cc-desc">{d}</p></div></div>'
-FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><a class="mw-hover" href="https://maxweberman.com">Built by Max Weberman</a></div>'
+FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><a class="mw-hover" href="https://maxweberman.com">Built by Machan</a></div>'
 SHARE='''const doShare=async()=>{const url=location.href.split('#')[0],text=document.title;
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
