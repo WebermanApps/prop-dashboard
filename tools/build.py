@@ -56,7 +56,7 @@ const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',d
 const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
 const big=f=>`<div class="bign"><div><span>Rent / Mo</span><b>${usd(f.rent)}</b></div><div><span>Cash Flow / Mo</span><b class="pos">${usd(f.cash_flow)}${star(f.cash_flow_est)}</b></div><div><span>Last Rent</span><b>${fmt(f.last_rent.date)}${star(f.last_rent.est)}</b></div></div>`;'''
-CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc11" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n</body></html>\n'
+CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc12" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n</body></html>\n'
 
 PROPS=[
  dict(id="mellow-wood",name="Mellow Wood",addr="6631 Mellow Wood Ln",status="Rented",line="Rented from Oct 1 on a one-year lease; paperwork and utilities left to close out.",
@@ -115,7 +115,7 @@ def kit_sync(h,page):
     # routines-section.css/.js already ?v=5 in head()/ROUT (property pages skip this block)
     h=h.replace('\nfooter.mw-footer{text-align:left;padding-bottom:16px}.week-wrap{margin-top:0}','.week-wrap{margin-top:0}').replace('.mw-footer-bar a{min-height:44px;padding:0}.week-wrap h2','.week-wrap h2',1)
     h=h.replace('mw-layout.js?v=ly14" defer></script></head><body>','mw-layout.js?v=ly14" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op8">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
-    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op8 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op8" defer></script>\n</body></html>\n')
+    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op8 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op9" defer></script>\n</body></html>\n')
     return h
 open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
