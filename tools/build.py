@@ -6,7 +6,7 @@ D=os.path.dirname(os.path.abspath(__file__))+'/..'
 style=open(D+'/tools/style.css').read()
 FIN=json.load(open(D+'/finance.json'));REP=json.load(open(D+'/report.json'))
 DATA='const FIN='+json.dumps(FIN)+';const REP='+json.dumps(REP)+';'
-HEAD_LINKS='''<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/dash-theme.css?v=cc6"><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/mw-layout.css?v=ly8"><script src="https://webermanapps.github.io/style-swipe/kit/mw-layout.js?v=ly8" defer></script>'''
+HEAD_LINKS='''<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/dash-theme.css?v=cc7"><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/mw-layout.css?v=ly8"><script src="https://webermanapps.github.io/style-swipe/kit/mw-layout.js?v=ly8" defer></script>'''
 OVR='''
 /* R80 (Max Oct 16 12:44): Apps Home colors, white with light beige accents, light only */
 :root{--beige:#FAF6EE;--beige2:#F1E9DA;--ink:#171717;--lagoon:#8a6d3b;--bd:#E5E0D8;--r:.75rem;--mut:#525252}
@@ -41,7 +41,7 @@ def head(title):
 <link href="https://fonts.googleapis.com/css2?family=Khand:wght@600;700&family=Hind:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="brand-tokens.css">
 <link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/deck-shelf.css?v=5">
-<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/routines-section.css?v=2">
+<link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/routines-section.css?v=5">
 <style>{style}</style>{HEAD_LINKS}</head><body><main>'''
 NAV=lambda name,extra='':f'''<nav class="topnav">{extra}<span class="navtitle">{name}</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>'''
 LOGO='<div class="mw-cc-logo" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="24" r="2.5" fill="#8a6d3b" stroke="none"/><circle cx="16" cy="24" r="7"/><circle cx="16" cy="24" r="2.5"/><path d="M23 24 H40 M34 24 v5 M39 24 v4"/></svg></div>'
@@ -56,7 +56,7 @@ const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',d
 const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
 const big=f=>`<div class="bign"><div><span>Rent / Mo</span><b>${usd(f.rent)}</b></div><div><span>Cash Flow / Mo</span><b class="pos">${usd(f.cash_flow)}${star(f.cash_flow_est)}</b></div><div><span>Last Rent</span><b>${fmt(f.last_rent.date)}${star(f.last_rent.est)}</b></div></div>`;'''
-CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc9" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n</body></html>\n'
+CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc11" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n</body></html>\n'
 
 PROPS=[
  dict(id="mellow-wood",name="Mellow Wood",addr="6631 Mellow Wood Ln",status="Rented",line="Rented from Oct 1 on a one-year lease; paperwork and utilities left to close out.",
@@ -75,12 +75,12 @@ todo_html='<ul class="todo">'+''.join(todo_li(t,g) for g,t in TOP)+'</ul>'
 cards=''.join(f'<a class="pc mw-hover" href="{p["id"]}.html" aria-label="Open {p["name"]}"><div class="pv" id="fin-{p["id"]}"><p class="muted">Loading numbers</p></div><div class="pt"><b>{p["name"]}</b><span class="pill st">{p["status"]}</span><span class="open">Open →</span><small>{p["addr"]} · {p["line"]}</small></div></a>' for p in PROPS)
 ROUT='''<footer class="mw-footer" id="routines-sec">
 <div class="week-wrap" id="routines-block"><section data-routines="routines.json" id="routines"></section></div>
-<script src="https://webermanapps.github.io/style-swipe/kit/routines-section.js?v=2" defer></script>
+<script src="https://webermanapps.github.io/style-swipe/kit/routines-section.js?v=5" defer></script>
 '''+FOOT_BAR+'</footer>'
 idx=head("Prop Command Center")+NAV("Prop")+CCH("Prop Command Center","Rental properties: tenants, finances and upkeep for each property")+f'''
 <div class="mw-sections">
 <section class="mw-section mw-section--plain" id="decks-sec"><section data-shelf="shelf.json" id="ready-shelf"></section>
-<script src="https://webermanapps.github.io/style-swipe/submit.js" defer></script>
+<script src="https://webermanapps.github.io/style-swipe/submit.js?v=9921428" defer></script>
 <script src="https://webermanapps.github.io/style-swipe/kit/deck-shelf.js?v=5" defer></script>
 <details data-mw-slot="morning" class="drop report" id="report" hidden><summary><span class="sumtxt"><b id="rtype">Report</b><span class="muted" id="rsum"></span></span><span class="chev" aria-hidden="true"></span></summary>
 <div class="rep" id="rep"><div id="rbody"></div></div></details>
@@ -110,12 +110,12 @@ Promise.resolve(REP).then(r=>{{
 VIEWER=open('/workspace/security/pagelock/enc_file_viewer.js').read()  # Security's viewer, inlined verbatim (never copied into the repo)
 def kit_sync(h,page):
     h=h.replace('deck-shelf.css?v=5','deck-shelf.css?v=ly12').replace('deck-shelf.js?v=5','deck-shelf.js?v=ly12')
-    h=h.replace('mw-layout.css?v=ly8','mw-layout.css?v=ly12').replace('mw-layout.js?v=ly8','mw-layout.js?v=ly12')  # kit ly12 (Branding 8bfda11): R106 header + loads kit/mw-back.js
+    h=h.replace('mw-layout.css?v=ly8','mw-layout.css?v=ly14').replace('mw-layout.js?v=ly8','mw-layout.js?v=ly14')  # kit ly14: R106 header + loads kit/mw-back.js
     if page!='index': return h
-    h=h.replace('routines-section.css?v=2','routines-section.css?v=4').replace('routines-section.js?v=2','routines-section.js?v=4')
+    # routines-section.css/.js already ?v=5 in head()/ROUT (property pages skip this block)
     h=h.replace('\nfooter.mw-footer{text-align:left;padding-bottom:16px}.week-wrap{margin-top:0}','.week-wrap{margin-top:0}').replace('.mw-footer-bar a{min-height:44px;padding:0}.week-wrap h2','.week-wrap h2',1)
-    h=h.replace('mw-layout.js?v=ly12" defer></script></head><body>','mw-layout.js?v=ly12" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op4">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
-    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op4 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op4" defer></script>\n</body></html>\n')
+    h=h.replace('mw-layout.js?v=ly14" defer></script></head><body>','mw-layout.js?v=ly14" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op8">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
+    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op8 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op8" defer></script>\n</body></html>\n')
     return h
 open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
@@ -135,7 +135,7 @@ for p in PROPS:
 /* R104 (Max Oct 17): Back returns to wherever you came from. history.back() when there is history and the referrer is
    same-origin; else a same-origin referrer or ?from= (same-origin only, no open redirects); else ./ (the real href). */
 (function(){{const b=document.getElementById('mwBack');if(!b)return;
- b.addEventListener('click',e=>{{if(window.mwBack&&window.mwBack.VERSION){{e.preventDefault();e.stopImmediatePropagation();window.mwBack('./');}}}});  /* kit mw-back.js (loaded by mw-layout ly12) wins when present */
+ b.addEventListener('click',e=>{{if(window.mwBack&&window.mwBack.VERSION){{e.preventDefault();e.stopImmediatePropagation();window.mwBack('./');}}}});  /* kit mw-back.js (loaded by mw-layout ly14) wins when present */
  const same=u=>{{try{{const x=new URL(u,location.href);return x.origin===location.origin&&x.href!==location.href?x.href:null}}catch(e){{return null}}}};
  b.addEventListener('click',e=>{{const ref=document.referrer&&same(document.referrer);
   if(history.length>1&&ref){{e.preventDefault();history.back();return}}
