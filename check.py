@@ -12,8 +12,9 @@ document.querySelectorAll('main *').forEach(e=>{if(e.closest('.ptrack,.track,[da
 const bg=getComputedStyle(document.body).backgroundColor.match(/\d+/g).map(Number);r.light=bg.slice(0,3).every(v=>v>200);
 r.emoji=/\p{Extended_Pictographic}/u.test(document.body.innerText);
 const H=[...document.querySelectorAll('a')].find(a=>a.href==='https://webermanapps.github.io/a-o956qercs5ubd57y/');r.home=!!H&&!H.target;
-r.footer=!!document.querySelector('footer a[href^="https://maxweberman.com"]')&&!!document.getElementById('share2');
+r.footer=!!document.querySelector('footer a[href^="https://maxweberman.com"],.mw-bf-standard a[href^="https://maxweberman.com"]')&&[...document.querySelectorAll('button,a')].some(e=>/share/i.test(e.textContent+(e.getAttribute('aria-label')||'')));  // kit mw-layout ly10 swaps in the standard branded footer
 r.order=[...document.querySelectorAll('.mw-sections > section, footer')].map(e=>e.id||e.tagName).join('>');
+r.todo=document.querySelectorAll('[data-mw-slot="todo"]').length;  // kit mw-layout ly12 moves the one To-Do block (data-mw-slot="todo") out of .mw-sections
 r.notif=!!document.getElementById('notif')||/Notifications/.test(document.body.innerText);
 const R=document.getElementById('report');r.report=R?(R.hidden?'hidden':'closed='+!R.open):'n/a';
 r.cards=[...document.querySelectorAll('.pc')].map(a=>a.getAttribute('href')+':'+/\$/.test(a.innerText));
@@ -27,7 +28,7 @@ with sync_playwright() as p:
       pg=b.new_page(viewport={"width":w,"height":h},device_scale_factor=s,is_mobile=m,has_touch=m,color_scheme="dark")
       pg.goto(u+"?v="+n,wait_until="networkidle");pg.wait_for_timeout(700)
       r=pg.evaluate(JS);ok=r['sw']<=r['iw'] and not r['overflow'] and not r['small'] and r['light'] and not r['emoji'] and r['home'] and r['footer'] and not r['notif']
-      if page=="index.html": ok=ok and r['order']=="decks-sec>todo-sec>props-sec>routines-sec" and len(r['cards'])==2 and all(c.endswith('true') for c in r['cards'])
+      if page=="index.html": ok=ok and r['order'] in("decks-sec>todo-sec>props-sec>routines-sec","decks-sec>props-sec>routines-sec") and r['todo']==1 and len(r['cards'])==2 and all(c.endswith('true') for c in r['cards'])
       bad+=not ok;print(("OK  " if ok else "FAIL"),page,n,json.dumps(r))
       if out and n in("phone-393","mba-1470"):
         pg.screenshot(path=f"{out}/{page[:-5]}-{n}.png",full_page=True)

@@ -46,7 +46,7 @@ def head(title):
 NAV=lambda name,extra='':f'''<nav class="topnav">{extra}<span class="navtitle">{name}</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>'''
 LOGO='<div class="mw-cc-logo" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="24" r="2.5" fill="#8a6d3b" stroke="none"/><circle cx="16" cy="24" r="7"/><circle cx="16" cy="24" r="2.5"/><path d="M23 24 H40 M34 24 v5 M39 24 v4"/></svg></div>'
 def CCH(t,d): return f'<div class="mw-cc-header">{LOGO}<div class="mw-cc-text"><h1 class="mw-cc-title">{t}</h1><p class="mw-cc-desc">{d}</p></div></div>'
-FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><a class="mw-hover" href="https://maxweberman.com">Built by Machan</a></div>'
+FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><a class="mw-hover" href="https://maxweberman.com"><span class="mw-machan" style="display:inline-flex;align-items:center;gap:6px;vertical-align:middle;white-space:nowrap"><svg class="mw-machan-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" style="display:block;flex:none;width:22px;height:22px"><path d="M12 5.2C11.2 3 9.4 2 7.6 2.3c.3 1.9 1.9 3.2 4.4 2.9z" fill="#3F7D58"/><path d="M12 5.2c.8-2.2 2.6-3.2 4.4-2.9-.3 1.9-1.9 3.2-4.4 2.9z" fill="#5E9A6E"/><rect x="3.5" y="5.5" width="17" height="16" rx="7" fill="#C8643F"/><rect x="5.5" y="9" width="13" height="10" rx="5" fill="#FAF6EE"/><circle cx="9.6" cy="13.3" r="1.35" fill="#2E6F86"/><circle cx="14.4" cy="13.3" r="1.35" fill="#2E6F86"/><path d="M10.6 16.1q1.4 1.1 2.8 0" fill="none" stroke="#C8643F" stroke-width="1.1" stroke-linecap="round"/><circle cx="7.6" cy="15.6" r=".9" fill="#E9B9A3"/><circle cx="16.4" cy="15.6" r=".9" fill="#E9B9A3"/></svg>Built by Machan</span></a></div>'
 SHARE='''const doShare=async()=>{const url=location.href.split('#')[0],text=document.title;
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
@@ -85,7 +85,7 @@ idx=head("Prop Command Center")+NAV("Prop")+CCH("Prop Command Center","Rental pr
 <details data-mw-slot="morning" class="drop report" id="report" hidden><summary><span class="sumtxt"><b id="rtype">Report</b><span class="muted" id="rsum"></span></span><span class="chev" aria-hidden="true"></span></summary>
 <div class="rep" id="rep"><div id="rbody"></div></div></details>
 </section>
-<section class="mw-section" id="todo-sec" aria-label="To-Do List"><h2>To-Do List</h2>{todo_html}</section>
+<section class="mw-section mw-todo" id="todo-sec" data-mw-slot="todo" aria-label="To-Do List"><h2>To-Do List</h2>{todo_html}</section>
 <section class="mw-section projects" id="props-sec" aria-label="Properties"><h2>Properties</h2>
 <div class="car"><button class="pcnav prev" type="button" aria-label="Previous property">&#8249;</button><div class="ptrack" id="ptrack">{cards}</div><button class="pcnav next" type="button" aria-label="Next property">&#8250;</button></div>
 <div class="pdots"><button type="button" aria-label="Property 1"></button><button type="button" aria-label="Property 2"></button></div>
@@ -105,11 +105,23 @@ Promise.resolve(REP).then(r=>{{
  if(h){{document.getElementById('rtype').textContent='Morning Report'+(r.date?' · '+fmt(r.date):'');document.getElementById('rsum').textContent=r.summary||'';document.getElementById('rbody').innerHTML=h;document.getElementById('report').hidden=false}}}}).catch(()=>{{}});
 </script>
 '''+CHAT
-open(D+'/index.html','w').write(idx)
+
+# ---- Kit sync (Oct 17): later kit rollouts edited the pages directly; mirror them here so a rebuild never regresses them.
+VIEWER=open('/workspace/security/pagelock/enc_file_viewer.js').read()  # Security's viewer, inlined verbatim (never copied into the repo)
+def kit_sync(h,page):
+    h=h.replace('deck-shelf.css?v=5','deck-shelf.css?v=ly12').replace('deck-shelf.js?v=5','deck-shelf.js?v=ly12')
+    h=h.replace('mw-layout.css?v=ly8','mw-layout.css?v=ly12').replace('mw-layout.js?v=ly8','mw-layout.js?v=ly12')  # kit ly12 (Branding 8bfda11): R106 header + loads kit/mw-back.js
+    if page!='index': return h
+    h=h.replace('routines-section.css?v=2','routines-section.css?v=4').replace('routines-section.js?v=2','routines-section.js?v=4')
+    h=h.replace('\nfooter.mw-footer{text-align:left;padding-bottom:16px}.week-wrap{margin-top:0}','.week-wrap{margin-top:0}').replace('.mw-footer-bar a{min-height:44px;padding:0}.week-wrap h2','.week-wrap h2',1)
+    h=h.replace('mw-layout.js?v=ly12" defer></script></head><body>','mw-layout.js?v=ly12" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op4">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
+    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op4 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op4" defer></script>\n</body></html>\n')
+    return h
+open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
     tl='<ul class="todo">'+''.join(todo_li(t,'Open') for t in p['todo'])+'</ul>'
     dl='<ul class="docs">'+''.join(f'<li><span class="{"ok" if ok else "no"}">{"On File" if ok else "Missing"}</span><span>{t}</span></li>' for ok,t in p['docs'])+'</ul>'
-    pg=head(f"{p['name']} | Prop Command Center")+NAV("Prop",'<a class="mw-hover homelink" href="./" style="display:inline-flex;align-items:center;min-height:44px">← Dashboard</a>')+CCH(p['name'],f"{p['addr']} · {p['line']}")+f'''
+    pg=head(f"{p['name']} | Prop Command Center")+NAV("Prop",'<a class="mw-hover homelink" id="mwBack" href="./" style="display:inline-flex;align-items:center;min-height:44px">← Back</a>')+CCH(p['name'],f"{p['addr']} · {p['line']}")+f'''
 <div class="mw-sections">
 <section class="mw-section" id="fin-sec" aria-label="Financial Details"><h2>Financial Details</h2><div id="fin"><p class="muted">Loading numbers</p></div></section>
 <section class="mw-section" id="items-sec" aria-label="Open Items"><h2>Open Items</h2>{tl}</section>
@@ -120,6 +132,14 @@ for p in PROPS:
 <script>
 {DATA}
 {SHARE}
+/* R104 (Max Oct 17): Back returns to wherever you came from. history.back() when there is history and the referrer is
+   same-origin; else a same-origin referrer or ?from= (same-origin only, no open redirects); else ./ (the real href). */
+(function(){{const b=document.getElementById('mwBack');if(!b)return;
+ b.addEventListener('click',e=>{{if(window.mwBack&&window.mwBack.VERSION){{e.preventDefault();e.stopImmediatePropagation();window.mwBack('./');}}}});  /* kit mw-back.js (loaded by mw-layout ly12) wins when present */
+ const same=u=>{{try{{const x=new URL(u,location.href);return x.origin===location.origin&&x.href!==location.href?x.href:null}}catch(e){{return null}}}};
+ b.addEventListener('click',e=>{{const ref=document.referrer&&same(document.referrer);
+  if(history.length>1&&ref){{e.preventDefault();history.back();return}}
+  const to=ref||same(new URLSearchParams(location.search).get('from')||'');if(to){{e.preventDefault();location.href=to}}}})}})();
 const ID="{p['id']}";
 Promise.resolve(FIN).then(F=>{{const f=F.properties[ID],el=document.getElementById('fin');
  const exp=Math.min(100,Math.round(f.known_total/f.rent*100)),cf=100-exp,anyEst=f.expenses.some(x=>x.est);
@@ -140,4 +160,4 @@ Promise.resolve(FIN).then(F=>{{const f=F.properties[ID],el=document.getElementBy
  <p class="legend">* Estimated or waiting for records</p>`}}).catch(()=>{{}});
 </script>
 '''+CHAT
-    open(D+'/'+p['id']+'.html','w').write(pg)
+    open(D+'/'+p['id']+'.html','w').write(kit_sync(pg,p['id']))
