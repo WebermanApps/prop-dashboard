@@ -2,44 +2,100 @@
  "agent": "prop",
  "decks": [
   {
-   "id": "prop-properties-properties-deck",
-   "name": "Properties Deck",
-   "url": "https://webermanapps.github.io/style-swipe/prop-properties-properties-deck-eupl06/",
-   "total": 20,
+   "id": "prop-properties-properties-deck-turnover-prep",
+   "name": "Properties: Switcher & Weekly Focus",
+   "url": "https://webermanapps.github.io/style-swipe/prop-properties-properties-deck-turnover-prep-xgvbyw/",
+   "total": 10,
    "topic": "prop-properties",
-   "added": "2026-10-14T20:09:23+07:00",
+   "added": "2026-10-17T08:05:35+07:00",
    "tag": "Properties",
-   "blurb": "20 cards, ready now"
+   "answered": 0,
+   "split_from": "prop-properties-properties-deck",
+   "blurb": "10 cards, ready now"
   },
   {
-   "id": "prop-tenant-lease-tenant-and-lease-deck",
-   "name": "Tenant And Lease Deck",
-   "url": "https://webermanapps.github.io/style-swipe/prop-tenant-lease-tenant-and-lease-deck-txbzz0/",
-   "total": 20,
+   "id": "prop-properties-properties-deck-folder-links-switcher-order",
+   "name": "Properties: Folders, Keys & Lease Dates",
+   "url": "https://webermanapps.github.io/style-swipe/prop-properties-properties-deck-folder-links-switcher-order-ybq2k6/",
+   "total": 10,
+   "topic": "prop-properties",
+   "added": "2026-10-17T08:05:35+07:00",
+   "tag": "Properties",
+   "answered": 0,
+   "split_from": "prop-properties-properties-deck",
+   "blurb": "10 cards, ready now"
+  },
+  {
+   "id": "prop-tenant-lease-tenant-and-lease-deck-emergency-contacts",
+   "name": "Tenant & Lease: Emergency Contacts",
+   "url": "https://webermanapps.github.io/style-swipe/prop-tenant-lease-tenant-and-lease-deck-emergency-contacts-78rrqp/",
+   "total": 10,
    "topic": "prop-tenant-lease",
-   "added": "2026-10-14T20:09:24+07:00",
+   "added": "2026-10-17T08:05:35+07:00",
    "tag": "Tenant And Lease",
-   "blurb": "20 cards, ready now"
+   "answered": 0,
+   "split_from": "prop-tenant-lease-tenant-and-lease-deck",
+   "blurb": "10 cards, ready now"
   },
   {
-   "id": "prop-maintenance-maintenance-and-contractors-deck",
-   "name": "Maintenance And Contractors Deck",
-   "url": "https://webermanapps.github.io/style-swipe/prop-maintenance-maintenance-and-contractors-deck-gx2g8r/",
-   "total": 20,
+   "id": "prop-tenant-lease-tenant-and-lease-deck-deposit-letter",
+   "name": "Tenant & Lease: Deposit Letter",
+   "url": "https://webermanapps.github.io/style-swipe/prop-tenant-lease-tenant-and-lease-deck-deposit-letter-jiaify/",
+   "total": 10,
+   "topic": "prop-tenant-lease",
+   "added": "2026-10-17T08:05:35+07:00",
+   "tag": "Tenant And Lease",
+   "answered": 0,
+   "split_from": "prop-tenant-lease-tenant-and-lease-deck",
+   "blurb": "10 cards, ready now"
+  },
+  {
+   "id": "prop-maintenance-maintenance-and-contractors-deck-bids-contractor-invoices",
+   "name": "Maintenance: Bids & Contractor Invoices",
+   "url": "https://webermanapps.github.io/style-swipe/prop-maintenance-maintenance-and-contractors-deck-bids-contractor-invoices-lvbmyc/",
+   "total": 10,
    "topic": "prop-maintenance",
-   "added": "2026-10-14T20:09:24+07:00",
+   "added": "2026-10-17T08:05:35+07:00",
    "tag": "Maintenance",
-   "blurb": "20 cards, ready now"
+   "answered": 0,
+   "split_from": "prop-maintenance-maintenance-and-contractors-deck",
+   "blurb": "10 cards, ready now"
   },
   {
-   "id": "prop-paperwork-paperwork-and-moves-deck",
-   "name": "Paperwork And Moves Deck",
-   "url": "https://webermanapps.github.io/style-swipe/prop-paperwork-paperwork-and-moves-deck-f2v7tn/",
-   "total": 20,
+   "id": "prop-maintenance-maintenance-and-contractors-deck-visit-scheduling",
+   "name": "Maintenance: Visit Scheduling",
+   "url": "https://webermanapps.github.io/style-swipe/prop-maintenance-maintenance-and-contractors-deck-visit-scheduling-oeb3ia/",
+   "total": 10,
+   "topic": "prop-maintenance",
+   "added": "2026-10-17T08:05:35+07:00",
+   "tag": "Maintenance",
+   "answered": 0,
+   "split_from": "prop-maintenance-maintenance-and-contractors-deck",
+   "blurb": "10 cards, ready now"
+  },
+  {
+   "id": "prop-paperwork-paperwork-and-moves-deck-address-change-list-file-names",
+   "name": "Paperwork: Address Change List & File Names",
+   "url": "https://webermanapps.github.io/style-swipe/prop-paperwork-paperwork-and-moves-deck-address-change-list-file-names-inh1jd/",
+   "total": 10,
    "topic": "prop-paperwork",
-   "added": "2026-10-14T20:09:25+07:00",
+   "added": "2026-10-17T08:05:35+07:00",
    "tag": "Paperwork",
-   "blurb": "20 cards, ready now"
+   "answered": 0,
+   "split_from": "prop-paperwork-paperwork-and-moves-deck",
+   "blurb": "10 cards, ready now"
+  },
+  {
+   "id": "prop-paperwork-paperwork-and-moves-deck-rental-certificate",
+   "name": "Paperwork: Rental Certificate",
+   "url": "https://webermanapps.github.io/style-swipe/prop-paperwork-paperwork-and-moves-deck-rental-certificate-23vr3z/",
+   "total": 10,
+   "topic": "prop-paperwork",
+   "added": "2026-10-17T08:05:35+07:00",
+   "tag": "Paperwork",
+   "answered": 0,
+   "split_from": "prop-paperwork-paperwork-and-moves-deck",
+   "blurb": "10 cards, ready now"
   },
   {
    "id": "prop-dashboard-dashboard-deck",
@@ -52,7 +108,77 @@
    "blurb": "20 cards, ready now"
   }
  ],
- "updated": "2026-10-14T20:09:25+07:00",
+ "updated": "2026-10-17T08:05:35+07:00",
  "pinned": [],
- "done": []
+ "done": [],
+ "unlisted": [
+  {
+   "id": "prop-properties-properties-deck",
+   "name": "Properties Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-properties-properties-deck-eupl06/",
+   "total": 20,
+   "topic": "prop-properties",
+   "added": "2026-10-14T20:09:23+07:00",
+   "tag": "Properties",
+   "blurb": "20 cards, ready now",
+   "unlisted_at": "2026-10-17T08:05:35+07:00",
+   "split_into": [
+    "prop-properties-properties-deck-turnover-prep",
+    "prop-properties-properties-deck-folder-links-switcher-order"
+   ],
+   "note": "R86 (Max Oct 17 2026 07:50 ICT): unanswered 20-pick deck split into two 10-pick decks; original unlisted (page, file and any votes kept)"
+  },
+  {
+   "id": "prop-tenant-lease-tenant-and-lease-deck",
+   "name": "Tenant And Lease Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-tenant-lease-tenant-and-lease-deck-txbzz0/",
+   "total": 20,
+   "topic": "prop-tenant-lease",
+   "added": "2026-10-14T20:09:24+07:00",
+   "tag": "Tenant And Lease",
+   "blurb": "20 cards, ready now",
+   "unlisted_at": "2026-10-17T08:05:35+07:00",
+   "split_into": [
+    "prop-tenant-lease-tenant-and-lease-deck-emergency-contacts",
+    "prop-tenant-lease-tenant-and-lease-deck-deposit-letter"
+   ],
+   "note": "R86 (Max Oct 17 2026 07:50 ICT): unanswered 20-pick deck split into two 10-pick decks; original unlisted (page, file and any votes kept)"
+  },
+  {
+   "id": "prop-maintenance-maintenance-and-contractors-deck",
+   "name": "Maintenance And Contractors Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-maintenance-maintenance-and-contractors-deck-gx2g8r/",
+   "total": 20,
+   "topic": "prop-maintenance",
+   "added": "2026-10-14T20:09:24+07:00",
+   "tag": "Maintenance",
+   "blurb": "20 cards, ready now",
+   "unlisted_at": "2026-10-17T08:05:35+07:00",
+   "split_into": [
+    "prop-maintenance-maintenance-and-contractors-deck-bids-contractor-invoices",
+    "prop-maintenance-maintenance-and-contractors-deck-visit-scheduling"
+   ],
+   "note": "R86 (Max Oct 17 2026 07:50 ICT): unanswered 20-pick deck split into two 10-pick decks; original unlisted (page, file and any votes kept)"
+  },
+  {
+   "id": "prop-paperwork-paperwork-and-moves-deck",
+   "name": "Paperwork And Moves Deck",
+   "url": "https://webermanapps.github.io/style-swipe/prop-paperwork-paperwork-and-moves-deck-f2v7tn/",
+   "total": 20,
+   "topic": "prop-paperwork",
+   "added": "2026-10-14T20:09:25+07:00",
+   "tag": "Paperwork",
+   "blurb": "20 cards, ready now",
+   "unlisted_at": "2026-10-17T08:05:35+07:00",
+   "split_into": [
+    "prop-paperwork-paperwork-and-moves-deck-address-change-list-file-names",
+    "prop-paperwork-paperwork-and-moves-deck-rental-certificate"
+   ],
+   "note": "R86 (Max Oct 17 2026 07:50 ICT): unanswered 20-pick deck split into two 10-pick decks; original unlisted (page, file and any votes kept)"
+  }
+ ],
+ "cap": 10,
+ "cap_note": "R86 (Max Oct 17 2026 07:50 ICT): every shelf shows up to 10 decks (pinned included), 10 picks per deck; in-progress first, done last (kit deck-shelf.js sort)",
+ "held": [],
+ "queued": []
 }
