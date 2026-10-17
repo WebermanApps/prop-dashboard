@@ -115,7 +115,7 @@ def kit_sync(h,page):
     # routines-section.css/.js already ?v=5 in head()/ROUT (property pages skip this block)
     h=h.replace('\nfooter.mw-footer{text-align:left;padding-bottom:16px}.week-wrap{margin-top:0}','.week-wrap{margin-top:0}').replace('.mw-footer-bar a{min-height:44px;padding:0}.week-wrap h2','.week-wrap h2',1)
     h=h.replace('mw-layout.js?v=ly14" defer></script></head><body>','mw-layout.js?v=ly14" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op8">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
-    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op8 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op9" defer></script>\n</body></html>\n')
+    h=h.replace('</body></html>\n','<!-- R100 Document Center: kit projects.js/.css pinned ?v=op8 (Security condition 8) + Security enc_file_viewer.js (inlined verbatim, per ops/team-sync/handoffs/encrypted-files.md) -->\n<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n<script src="https://webermanapps.github.io/style-swipe/kit/projects.js?v=op10" defer></script>\n</body></html>\n')
     return h
 open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
