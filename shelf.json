@@ -2,21 +2,19 @@
  "agent": "prop",
  "decks": [
   {
-   "id": "prop-dashboard-arrangement-deck",
-   "name": "Prop Dashboard Arrangement",
-   "url": "https://webermanapps.github.io/branding-djqmb410/decks/prop-dashboard-arrangement-deck-5ihfqv/",
+   "id": "prop-home-todo-stack-deck",
+   "name": "Prop Home — To-Do Stack",
+   "url": "https://webermanapps.github.io/branding-djqmb410/decks/prop-home-todo-stack-deck-9s2zps/",
    "total": 10,
-   "topic": "prop-dashboard-arrangement-deck",
-   "added": "2026-10-27T15:34:01+07:00",
+   "topic": "prop-dashboard-arrangement",
    "tag": "Arrangement",
    "pinned": true,
    "answered": 0,
    "requested": true,
-   "requested_at": "2026-10-27T15:29:17+07:00",
+   "requested_at": "2026-10-27T16:00:00+07:00",
    "blurb": "10 cards, ready now, with Notes",
-   "new": true,
-   "made": "2026-10-27",
-   "note": "Prop dashboard arrangement decks (Machan via Prop Oct 27)."
+   "note": "Follow-up remake of prop-dashboard-arrangement-deck from Oct 27 submit picks + notes.",
+   "added": "2026-10-27T16:01:27+07:00"
   },
   {
    "id": "mellow-wood-page-layout-deck",
@@ -53,7 +51,7 @@
    "note": "Prop dashboard arrangement decks (Machan via Prop Oct 27)."
   }
  ],
- "updated": "2026-10-27T15:34:01+07:00",
+ "updated": "2026-10-27T16:01:27+07:00",
  "pinned": [],
  "done": [],
  "unlisted": [
