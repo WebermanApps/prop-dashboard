@@ -2,6 +2,24 @@
  "agent": "prop",
  "decks": [
   {
+   "id": "prop-dashboard-arrangement-deck",
+   "name": "Prop Dashboard Arrangement",
+   "url": "https://webermanapps.github.io/branding-djqmb410/decks/prop-dashboard-arrangement-deck-wnlmv3/",
+   "total": 7,
+   "topic": "Prop",
+   "added": "2026-10-27T17:22:12+07:00",
+   "tag": "Prop",
+   "pinned": true,
+   "answered": 0,
+   "requested": true,
+   "requested_at": "2026-10-27T17:22:12+07:00",
+   "blurb": "7 cards · 14 unique visuals · gate OK",
+   "new": true,
+   "agent": "prop",
+   "made": "2026-10-27",
+   "note": "High remake: distinct wireframe per option under publish gate."
+  },
+  {
    "id": "prop-home-todo-stack-deck",
    "name": "Prop Home — To-Do Stack",
    "url": "https://webermanapps.github.io/branding-djqmb410/decks/prop-home-todo-stack-deck-9s2zps/",
@@ -51,7 +69,7 @@
    "note": "Prop dashboard arrangement decks (Machan via Prop Oct 27)."
   }
  ],
- "updated": "2026-10-27T16:01:27+07:00",
+ "updated": "2026-10-27T17:22:12+07:00",
  "pinned": [],
  "done": [],
  "unlisted": [
