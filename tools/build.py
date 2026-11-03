@@ -34,6 +34,16 @@ ul.todo .tg.due{background:#fbf1d6;border-color:#D4A017;color:#7a5a00}
 .bign b.pos{color:#0B6E4F}.star{color:#8a5a2b}
 .docs{list-style:none;margin:0;padding:0}.docs li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}.docs li:first-child{border-top:0}.docs li span:first-child{flex:none;white-space:nowrap;min-width:64px}.docs .ok{color:#0B6E4F;font-weight:700}.docs .no{color:#9a3412;font-weight:700}
 '''
+TOG='''/* property toggle */
+.pseg{display:inline-flex;border:1px solid var(--bd);border-radius:999px;background:var(--beige);padding:3px;gap:3px;margin:0 0 12px;max-width:100%}
+.pseg button{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:none;font:600 1rem Hind,sans-serif;color:var(--ink);cursor:pointer}
+.pseg button[aria-selected=true]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);outline:1px solid var(--beige2)}
+.ppanel{border:1px solid var(--bd);border-radius:var(--r);background:#fff;padding:4px 14px 14px;overflow-x:auto}
+.ppanel .pt{padding:10px 0}.ppanel .ft{width:100%}
+.tdx{flex:none;width:32px;height:32px;margin:-4px -4px -4px 0;border:0;background:none;font-size:20px;line-height:1;color:var(--mut);cursor:pointer;border-radius:50%}.tdx:hover{background:var(--beige)}
+.tdclear{margin-top:10px}
+@media(max-width:480px){.pseg{display:flex}.pseg button{flex:1;padding:0 10px}}
+'''
 def head(title):
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex"><meta name="color-scheme" content="light only"><meta name="theme-color" content="#FAF6EE"><title>{title}</title>
@@ -42,12 +52,12 @@ def head(title):
 <link rel="stylesheet" href="brand-tokens.css">
 <link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/deck-shelf.css?v=5">
 <link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/routines-section.css?v=5">
-<style>{style}</style>{HEAD_LINKS}</head><body><main>'''
+<style>{style}{TOG}</style>{HEAD_LINKS}</head><body><main>'''
 NAV=lambda name,extra='':f'''<nav class="topnav">{extra}<span class="navtitle">{name}</span><span class="upd" id="upd"></span><button class="shareico mw-hover" id="share" aria-label="Share" title="Share"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><path d="M12 3v12M7 8l5-5 5 5M5 13v8h14v-8"/></svg></button></nav>'''
 LOGO='<div class="mw-cc-logo" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" fill="none" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="16" cy="24" r="2.5" fill="#8a6d3b" stroke="none"/><circle cx="16" cy="24" r="7"/><circle cx="16" cy="24" r="2.5"/><path d="M23 24 H40 M34 24 v5 M39 24 v4"/></svg></div>'
 def CCH(t,d): return f'<div class="mw-cc-header">{LOGO}<div class="mw-cc-text"><h1 class="mw-cc-title">{t}</h1><p class="mw-cc-desc">{d}</p></div></div>'
-FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><a class="mw-hover" href="https://maxweberman.com"><span class="mw-machan" style="display:inline-flex;align-items:center;gap:6px;vertical-align:middle;white-space:nowrap"><svg class="mw-machan-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" style="display:block;flex:none;width:22px;height:22px"><path d="M12 5.2C11.2 3 9.4 2 7.6 2.3c.3 1.9 1.9 3.2 4.4 2.9z" fill="#3F7D58"/><path d="M12 5.2c.8-2.2 2.6-3.2 4.4-2.9-.3 1.9-1.9 3.2-4.4 2.9z" fill="#5E9A6E"/><rect x="3.5" y="5.5" width="17" height="16" rx="7" fill="#C8643F"/><rect x="5.5" y="9" width="13" height="10" rx="5" fill="#FAF6EE"/><circle cx="9.6" cy="13.3" r="1.35" fill="#2E6F86"/><path d="M13 13.1q1.4 1.25 2.8 0" fill="none" stroke="#2E6F86" stroke-width="1.1" stroke-linecap="round"/><path d="M10.6 16.1q1.4 1.1 2.8 0" fill="none" stroke="#C8643F" stroke-width="1.1" stroke-linecap="round"/><circle cx="7.6" cy="15.6" r=".9" fill="#E9B9A3"/><circle cx="16.4" cy="15.6" r=".9" fill="#E9B9A3"/></svg>Built by Machan</span></a></div>'
-SHARE='''const doShare=async()=>{const url=location.href.split('#')[0],text=document.title;
+FOOT_BAR='<div class="mw-footer-bar"><button class="mw-btn mw-hover sharebtn" id="share2" type="button">Share</button><span class="builtby"><span class="mw-machan" style="display:inline-flex;align-items:center;gap:6px;vertical-align:middle;white-space:nowrap"><svg class="mw-machan-mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" style="display:block;flex:none;width:22px;height:22px"><path d="M12 5.2C11.2 3 9.4 2 7.6 2.3c.3 1.9 1.9 3.2 4.4 2.9z" fill="#3F7D58"/><path d="M12 5.2c.8-2.2 2.6-3.2 4.4-2.9-.3 1.9-1.9 3.2-4.4 2.9z" fill="#5E9A6E"/><rect x="3.5" y="5.5" width="17" height="16" rx="7" fill="#C8643F"/><rect x="5.5" y="9" width="13" height="10" rx="5" fill="#FAF6EE"/><circle cx="9.6" cy="13.3" r="1.35" fill="#2E6F86"/><path d="M13 13.1q1.4 1.25 2.8 0" fill="none" stroke="#2E6F86" stroke-width="1.1" stroke-linecap="round"/><path d="M10.6 16.1q1.4 1.1 2.8 0" fill="none" stroke="#C8643F" stroke-width="1.1" stroke-linecap="round"/><circle cx="7.6" cy="15.6" r=".9" fill="#E9B9A3"/><circle cx="16.4" cy="15.6" r=".9" fill="#E9B9A3"/></svg>Built by Machan</span></span></div>'
+SHARE0='''const doShare=async()=>{const url=location.href.split('#')[0],text=document.title;
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
  const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.title='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.title='Share',1800)};document.getElementById('share').onclick=doShare;document.getElementById('share2').onclick=doShare;
@@ -55,8 +65,11 @@ const BUILT="2026-10-16T13:00:00+07:00";const setUpd=iso=>{const d=new Date(iso)
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
+BD_PLACEHOLDER
 const big=f=>`<div class="bign"><div><span>Rent / Mo</span><b>${usd(f.rent)}</b></div><div><span>Cash Flow / Mo</span><b class="pos">${usd(f.cash_flow)}${star(f.cash_flow_est)}</b></div><div><span>Last Rent</span><b>${fmt(f.last_rent.date)}${star(f.last_rent.est)}</b></div></div>`;'''
-CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc13" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n</body></html>\n'
+BREAKDOWN='const breakdown=f=>{if(!f)return \'<p class="muted">Waiting for records</p>\';const exp=Math.min(100,Math.round(f.known_total/f.rent*100)),cf=100-exp,anyEst=f.expenses.some(x=>x.est);\n return big(f)+`<div class="split" role="img" aria-label="Of ${usd(f.rent)} rent, known expenses ${usd(f.known_total)}, cash flow ${usd(f.cash_flow)}"><i class="ex" style="width:${exp}%"></i><i class="cf" style="width:${cf}%"></i></div>\n <div class="splitkey"><span><i class="ex"></i>Expenses ${usd(f.known_total)}${star(anyEst)}</span><span><i class="cf"></i>Cash Flow ${usd(f.cash_flow)}${star(f.cash_flow_est)}</span></div>\n <table class="ft"><thead><tr><th>Monthly</th><th>Amount</th><th>Source</th></tr></thead><tbody>\n <tr><td>Rent</td><td>${usd(f.rent)}</td><td>Lease</td></tr>\n ${f.expenses.map(x=>`<tr><td>${x.label}<small class="src">${x.source}${x.as_of?\' · \'+fmt(x.as_of):\'\'}</small></td><td>${usd(x.amount)}${star(x.est)}</td><td>${x.source}${x.as_of?\' · \'+fmt(x.as_of):\'\'}</td></tr>`).join(\'\')}\n <tr class="tot"><td>Known Expenses</td><td>${usd(f.known_total)}${star(anyEst)}</td><td></td></tr>\n <tr class="tot"><td>Cash Flow</td><td>${usd(f.cash_flow)}${star(f.cash_flow_est)}</td><td>Rent minus known expenses</td></tr></tbody></table>\n <h3 class="caps">Annual</h3><table class="ft"><tbody>\n <tr><td>Rent</td><td>${usd(f.rent*12)}</td><td>Monthly × 12</td></tr>\n <tr><td>Known Expenses</td><td>${usd(+(f.known_total*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr>\n <tr class="tot"><td>Cash Flow</td><td>${usd(+(f.cash_flow*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr></tbody></table>\n <h3 class="caps">Last Rent</h3><p class="fp">${f.last_rent.label}, ${fmt(f.last_rent.date)}${star(f.last_rent.est)}: ${f.last_rent.detail}</p>\n ${f.extra.map(x=>`<p class="fp"><b>${x.label}:</b> ${x.value} <span class="pill">${x.note}</span></p>`).join(\'\')}\n ${f.notes.map(n=>`<p class="fp muted">${n}</p>`).join(\'\')}\n <p class="legend">* Estimated or waiting for records</p>`};'
+SHARE=SHARE0.replace('BD_PLACEHOLDER','')+'\n'+BREAKDOWN
+CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc13" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n'+open(D+'/tools/machan-pop.html').read()+'</body></html>\n'
 
 PROPS=[
  dict(id="mellow-wood",name="Mellow Wood",addr="6631 Mellow Wood Ln",status="Rented",line="Rented from Oct 1 on a one-year lease; paperwork and utilities left to close out.",
@@ -72,7 +85,9 @@ def todo_li(t,tag):
 # main To-Do: short
 TOP=[("Wickfield",("USPS forwarding ID check","2026-10-30")),("Mellow Wood","Send the Steadily lender request (confirm the lender address)"),("Mellow Wood","Move the utilities out of your name"),("Wickfield","Send the 2026 receipts email"),("Wickfield","Homestead Form 2602: move-out date and signature"),("Both","Re-send the missing documents (lease extension, insurance pages, HOA contacts, invoices)"),("Address","Confirm the new mailing address")]
 todo_html='<ul class="todo">'+''.join(todo_li(t,g) for g,t in TOP)+'</ul>'
-cards=''.join(f'<a class="pc mw-hover" href="{p["id"]}.html" aria-label="Open {p["name"]}"><div class="pv" id="fin-{p["id"]}"><p class="muted">Loading numbers</p></div><div class="pt"><b>{p["name"]}</b><span class="pill st">{p["status"]}</span><span class="open">Open →</span><small>{p["addr"]} · {p["line"]}</small></div></a>' for p in PROPS)
+_old_cards=''.join(f'<a class="pc mw-hover" href="{p["id"]}.html" aria-label="Open {p["name"]}"><div class="pv" id="fin-{p["id"]}"><p class="muted">Loading numbers</p></div><div class="pt"><b>{p["name"]}</b><span class="pill st">{p["status"]}</span><span class="open">Open →</span><small>{p["addr"]} · {p["line"]}</small></div></a>' for p in PROPS)
+SEG='<div class="pseg" role="tablist" aria-label="Choose property">'+''.join(f'<button type="button" role="tab" class="mw-hover" data-p="{p["id"]}" aria-selected="false">{p["name"]}</button>' for p in PROPS)+'</div>'
+PMETA=json.dumps({p['id']:dict(name=p['name'],status=p['status'],line=p['addr']+' · '+p['line']) for p in PROPS})
 ROUT='''<footer class="mw-footer" id="routines-sec">
 <div class="week-wrap" id="routines-block"><section data-routines="routines.json" id="routines"></section></div>
 <script src="https://webermanapps.github.io/style-swipe/kit/routines-section.js?v=5" defer></script>
@@ -87,17 +102,24 @@ idx=head("Prop Command Center")+NAV("Prop")+CCH("Prop Command Center","Rental pr
 </section>
 <section class="mw-section mw-todo" id="todo-sec" data-mw-slot="todo" aria-label="To-Do List"><h2>To-Do List</h2>{todo_html}</section>
 <section class="mw-section projects" id="props-sec" aria-label="Properties"><h2>Properties</h2>
-<div class="car"><button class="pcnav prev" type="button" aria-label="Previous property">&#8249;</button><div class="ptrack" id="ptrack">{cards}</div><button class="pcnav next" type="button" aria-label="Next property">&#8250;</button></div>
-<div class="pdots"><button type="button" aria-label="Property 1"></button><button type="button" aria-label="Property 2"></button></div>
-<p class="legend">* Estimated or waiting for records</p></section>
+{SEG}
+<div class="ppanel" role="tabpanel" aria-live="polite"><div class="pt"><b id="pname"></b><span class="pill st" id="pstat"></span><small id="pline"></small></div><div id="pfin"><p class="muted">Loading numbers</p></div></div></section>
 </div>
 {ROUT}
 </main>
 <script>
 {DATA}
 {SHARE}
-Promise.resolve(FIN).then(F=>{{for(const id of ['mellow-wood','wickfield']){{const f=F.properties[id],el=document.getElementById('fin-'+id);if(f&&el)el.innerHTML=big(f)}}}}).catch(()=>{{}});
-(function(){{const t=document.getElementById("ptrack"),c=[...t.children],d=[...document.querySelectorAll(".projects .pdots button")];const go=i=>{{i=(i+c.length)%c.length;t.scrollTo({{left:c[i].offsetLeft-t.offsetLeft,behavior:"smooth"}})}};const cur=()=>Math.round(t.scrollLeft/(c[0].offsetWidth+14));const upd=()=>d.forEach((b,i)=>b.classList.toggle("on",i==cur()));t.addEventListener("scroll",upd,{{passive:true}});upd();d.forEach((b,i)=>b.onclick=()=>go(i));document.querySelector(".projects .prev").onclick=()=>go(cur()-1);document.querySelector(".projects .next").onclick=()=>go(cur()+1)}})();
+const PM={PMETA};
+(function(){{const bs=[...document.querySelectorAll('.pseg button')];const show=id=>{{if(!PM[id])id='mellow-wood';bs.forEach(b=>b.setAttribute('aria-selected',b.dataset.p===id));const m=PM[id];document.getElementById('pname').textContent=m.name;document.getElementById('pstat').textContent=m.status;document.getElementById('pline').textContent=m.line;document.getElementById('pfin').innerHTML=breakdown(FIN.properties[id]);try{{localStorage.setItem('propSel',id)}}catch(e){{}}}};
+ bs.forEach(b=>b.onclick=()=>show(b.dataset.p));let s0;try{{s0=localStorage.getItem('propSel')}}catch(e){{}}show(s0)}})();
+/* to-do: delete one or all (remembered) */
+(function(){{const K='propTodoDone',ul=document.querySelector('#todo-sec ul.todo');if(!ul)return;let gone;try{{gone=JSON.parse(localStorage.getItem(K)||'[]')}}catch(e){{gone=[]}}
+ const save=()=>{{try{{localStorage.setItem(K,JSON.stringify(gone))}}catch(e){{}}}};const key=li=>li.querySelector('span').textContent;
+ const empty=()=>{{if(!ul.querySelector('li'))ul.outerHTML='<p class="muted" id="todo-empty">All clear.</p>'}};
+ [...ul.children].forEach(li=>{{if(gone.includes(key(li))){{li.remove();return}}const x=document.createElement('button');x.type='button';x.className='tdx mw-hover';x.setAttribute('aria-label','Delete item');x.textContent='×';x.onclick=()=>{{gone.push(key(li));save();li.remove();empty()}};li.appendChild(x)}});
+ const c=document.createElement('button');c.type='button';c.className='mw-btn mw-hover tdclear';c.textContent='Delete all';c.onclick=()=>{{if(!confirm('Delete all to-do items?'))return;ul.querySelectorAll('li').forEach(li=>gone.push(key(li)));save();ul.innerHTML='';empty();c.remove()}};
+ empty();if(ul.isConnected)ul.after(c)}})();
 const rows=a=>'<ul class="plain">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
 Promise.resolve(REP).then(r=>{{
  if(r.updated&&new Date(r.updated)>new Date(BUILT))setUpd(r.updated);let h='';
@@ -141,23 +163,7 @@ for p in PROPS:
   if(history.length>1&&ref){{e.preventDefault();history.back();return}}
   const to=ref||same(new URLSearchParams(location.search).get('from')||'');if(to){{e.preventDefault();location.href=to}}}})}})();
 const ID="{p['id']}";
-Promise.resolve(FIN).then(F=>{{const f=F.properties[ID],el=document.getElementById('fin');
- const exp=Math.min(100,Math.round(f.known_total/f.rent*100)),cf=100-exp,anyEst=f.expenses.some(x=>x.est);
- el.innerHTML=big(f)+`<div class="split" role="img" aria-label="Of ${{usd(f.rent)}} rent, known expenses ${{usd(f.known_total)}}, cash flow ${{usd(f.cash_flow)}}"><i class="ex" style="width:${{exp}}%"></i><i class="cf" style="width:${{cf}}%"></i></div>
- <div class="splitkey"><span><i class="ex"></i>Expenses ${{usd(f.known_total)}}${{star(anyEst)}}</span><span><i class="cf"></i>Cash Flow ${{usd(f.cash_flow)}}${{star(f.cash_flow_est)}}</span></div>
- <table class="ft"><thead><tr><th>Monthly</th><th>Amount</th><th>Source</th></tr></thead><tbody>
- <tr><td>Rent</td><td>${{usd(f.rent)}}</td><td>Lease</td></tr>
- ${{f.expenses.map(x=>`<tr><td>${{x.label}}<small class="src">${{x.source}}${{x.as_of?' · '+fmt(x.as_of):''}}</small></td><td>${{usd(x.amount)}}${{star(x.est)}}</td><td>${{x.source}}${{x.as_of?' · '+fmt(x.as_of):''}}</td></tr>`).join('')}}
- <tr class="tot"><td>Known Expenses</td><td>${{usd(f.known_total)}}${{star(anyEst)}}</td><td></td></tr>
- <tr class="tot"><td>Cash Flow</td><td>${{usd(f.cash_flow)}}${{star(f.cash_flow_est)}}</td><td>Rent minus known expenses</td></tr></tbody></table>
- <h3 class="caps">Annual</h3><table class="ft"><tbody>
- <tr><td>Rent</td><td>${{usd(f.rent*12)}}</td><td>Monthly × 12</td></tr>
- <tr><td>Known Expenses</td><td>${{usd(+(f.known_total*12).toFixed(2))}}${{star(1)}}</td><td>Monthly × 12</td></tr>
- <tr class="tot"><td>Cash Flow</td><td>${{usd(+(f.cash_flow*12).toFixed(2))}}${{star(1)}}</td><td>Monthly × 12</td></tr></tbody></table>
- <h3 class="caps">Last Rent</h3><p class="fp">${{f.last_rent.label}}, ${{fmt(f.last_rent.date)}}${{star(f.last_rent.est)}}: ${{f.last_rent.detail}}</p>
- ${{f.extra.map(x=>`<p class="fp"><b>${{x.label}}:</b> ${{x.value}} <span class="pill">${{x.note}}</span></p>`).join('')}}
- ${{f.notes.map(n=>`<p class="fp muted">${{n}}</p>`).join('')}}
- <p class="legend">* Estimated or waiting for records</p>`}}).catch(()=>{{}});
+Promise.resolve(FIN).then(F=>{{document.getElementById('fin').innerHTML=breakdown(F.properties[ID])}}).catch(()=>{{}});
 </script>
 '''+CHAT
     open(D+'/'+p['id']+'.html','w').write(kit_sync(pg,p['id']))
