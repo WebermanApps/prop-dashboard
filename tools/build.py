@@ -34,7 +34,30 @@ ul.todo .tg.due{background:#fbf1d6;border-color:#D4A017;color:#7a5a00}
 .bign b.pos{color:#0B6E4F}.star{color:#8a5a2b}
 .docs{list-style:none;margin:0;padding:0}.docs li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}.docs li:first-child{border-top:0}.docs li span:first-child{flex:none;white-space:nowrap;min-width:64px}.docs .ok{color:#0B6E4F;font-weight:700}.docs .no{color:#9a3412;font-weight:700}
 '''
-TOG='''/* property toggle */
+TOG='''
+.bign.b4{grid-template-columns:repeat(4,minmax(0,1fr))}.bign small{display:block;font-size:.75rem;color:var(--mut);margin-top:2px}.bign b.neg{color:#B02030}
+@media(max-width:600px){.bign.b4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#cf12{margin:10px 0 4px;border:1px solid var(--bd);border-left:4px solid var(--ink);padding:8px 10px}
+#cf12 .cf-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}#cf12 .cf-h b{font:600 16px Khand,sans-serif}#cf12 .cf-h span,#cf12 small{font-size:.75rem}
+.cf-strip{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:4px 0}
+.cf-strip span{display:flex;flex-direction:column;align-items:center;gap:2px}
+.cf-strip .bx{position:relative;width:100%;height:30px;background:#f3efe8;border-radius:3px;overflow:hidden}
+.cf-strip .bx i{position:absolute;left:0;right:0;bottom:0;border-radius:3px 3px 0 0}
+.cf-strip .bx u{position:absolute;left:0;right:0;height:0;border-top:1px dashed #1a1a1a;opacity:.55}
+.cf-strip .ok i{background:#0B6E4F}.cf-strip .bad i{background:#B02030}.cf-strip .nd .bx{background:repeating-linear-gradient(45deg,#eee,#eee 3px,#e2e2e2 3px,#e2e2e2 6px)}
+.cf-strip em{font:600 11px Khand,sans-serif;font-style:normal;color:#555}
+.lines{border-top:1px solid var(--bd)}
+.li{border-bottom:1px solid var(--bd)}.li>summary,div.li{display:flex;align-items:center;gap:8px;min-height:44px}
+.li .lt{flex:1}.li .la{font-weight:600;white-space:nowrap}.li.tot{font-weight:700}
+details.li>summary::after{margin-left:6px}.li .ld{padding:0 0 10px;font-size:.9rem}.li .ld p{margin:2px 0}
+.att{border:1px solid var(--bd);border-radius:.6rem;padding:0 10px;margin:10px 0}.att.has{border-left:4px solid #D4A017}
+.att summary{gap:10px}.att-b{font-weight:700}.att-l,.pdocs{list-style:none;margin:0 0 8px;padding:0}
+.att-l li,.pdocs li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--bd)}
+.att-l small,.pdocs small{display:block;color:var(--mut);font-size:.8rem}
+.att-s{flex:none;min-width:86px;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 8px;border:1px solid}
+.att-s.ok{color:#0B6E4F;border-color:#9fd3bf;background:#eef8f3}.att-s.bad{color:#B02030;border-color:#e7b0b7;background:#fbeef0}.att-s.warn{color:#7a5a00;border-color:#D4A017;background:#fbf1d6}.att-s.na{color:var(--mut);border-color:var(--bd)}
+.pdocs .op-lt{flex:1;min-width:0}.pdocs a{font-weight:600;color:var(--ink)}
+/* property toggle */
 .pseg{display:inline-flex;border:1px solid var(--bd);border-radius:999px;background:var(--beige);padding:3px;gap:3px;margin:0 0 12px;max-width:100%}
 .pseg button{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:none;font:600 1rem Hind,sans-serif;color:var(--ink);cursor:pointer}
 .pseg button[aria-selected=true]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);outline:1px solid var(--beige2)}
@@ -67,7 +90,7 @@ const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFrac
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
 BD_PLACEHOLDER
 const big=f=>`<div class="bign"><div><span>Rent / Mo</span><b>${usd(f.rent)}</b></div><div><span>Cash Flow / Mo</span><b class="pos">${usd(f.cash_flow)}${star(f.cash_flow_est)}</b></div><div><span>Last Rent</span><b>${fmt(f.last_rent.date)}${star(f.last_rent.est)}</b></div></div>`;'''
-BREAKDOWN='const breakdown=f=>{if(!f)return \'<p class="muted">Waiting for records</p>\';const exp=Math.min(100,Math.round(f.known_total/f.rent*100)),cf=100-exp,anyEst=f.expenses.some(x=>x.est);\n return big(f)+`<div class="split" role="img" aria-label="Of ${usd(f.rent)} rent, known expenses ${usd(f.known_total)}, cash flow ${usd(f.cash_flow)}"><i class="ex" style="width:${exp}%"></i><i class="cf" style="width:${cf}%"></i></div>\n <div class="splitkey"><span><i class="ex"></i>Expenses ${usd(f.known_total)}${star(anyEst)}</span><span><i class="cf"></i>Cash Flow ${usd(f.cash_flow)}${star(f.cash_flow_est)}</span></div>\n <table class="ft"><thead><tr><th>Monthly</th><th>Amount</th><th>Source</th></tr></thead><tbody>\n <tr><td>Rent</td><td>${usd(f.rent)}</td><td>Lease</td></tr>\n ${f.expenses.map(x=>`<tr><td>${x.label}<small class="src">${x.source}${x.as_of?\' · \'+fmt(x.as_of):\'\'}</small></td><td>${usd(x.amount)}${star(x.est)}</td><td>${x.source}${x.as_of?\' · \'+fmt(x.as_of):\'\'}</td></tr>`).join(\'\')}\n <tr class="tot"><td>Known Expenses</td><td>${usd(f.known_total)}${star(anyEst)}</td><td></td></tr>\n <tr class="tot"><td>Cash Flow</td><td>${usd(f.cash_flow)}${star(f.cash_flow_est)}</td><td>Rent minus known expenses</td></tr></tbody></table>\n <h3 class="caps">Annual</h3><table class="ft"><tbody>\n <tr><td>Rent</td><td>${usd(f.rent*12)}</td><td>Monthly × 12</td></tr>\n <tr><td>Known Expenses</td><td>${usd(+(f.known_total*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr>\n <tr class="tot"><td>Cash Flow</td><td>${usd(+(f.cash_flow*12).toFixed(2))}${star(1)}</td><td>Monthly × 12</td></tr></tbody></table>\n <h3 class="caps">Last Rent</h3><p class="fp">${f.last_rent.label}, ${fmt(f.last_rent.date)}${star(f.last_rent.est)}: ${f.last_rent.detail}</p>\n ${f.extra.map(x=>`<p class="fp"><b>${x.label}:</b> ${x.value} <span class="pill">${x.note}</span></p>`).join(\'\')}\n ${f.notes.map(n=>`<p class="fp muted">${n}</p>`).join(\'\')}\n <p class="legend">* Estimated or waiting for records</p>`};'
+BREAKDOWN=open(D+'/tools/breakdown.js').read()
 SHARE=SHARE0.replace('BD_PLACEHOLDER','')+'\n'+BREAKDOWN
 CHAT='<script src="ptr.js" defer></script>\n<script src="https://webermanapps.github.io/style-swipe/kit/mw-chat.js?v=cc13" data-agent-id="f466837e-6ecd-4c83-9ac9-5f031aa92add" data-agent-name="Prop Agent" defer></script>\n'+open(D+'/tools/machan-pop.html').read()+'</body></html>\n'
 
@@ -111,7 +134,7 @@ idx=head("Prop Command Center")+NAV("Prop")+CCH("Prop Command Center","Rental pr
 {DATA}
 {SHARE}
 const PM={PMETA};
-(function(){{const bs=[...document.querySelectorAll('.pseg button')];const show=id=>{{if(!PM[id])id='mellow-wood';bs.forEach(b=>b.setAttribute('aria-selected',b.dataset.p===id));const m=PM[id];document.getElementById('pname').textContent=m.name;document.getElementById('pstat').textContent=m.status;document.getElementById('pline').textContent=m.line;document.getElementById('pfin').innerHTML=breakdown(FIN.properties[id]);try{{localStorage.setItem('propSel',id)}}catch(e){{}}}};
+(function(){{const bs=[...document.querySelectorAll('.pseg button')];const show=id=>{{if(!PM[id])id='mellow-wood';bs.forEach(b=>b.setAttribute('aria-selected',b.dataset.p===id));const m=PM[id];document.getElementById('pname').textContent=m.name;document.getElementById('pstat').textContent=m.status;document.getElementById('pline').textContent=m.line;document.getElementById('pfin').innerHTML=breakdown(FIN.properties[id],id);try{{localStorage.setItem('propSel',id)}}catch(e){{}}}};
  bs.forEach(b=>b.onclick=()=>show(b.dataset.p));let s0;try{{s0=localStorage.getItem('propSel')}}catch(e){{}}show(s0)}})();
 /* to-do: delete one or all (remembered) */
 (function(){{const K='propTodoDone',ul=document.querySelector('#todo-sec ul.todo');if(!ul)return;let gone;try{{gone=JSON.parse(localStorage.getItem(K)||'[]')}}catch(e){{gone=[]}}
@@ -163,7 +186,7 @@ for p in PROPS:
   if(history.length>1&&ref){{e.preventDefault();history.back();return}}
   const to=ref||same(new URLSearchParams(location.search).get('from')||'');if(to){{e.preventDefault();location.href=to}}}})}})();
 const ID="{p['id']}";
-Promise.resolve(FIN).then(F=>{{document.getElementById('fin').innerHTML=breakdown(F.properties[ID])}}).catch(()=>{{}});
+Promise.resolve(FIN).then(F=>{{document.getElementById('fin').innerHTML=breakdown(F.properties[ID],ID)}}).catch(()=>{{}});
 </script>
 '''+CHAT
     open(D+'/'+p['id']+'.html','w').write(kit_sync(pg,p['id']))
