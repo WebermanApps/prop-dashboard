@@ -56,6 +56,7 @@ details.li>summary::after{margin-left:6px}.li .ld{padding:0 0 10px;font-size:.9r
 .att-l small,.pdocs small{display:block;color:var(--mut);font-size:.8rem}
 .att-s{flex:none;min-width:86px;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 8px;border:1px solid}
 .att-s.ok{color:#0B6E4F;border-color:#9fd3bf;background:#eef8f3}.att-s.bad{color:#B02030;border-color:#e7b0b7;background:#fbeef0}.att-s.warn{color:#7a5a00;border-color:#D4A017;background:#fbf1d6}.att-s.na{color:var(--mut);border-color:var(--bd)}
+.pdocs-fold{margin-top:12px;border-bottom:1px solid var(--bd)}.pdocs-fold>summary{font-weight:700}
 .pdocs .op-lt{flex:1;min-width:0}.pdocs a{font-weight:600;color:var(--ink)}
 /* property toggle */
 .pseg{display:inline-flex;border:1px solid var(--bd);border-radius:999px;background:var(--beige);padding:3px;gap:3px;margin:0 0 12px;max-width:100%}

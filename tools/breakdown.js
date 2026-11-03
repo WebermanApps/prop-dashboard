@@ -29,10 +29,12 @@ const attention=f=>{const a=(f.attention||[]).slice();(f.docs||[]).filter(d=>d.s
 const DST={on_file:['On File','ok'],missing:['Missing','bad'],needs_check:['Needs check','warn'],na:['N/A','na']};
 const docsSec=(id,f)=>{const ds=f.docs||[];let gone=[];try{gone=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(e){}
  const rows=ds.map((d,i)=>({d,k:id+':'+d.slot+':'+d.title})).filter(r=>!(r.d.status!=='on_file'&&!r.d.doc_id&&gone.includes(r.k)));
- if(!rows.length)return '<h3 class="caps">Documents</h3><p class="muted">No documents yet</p>';
- return '<h3 class="caps">Documents</h3><ul class="op-list pdocs">'+rows.map(({d,k})=>{const s=DST[d.status]||DST.needs_check;
+ const nOn=ds.filter(d=>d.status==='on_file').length,nMis=ds.filter(d=>d.status==='missing').length;
+ const fo=`<details class="fold pdocs-fold"><summary><span class="lt">Documents · ${nOn} on file · ${nMis} missing</span></summary>`;
+ if(!rows.length)return fo+'<p class="muted">No documents yet</p></details>';
+ return fo+'<ul class="op-list pdocs">'+rows.map(({d,k})=>{const s=DST[d.status]||DST.needs_check;
   const t=d.link?`<a href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">${esc(d.title)}</a>`:d.doc_id?`<a href="#" data-doc-open="${esc(d.title)}">${esc(d.title)}</a>`:`<span>${esc(d.title)}</span>`;
-  return `<li><span class="att-s ${s[1]}">${s[0]}</span><div class="op-lt"><small>${esc(d.slot)}</small>${t}${d.note?`<small>${esc(d.note)}</small>`:''}</div><button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" ${d.doc_id?`data-doc-rm="${esc(d.title)}"`:''} aria-label="Remove ${esc(d.title)}">×</button></li>`}).join('')+'</ul>'};
+  return `<li><span class="att-s ${s[1]}">${s[0]}</span><div class="op-lt"><small>${esc(d.slot)}</small>${t}${d.note?`<small>${esc(d.note)}</small>`:''}</div><button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" ${d.doc_id?`data-doc-rm="${esc(d.title)}"`:''} aria-label="Remove ${esc(d.title)}">×</button></li>`}).join('')+'</ul></details>'};
 const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>';
  const M=months(f),rec=M.filter(x=>x.rent!=null).pop(),ps=(f.rent_payments||[]).slice().sort((a,b)=>a.date<b.date?-1:1),lp=ps[ps.length-1];
  const late=lp?+lp.date.slice(8)>5:null,anyEst=f.expenses.some(x=>x.est||x.amount==null);
