@@ -28,13 +28,13 @@ const attention=f=>{const a=(f.attention||[]).slice();(f.docs||[]).filter(d=>d.s
   return `<li><span class="att-s ${s[1]}">${s[0]}</span><span><b>${esc(x.item)}</b>${x.date?' · '+new Date(x.date+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):''}${x.note?`<small>${esc(x.note)}</small>`:''}</span></li>`}).join('')+`</ul></details>`};
 const DST={on_file:['On File','ok'],missing:['Missing','bad'],needs_check:['Needs check','warn'],na:['N/A','na']};
 const docsSec=(id,f)=>{const ds=f.docs||[];let gone=[];try{gone=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(e){}
- const rows=ds.map((d,i)=>({d,k:id+':'+d.slot+':'+d.title})).filter(r=>!(r.d.status!=='on_file'&&!r.d.doc_id&&gone.includes(r.k)));
+ const rows=ds.map((d,i)=>({d,k:id+':'+d.slot+':'+d.title})).filter(r=>!gone.includes(r.k));
  const nOn=ds.filter(d=>d.status==='on_file').length,nMis=ds.filter(d=>d.status==='missing').length;
  const fo=`<details class="fold pdocs-fold"><summary><span class="lt">Documents · ${nOn} on file · ${nMis} missing</span></summary>`;
  if(!rows.length)return fo+'<p class="muted">No documents yet</p></details>';
  return fo+'<ul class="op-list pdocs">'+rows.map(({d,k})=>{const s=DST[d.status]||DST.needs_check;
-  const t=d.link?`<a href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">${esc(d.title)}</a>`:d.doc_id?`<a href="#" data-doc-open="${esc(d.title)}">${esc(d.title)}</a>`:`<span>${esc(d.title)}</span>`;
-  return `<li><span class="att-s ${s[1]}">${s[0]}</span><div class="op-lt"><small>${esc(d.slot)}</small>${t}${d.note?`<small>${esc(d.note)}</small>`:''}</div><button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" ${d.doc_id?`data-doc-rm="${esc(d.title)}"`:''} aria-label="Remove ${esc(d.title)}">×</button></li>`}).join('')+'</ul></details>'};
+  const t=d.link?`<a href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">${esc(d.title)}</a>`:d.file?`<a href="#" data-enc-file="${esc(d.file)}">${esc(d.title)}</a>`:`<span>${esc(d.title)}</span>`;
+  return `<li><span class="att-s ${s[1]}">${s[0]}</span><div class="op-lt"><small>${esc(d.slot)}</small>${t}${d.note?`<small>${esc(d.note)}</small>`:''}</div><button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" aria-label="Remove ${esc(d.title)}">×</button></li>`}).join('')+'</ul></details>'};
 const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>';
  const M=months(f),rec=M.filter(x=>x.rent!=null).pop(),ps=(f.rent_payments||[]).slice().sort((a,b)=>a.date<b.date?-1:1),lp=ps[ps.length-1];
  const late=lp?+lp.date.slice(8)>5:null,anyEst=f.expenses.some(x=>x.est||x.amount==null);
@@ -54,9 +54,6 @@ const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>'
  ${f.extra.map(x=>`<p class="fp"><b>${esc(x.label)}:</b> ${esc(x.value)} <span class="pill">${esc(x.note)}</span></p>`).join('')}
  ${f.notes.map(n=>`<p class="fp muted">${esc(n)}</p>`).join('')}`;
  return tiles+attention(f)+cf12(f)+table+docsSec(id||'',f)+'<p class="legend">* Estimated, computed from estimated data, or waiting for records</p>'};
-/* documents: open / X go through the kit Document Center card for that title (same open + Remove flow) */
-document.addEventListener('click',e=>{const o=e.target.closest('[data-doc-open],[data-doc-rm],.pdx');if(!o)return;
- const kit=t=>[...document.querySelectorAll('#mw-projects .op-card,#mw-projects .op-list li')].find(c=>(c.getAttribute('aria-label')||(c.querySelector('b')||{}).textContent)===t);
- if(o.dataset.docOpen){e.preventDefault();const c=kit(o.dataset.docOpen);const b=c&&c.querySelector('.op-btn--open');if(b)b.click();else alert('Unlock the dashboard first');return}
- if(o.dataset.docRm){const c=kit(o.dataset.docRm),fd=document.getElementById('mw-docs-fold');if(fd)fd.open=true;const host=c&&c.closest('details.op-older');if(host)host.open=true;const b=c&&c.querySelector('.op-rm-btn');if(b){c.scrollIntoView({behavior:'smooth',block:'center'});b.click()}return}
+/* documents: open = Security's enc viewer (data-enc-file); X hides the row on this device (the encrypted file stays) */
+document.addEventListener('click',e=>{const o=e.target.closest('.pdx');if(!o)return;
  let g=[];try{g=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(_){}g.push(o.dataset.k);try{localStorage.setItem('propDocHide',JSON.stringify(g))}catch(_){}o.closest('li').remove()});

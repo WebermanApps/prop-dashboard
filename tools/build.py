@@ -157,7 +157,7 @@ VIEWER=open('/workspace/security/pagelock/enc_file_viewer.js').read()  # Securit
 def kit_sync(h,page):
     h=h.replace('deck-shelf.css?v=5','deck-shelf.css?v=ly12').replace('deck-shelf.js?v=5','deck-shelf.js?v=ly12')
     h=h.replace('mw-layout.css?v=ly8','mw-layout.css?v=ly14').replace('mw-layout.js?v=ly8','mw-layout.js?v=ly14')  # kit ly14: R106 header + loads kit/mw-back.js
-    if page!='index': return h
+    if page!='index': return h.replace('</body></html>\n','<script id="mw-enc-viewer">\n'+VIEWER+'\n</script>\n</body></html>\n')
     # routines-section.css/.js already ?v=5 in head()/ROUT (property pages skip this block)
     h=h.replace('\nfooter.mw-footer{text-align:left;padding-bottom:16px}.week-wrap{margin-top:0}','.week-wrap{margin-top:0}').replace('.mw-footer-bar a{min-height:44px;padding:0}.week-wrap h2','.week-wrap h2',1)
     h=h.replace('mw-layout.js?v=ly14" defer></script></head><body>','mw-layout.js?v=ly14" defer></script><link rel="stylesheet" href="https://webermanapps.github.io/style-swipe/kit/projects.css?v=op8">\n</head><body><section id="mw-projects" data-mw-projects="projects.json" aria-label="Document Center"><p class="op-empty">Loading documents</p></section>\n')
