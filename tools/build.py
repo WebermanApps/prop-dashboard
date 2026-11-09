@@ -34,40 +34,7 @@ ul.todo .tg.due{background:#fbf1d6;border-color:#D4A017;color:#7a5a00}
 .bign b.pos{color:#0B6E4F}.star{color:#8a5a2b}
 .docs{list-style:none;margin:0;padding:0}.docs li{display:flex;gap:10px;padding:7px 0;border-top:1px solid var(--bd)}.docs li:first-child{border-top:0}.docs li span:first-child{flex:none;white-space:nowrap;min-width:64px}.docs .ok{color:#0B6E4F;font-weight:700}.docs .no{color:#9a3412;font-weight:700}
 '''
-TOG='''
-.bign.b4{grid-template-columns:repeat(4,minmax(0,1fr))}.bign small{display:block;font-size:.75rem;color:var(--mut);margin-top:2px}.bign b.neg{color:#B02030}
-@media(max-width:600px){.bign.b4{grid-template-columns:repeat(2,minmax(0,1fr))}}
-#cf12{margin:10px 0 4px;border:1px solid var(--bd);border-left:4px solid var(--ink);padding:8px 10px}
-#cf12 .cf-h{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}#cf12 .cf-h b{font:600 16px Khand,sans-serif}#cf12 .cf-h span,#cf12 small{font-size:.75rem}
-.cf-strip{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;margin:4px 0}
-.cf-strip span{display:flex;flex-direction:column;align-items:center;gap:2px}
-.cf-strip .bx{position:relative;width:100%;height:30px;background:#f3efe8;border-radius:3px;overflow:hidden}
-.cf-strip .bx i{position:absolute;left:0;right:0;bottom:0;border-radius:3px 3px 0 0}
-.cf-strip .bx u{position:absolute;left:0;right:0;height:0;border-top:1px dashed #1a1a1a;opacity:.55}
-.cf-strip .ok i{background:#0B6E4F}.cf-strip .bad i{background:#B02030}.cf-strip .nd .bx{background:repeating-linear-gradient(45deg,#eee,#eee 3px,#e2e2e2 3px,#e2e2e2 6px)}
-.cf-strip em{font:600 11px Khand,sans-serif;font-style:normal;color:#555}
-.lines{border-top:1px solid var(--bd)}
-.li{border-bottom:1px solid var(--bd)}.li>summary,div.li{display:flex;align-items:center;gap:8px;min-height:44px}
-.li .lt{flex:1}.li .la{font-weight:600;white-space:nowrap}.li.tot{font-weight:700}
-details.li>summary::after{margin-left:6px}.li .ld{padding:0 0 10px;font-size:.9rem}.li .ld p{margin:2px 0}
-.att{border:1px solid var(--bd);border-radius:.6rem;padding:0 10px;margin:10px 0}.att.has{border-left:4px solid #D4A017}
-.att summary{gap:10px}.att-b{font-weight:700}.att-l,.pdocs{list-style:none;margin:0 0 8px;padding:0}
-.att-l li,.pdocs li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px solid var(--bd)}
-.att-l small,.pdocs small{display:block;color:var(--mut);font-size:.8rem}
-.att-s{flex:none;min-width:86px;text-align:center;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 8px;border:1px solid}
-.att-s.ok{color:#0B6E4F;border-color:#9fd3bf;background:#eef8f3}.att-s.bad{color:#B02030;border-color:#e7b0b7;background:#fbeef0}.att-s.warn{color:#7a5a00;border-color:#D4A017;background:#fbf1d6}.att-s.na{color:var(--mut);border-color:var(--bd)}
-.pdocs-fold{margin-top:12px;border-bottom:1px solid var(--bd)}.pdocs-fold>summary{font-weight:700}
-.pdocs .op-lt{flex:1;min-width:0}.pdocs a{font-weight:600;color:var(--ink)}
-/* property toggle */
-.pseg{display:inline-flex;border:1px solid var(--bd);border-radius:999px;background:var(--beige);padding:3px;gap:3px;margin:0 0 12px;max-width:100%}
-.pseg button{min-height:44px;padding:0 20px;border:0;border-radius:999px;background:none;font:600 1rem Hind,sans-serif;color:var(--ink);cursor:pointer}
-.pseg button[aria-selected=true]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);outline:1px solid var(--beige2)}
-.ppanel{border:1px solid var(--bd);border-radius:var(--r);background:#fff;padding:4px 14px 14px;overflow-x:auto}
-.ppanel .pt{padding:10px 0}.ppanel .ft{width:100%}
-.tdx{flex:none;width:32px;height:32px;margin:-4px -4px -4px 0;border:0;background:none;font-size:20px;line-height:1;color:var(--mut);cursor:pointer;border-radius:50%}.tdx:hover{background:var(--beige)}
-.tdclear{margin-top:10px}
-@media(max-width:480px){.pseg{display:flex}.pseg button{flex:1;padding:0 10px}}
-'''
+TOG=open(D+'/tools/prop-panel.css').read()
 def head(title):
     return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex"><meta name="color-scheme" content="light only"><meta name="theme-color" content="#FAF6EE"><title>{title}</title>
