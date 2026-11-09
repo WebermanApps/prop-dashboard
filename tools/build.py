@@ -52,7 +52,7 @@ SHARE0='''const doShare=async()=>{const url=location.href.split('#')[0],text=doc
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
  const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.title='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.title='Share',1800)};document.getElementById('share').onclick=doShare;document.getElementById('share2').onclick=doShare;
-const BUILT="2026-10-16T13:00:00+07:00";const setUpd=iso=>{const d=new Date(iso);document.getElementById('upd').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'Asia/Bangkok'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Bangkok'})+' ICT'};setUpd(BUILT);
+const BUILT="2026-11-09T13:10:00+07:00";const setUpd=iso=>{const d=new Date(iso);document.getElementById('upd').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'Asia/Bangkok'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Bangkok'})+' ICT'};setUpd(BUILT);
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';
@@ -104,13 +104,6 @@ idx=head("Prop Command Center")+NAV("Prop")+CCH("Prop Command Center","Rental pr
 const PM={PMETA};
 (function(){{const bs=[...document.querySelectorAll('.pseg button')];const show=id=>{{if(!PM[id])id='mellow-wood';bs.forEach(b=>b.setAttribute('aria-selected',b.dataset.p===id));const m=PM[id];document.getElementById('pname').textContent=m.name;document.getElementById('pstat').textContent=m.status;document.getElementById('pline').textContent=m.line;document.getElementById('pfin').innerHTML=breakdown(FIN.properties[id],id);try{{localStorage.setItem('propSel',id)}}catch(e){{}}}};
  bs.forEach(b=>b.onclick=()=>show(b.dataset.p));let s0;try{{s0=localStorage.getItem('propSel')}}catch(e){{}}show(s0)}})();
-/* to-do: delete one or all (remembered) */
-(function(){{const K='propTodoDone',ul=document.querySelector('#todo-sec ul.todo');if(!ul)return;let gone;try{{gone=JSON.parse(localStorage.getItem(K)||'[]')}}catch(e){{gone=[]}}
- const save=()=>{{try{{localStorage.setItem(K,JSON.stringify(gone))}}catch(e){{}}}};const key=li=>li.querySelector('span').textContent;
- const empty=()=>{{if(!ul.querySelector('li'))ul.outerHTML='<p class="muted" id="todo-empty">All clear.</p>'}};
- [...ul.children].forEach(li=>{{if(gone.includes(key(li))){{li.remove();return}}const x=document.createElement('button');x.type='button';x.className='tdx mw-hover';x.setAttribute('aria-label','Delete item');x.textContent='×';x.onclick=()=>{{gone.push(key(li));save();li.remove();empty()}};li.appendChild(x)}});
- const c=document.createElement('button');c.type='button';c.className='mw-btn mw-hover tdclear';c.textContent='Delete all';c.onclick=()=>{{if(!confirm('Delete all to-do items?'))return;ul.querySelectorAll('li').forEach(li=>gone.push(key(li)));save();ul.innerHTML='';empty();c.remove()}};
- empty();if(ul.isConnected)ul.after(c)}})();
 const rows=a=>'<ul class="plain">'+a.map(x=>'<li>'+x+'</li>').join('')+'</ul>';
 Promise.resolve(REP).then(r=>{{
  if(r.updated&&new Date(r.updated)>new Date(BUILT))setUpd(r.updated);let h='';
@@ -133,12 +126,12 @@ def kit_sync(h,page):
 open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
     tl='<ul class="todo">'+''.join(todo_li(t,'Open') for t in p['todo'])+'</ul>'
-    dl='<ul class="docs">'+''.join(f'<li><span class="{"ok" if ok else "no"}">{"On File" if ok else "Missing"}</span><span>{t}</span></li>' for ok,t in p['docs'])+'</ul>'
+    dl='<details class="fold pdocs-fold docs-status-fold"><summary>Documents Status</summary><ul class="docs">'+''.join(f'<li><span class="{"ok" if ok else "no"}">{"On File" if ok else "Missing"}</span><span>{t}</span></li>' for ok,t in p['docs'])+'</ul></details>'
     pg=head(f"{p['name']} | Prop Command Center")+NAV("Prop",'<a class="mw-hover homelink" id="mwBack" href="./" style="display:inline-flex;align-items:center;min-height:44px">← Back</a>')+CCH(p['name'],f"{p['addr']} · {p['line']}")+f'''
 <div class="mw-sections">
 <section class="mw-section" id="fin-sec" aria-label="Financial Details"><h2>Financial Details</h2><div id="fin"><p class="muted">Loading numbers</p></div></section>
 <section class="mw-section" id="items-sec" aria-label="Open Items"><h2>Open Items</h2>{tl}</section>
-<section class="mw-section" id="docs-sec" aria-label="Documents Status"><h2>Documents Status</h2>{dl}</section>
+<section class="mw-section" id="docs-sec" aria-label="Documents Status">{dl}</section>
 </div>
 <footer class="mw-footer">{FOOT_BAR}</footer>
 </main>

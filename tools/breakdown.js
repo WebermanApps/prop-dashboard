@@ -129,9 +129,50 @@ document.addEventListener('click',e=>{
   if(jump){e.preventDefault();const el=document.getElementById(jump.dataset.jump);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});return}
   const row=e.target.closest('.stmt-row[data-det]');
   if(row){const pop=document.getElementById('stmt-pop');if(!pop)return;const d=JSON.parse(row.getAttribute('data-det'));
-    document.getElementById('stmt-pop-t').textContent=d.t;document.getElementById('stmt-pop-b').innerHTML=d.h;pop.hidden=false;return}
+    document.getElementById('stmt-pop-t').textContent=d.t;document.getElementById('stmt-pop-b').innerHTML=d.h;pop.hidden=false;
+    const card=row.closest('.stmt-card');if(card&&window.innerWidth>480){const rr=row.getBoundingClientRect(),cr=card.getBoundingClientRect();
+      let top=rr.bottom-cr.top+8;const max=Math.max(24,card.clientHeight-pop.offsetHeight-16);if(top>max)top=Math.max(24,rr.top-cr.top-pop.offsetHeight-8);pop.style.top=top+'px'}
+    else pop.style.top='';return}
   if(e.target.closest('.stmt-pop-x')||e.target.id==='stmt-pop'&&e.target.classList.contains('stmt-pop')){const pop=document.getElementById('stmt-pop');if(pop)pop.hidden=true;return}
   const o=e.target.closest('.pdx');if(!o)return;
   let g=[];try{g=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(_){}g.push(o.dataset.k);try{localStorage.setItem('propDocHide',JSON.stringify(g))}catch(_){}o.closest('li').remove()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){const pop=document.getElementById('stmt-pop');if(pop)pop.hidden=true}
   if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('stmt-row')){e.preventDefault();e.target.click()}});
+
+/* Standing-rule UI: every to-do list gets delete-one + delete-all (remembered). */
+(function(){const K='propTodoDone';document.querySelectorAll('ul.todo').forEach(ul=>{
+  if(ul.dataset.tdWired)return;ul.dataset.tdWired='1';
+  let gone;try{gone=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){gone=[]}
+  const save=()=>{try{localStorage.setItem(K,JSON.stringify(gone))}catch(e){}};
+  const key=li=>{const s=li.querySelector('span');return (s&&s.textContent)||li.textContent};
+  const empty=()=>{if(!ul.querySelector('li')){const p=document.createElement('p');p.className='muted';p.id=ul.id||'todo-empty';p.textContent='All clear.';ul.replaceWith(p)}};
+  [...ul.children].forEach(li=>{if(li.tagName!=='LI')return;if(gone.includes(key(li))){li.remove();return}
+    if(li.querySelector('.tdx'))return;
+    const x=document.createElement('button');x.type='button';x.className='tdx mw-hover';x.setAttribute('aria-label','Delete item');x.textContent='×';
+    x.onclick=()=>{gone.push(key(li));save();li.remove();empty()};li.appendChild(x)});
+  if(!ul.isConnected)return;
+  if(ul.parentNode.querySelector('.tdclear'))return;
+  const c=document.createElement('button');c.type='button';c.className='mw-btn mw-hover tdclear';c.textContent='Delete all';
+  c.onclick=()=>{if(!confirm('Delete all to-do items?'))return;ul.querySelectorAll('li').forEach(li=>gone.push(key(li)));save();ul.innerHTML='';empty();c.remove()};
+  empty();if(ul.isConnected)ul.after(c)})})();
+
+/* Standing-rule UI: legacy Documents Status lists get a small X (remembered). */
+(function(){const K='propLegacyDocHide';document.querySelectorAll('#docs-sec ul.docs li').forEach(li=>{
+  if(li.querySelector('.tdx'))return;
+  const title=(li.querySelector('span:last-child')||li).textContent.trim();
+  let gone;try{gone=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){gone=[]}
+  if(gone.includes(title)){li.remove();return}
+  const x=document.createElement('button');x.type='button';x.className='tdx mw-hover';x.setAttribute('aria-label','Remove '+title);x.textContent='×';
+  x.onclick=()=>{let g;try{g=JSON.parse(localStorage.getItem(K)||'[]')}catch(_){g=[]}g.push(title);try{localStorage.setItem(K,JSON.stringify(g))}catch(_){}li.remove()};
+  li.appendChild(x)})})();
+
+/* Standing-rule UI: links to other dashboards open in a new tab (after kit layout). */
+(function(){const apply=()=>{document.querySelectorAll('a[href]').forEach(a=>{
+  const href=a.getAttribute('href')||'';if(!/^https?:/i.test(href))return;
+  let u;try{u=new URL(href,location.href)}catch(e){return}
+  if(u.origin!==location.origin){if(u.hostname.endsWith('github.io')||u.hostname.endsWith('webermanapps.com')||u.hostname==='smartupkeep.ai'){a.target='_blank';a.rel='noopener noreferrer'}}
+  else if(!u.pathname.replace(/\/+$/,'').startsWith((location.pathname.replace(/\/[^/]*$/,'')||''))){ /* other repo pages on same host */
+    if(/webermanapps\\.github\\.io/.test(u.host)&&!u.pathname.startsWith('/prop-dashboard')){a.target='_blank';a.rel='noopener noreferrer'}}
+  if(a.classList.contains('mw-apps-home')||a.classList.contains('mw-stick-home')){a.target='_blank';a.rel='noopener noreferrer'}
+})};
+document.addEventListener('mw-layout',apply);if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(apply,50));else setTimeout(apply,50);setTimeout(apply,800)})();
