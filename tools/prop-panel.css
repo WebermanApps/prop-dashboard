@@ -83,3 +83,7 @@ ul.todo .tdx{margin-left:auto}
 #cf12 .bx{height:28px;border-radius:4px}
 #cf12 em{font:600 11px/1 Khand,sans-serif}
 @media(max-width:480px){#cf12 .cf-strip,#cf12>div{gap:2px}#cf12 .bx{height:24px}}
+.cf-strip .up .bx{background:#f7f4ee}
+.cf-strip .up em{color:#9a9a9a}
+.cf-strip em{font-size:10px;letter-spacing:0;text-align:center;line-height:1.1;max-width:100%;overflow:hidden}
+.cf-note{margin:6px 0 2px;font-size:.8rem}

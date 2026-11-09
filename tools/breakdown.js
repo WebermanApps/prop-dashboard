@@ -2,11 +2,39 @@
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const payAmt=(p,f)=>p.amount!=null?p.amount:(/in full/i.test(p.label||'')?f.rent:null);
-const months=f=>{const ps=(f.rent_payments||[]).slice().sort((a,b)=>a.date<b.date?-1:1);const last=ps.length?ps[ps.length-1].month:new Date().toISOString().slice(0,7);
- let [y,m]=last.split('-').map(Number);const out=[];for(let i=11;i>=0;i--){let mm=m-i,yy=y;while(mm<1){mm+=12;yy--}const key=yy+'-'+String(mm).padStart(2,'0');
-  const p=ps.filter(x=>x.month===key);const amt=p.length&&p.every(x=>payAmt(x,f)!=null)?p.reduce((t,x)=>t+payAmt(x,f),0):null;
-  const est=f.expenses.some(x=>x.est||x.amount==null)||p.some(x=>x.est);
-  out.push({m:MN[mm-1]+' '+yy,key,rent:amt,exp:f.known_total,est,date:p.length?p[p.length-1].date:null})}return out};
+/* Current lease year: lease_start month through +11 months. Rolls forward when today is past that window. */
+const leaseWindow=f=>{
+  if(!f.lease_start)return null;
+  let [y,m]=f.lease_start.slice(0,7).split('-').map(Number);
+  const today=new Date();const ty=today.getFullYear(),tm=today.getMonth()+1;
+  // advance whole lease years until today is inside [start, start+12mo)
+  for(;;){let ey=y,em=m+12;if(em>12){ey++;em-=12}
+    const afterEnd=(ty>ey)||(ty===ey&&tm>=em);
+    if(!afterEnd)break;y=ey;m=em}
+  return {y,m}};
+const monLabel=(yy,mm,showYear)=>MN[mm-1]+(showYear?" '"+String(yy).slice(2):'');
+const months=f=>{
+  const ps=(f.rent_payments||[]).slice().sort((a,b)=>a.date<b.date?-1:1);
+  const w=leaseWindow(f);
+  let y,m,count=12;
+  if(w){y=w.y;m=w.m}else{
+    const last=ps.length?ps[ps.length-1].month:new Date().toISOString().slice(0,7);
+    [y,m]=last.split('-').map(Number); // legacy fallback: last 12 ending at latest payment
+    for(let i=0;i<11;i++){m--;if(m<1){m=12;y--}}
+  }
+  const today=new Date();const curKey=today.getFullYear()+'-'+String(today.getMonth()+1).padStart(2,'0');
+  const out=[];let yy=y,mm=m;const startY=y;
+  for(let i=0;i<count;i++){
+    const key=yy+'-'+String(mm).padStart(2,'0');
+    const p=ps.filter(x=>x.month===key);
+    const amt=p.length&&p.every(x=>payAmt(x,f)!=null)?p.reduce((t,x)=>t+payAmt(x,f),0):null;
+    const est=f.expenses.some(x=>x.est||x.amount==null)||p.some(x=>x.est);
+    const upcoming=key>curKey;
+    const showYear=(i===0)||(mm===1)||(yy!==startY&&mm===m);
+    out.push({m:monLabel(yy,mm,true),short:monLabel(yy,mm,i===0||mm===1),key,rent:amt,exp:f.known_total,est,upcoming,date:p.length?p[p.length-1].date:null});
+    mm++;if(mm>12){mm=1;yy++}
+  }
+  return out};
 const gap=x=>{const n=x.rent-x.exp;return n>=0?'Paid For · +'+usd(+n.toFixed(2))+' ('+Math.round(n/x.exp*100)+'%)':'Short '+usd(+(-n).toFixed(2))+' ('+Math.round(-n/x.exp*100)+'%)'};
 const noDet='<p class="muted">No details yet</p>';
 const short=l=>l.replace(/\s*\(.*\)\s*/,'').trim();
@@ -43,11 +71,15 @@ const tiles=(f,M)=>{
   </div></section>`};
 
 const cf12=f=>{const M=months(f),mx=Math.max(1.1,...M.filter(x=>x.rent!=null).map(x=>x.rent/x.exp));
- return `<section class="pcard cf-card" aria-label="12-Month Cash Flow"><header class="pcard-h"><h3>12-Month Cash Flow</h3><span class="muted">Rent vs known expenses${star(1)}</span></header>
- <div id="cf12" data-cf12-slot="temporary" data-cf12-source="upkeep ccm-cov-strip pattern"><div class="cf-strip">`+M.map(x=>{
-  if(x.rent==null)return `<span class="nd" title="${x.m}: no data"><div class="bx"><i></i><u style="bottom:${100/mx}%"></u></div><em>${x.m[0]}</em></span>`;
-  const ok=x.rent>=x.exp;return `<span class="${ok?'ok':'bad'}" title="${x.m}: ${gap(x)}${x.est?' (estimated)':''}"><div class="bx"><i style="height:${Math.max(6,x.rent/x.exp/mx*100)}%"></i><u style="bottom:${100/mx}%"></u></div><em>${x.m[0]}${x.est?'<sup class="star">*</sup>':''}</em></span>`}).join('')+
-  `</div><small class="muted">Grey = no data. Dashed line = break-even.</small></div></section>`};
+ const prorate=f.lease_prorate?`<p class="cf-note muted">${esc(f.lease_prorate.label)}: ${esc(f.lease_prorate.detail)}${f.lease_prorate.amount!=null?' · '+usd(f.lease_prorate.amount):''} — shown as a note, not a tracker month.</p>`:'';
+ const assume=f.lease_start_note?`<p class="cf-note muted">${esc(f.lease_start_note)}</p>`:'';
+ const win=M.length?`${M[0].m} – ${M[M.length-1].m}`:'';
+ return `<section class="pcard cf-card" aria-label="12-Month Cash Flow"><header class="pcard-h"><h3>12-Month Cash Flow</h3><span class="muted">${win} · rent vs known expenses${star(1)}</span></header>
+ <div id="cf12" data-cf12-slot="temporary" data-cf12-source="upkeep ccm-cov-strip pattern" data-lease-start="${esc(f.lease_start||'')}"><div class="cf-strip">`+M.map(x=>{
+  if(x.upcoming&&x.rent==null)return `<span class="up" title="${x.m}: upcoming"><div class="bx"><i></i><u style="bottom:${100/mx}%"></u></div><em>${esc(x.short)}</em></span>`;
+  if(x.rent==null)return `<span class="nd" title="${x.m}: no data"><div class="bx"><i></i><u style="bottom:${100/mx}%"></u></div><em>${esc(x.short)}</em></span>`;
+  const ok=x.rent>=x.exp;return `<span class="${ok?'ok':'bad'}" title="${x.m}: ${gap(x)}${x.est?' (estimated)':''}"><div class="bx"><i style="height:${Math.max(6,x.rent/x.exp/mx*100)}%"></i><u style="bottom:${100/mx}%"></u></div><em>${esc(x.short)}${x.est?'<sup class="star">*</sup>':''}</em></span>`}).join('')+
+  `</div>${prorate}${assume}<small class="muted">Hatched = no data. Light = upcoming. Dashed line = break-even.</small></div></section>`};
 
 const detBody=x=>{
   const bits=[];
