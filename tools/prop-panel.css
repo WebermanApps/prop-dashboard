@@ -108,3 +108,8 @@ ul.todo .tdx{margin-left:auto}
 .status-chip small{display:inline;margin-left:4px}
 .pgrid-2 #receipts-card{grid-column:1/-1}
 @media(max-width:900px){.pgrid-2 #receipts-card{grid-column:auto}}
+
+/* Owed bill-back chip tones (Status Check chip row only) */
+.status-chip.info{border-color:#9db7d4;background:#f3f7fb}
+.st-mark.info{background:#3E6F95}
+.status-item.info{border-color:#9db7d4}

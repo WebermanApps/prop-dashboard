@@ -53,11 +53,31 @@ const statusRow=f=>{
   ];
   const covered=/rent on time|renters insurance|mortgage|landlord (policy|insurance)|lease (ends|current|end)/i;
   const extra=(f.attention||[]).filter(a=>a.status!=='ok'&&!covered.test(a.item));
-  const owedChips=(f.owed||[]).map(o=>{
-    const st=ST[o.status==='Awaiting first bill'||o.status==='Open'||o.status==='Billed'?'needs_check':(o.status==='Paid'?'ok':'needs_check')];
+  const OWED_TONE={awaiting_charge:['info','i'],charge_posted:['bad','!'],billed:['warn','!'],paid:['ok','✓'],
+    'On Autopay (Amex) · Awaiting First Charge':['info','i'],'Charge Posted · Bill Tenant':['bad','!'],
+    'Billed · Awaiting Payment':['warn','!'],'Paid':['ok','✓'],'Awaiting first bill':['info','i']};
+  const owedChips=(f.owed||[]).filter(o=>{
+    /* Paid chips auto-clear after the quarter they belong to */
+    if((o.lifecycle==='paid'||o.status==='Paid')&&o.quarter_end){const end=new Date(o.quarter_end+'T12:00:00'),n=new Date();if(n>end)return false}
+    return true;
+  }).map(o=>{
+    const key=o.lifecycle||o.status||'';const tone=OWED_TONE[key]||['warn','!'];
     const amt=o.amount!=null?' · '+usd(o.amount):'';
-    return `<a class="status-chip ${st[1]} mw-hover" href="#invoices-card" data-jump="invoices-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(o.label)}${amt}</b><small>${esc(o.status)}${o.note?' · '+esc(o.note):''}</small></a>`});
-  const chips=[...extra.map(a=>{const st=ST[a.status]||ST.needs_check;return `<a class="status-chip ${st[1]} mw-hover" href="#docs-card" data-jump="docs-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(a.item)}</b>${a.note?`<small>${esc(a.note)}</small>`:''}</a>`}),...owedChips];
+    const label=o.status||(f.owed_lifecycle&&f.owed_lifecycle[o.lifecycle]&&f.owed_lifecycle[o.lifecycle].label)||key;
+    return `<a class="status-chip ${tone[0]} mw-hover" href="#invoices-card" data-jump="invoices-card" title="${esc(o.note||label)}"><span class="st-mark ${tone[0]}">${tone[1]}</span><b>${esc(o.label)}${amt}</b><small>${esc(label)}</small></a>`});
+  const taxChips=(function(){
+    const t=f.taxes;if(!t)return [];
+    const due=t.next_due,left=due?daysLeft(due):null;
+    let tone='na',mark='–',label='Taxes Paid · Not Tracked · next due unknown';
+    if(t.last_paid||t.next_due){
+      if(left!=null&&left<0&&t.status!=='paid'){tone='bad';mark='!';label='Taxes Unpaid · next due '+ymd(due)+' ('+(-left)+'d past)'}
+      else if(left!=null&&left<=30){tone='warn';mark='!';label='Taxes Paid · next due '+ymd(due)+' ('+left+'d)'}
+      else if(t.last_paid||due){tone='ok';mark='✓';label='Taxes Paid · next due '+(due?ymd(due):'unknown')}
+    }
+    const method=t.method&&t.method!=='unknown'?' · '+t.method:'';
+    return [`<a class="status-chip ${tone} mw-hover" href="#dates-card" data-jump="dates-card" title="${esc(t.note||label)}"><span class="st-mark ${tone}">${mark}</span><b>Taxes</b><small>${esc(label)}${esc(method)}</small></a>`];
+  })();
+  const chips=[...extra.map(a=>{const st=ST[a.status]||ST.needs_check;return `<a class="status-chip ${st[1]} mw-hover" href="#docs-card" data-jump="docs-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(a.item)}</b>${a.note?`<small>${esc(a.note)}</small>`:''}</a>`}),...owedChips,...taxChips];
   return `<section class="pcard status-card" aria-label="Status Check"><header class="pcard-h"><h3>Status Check</h3><span class="muted">This month</span></header>
   <div class="status-row">`+items.map(([k,label,href])=>{const x=s[k]||{status:'unknown'};const st=ST[x.status]||ST.unknown;
     return `<a class="status-item ${st[1]} mw-hover" href="${href}" data-jump="${href.slice(1)}"><span class="st-mark ${st[1]}">${st[2]}</span><span class="st-body"><b>${label}</b><small>${esc(x.note||st[0])}${x.date?' · '+ymd(x.date):''}</small></span></a>`}).join('')+
