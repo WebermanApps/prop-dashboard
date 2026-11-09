@@ -11,7 +11,7 @@ document.querySelectorAll('a,button,summary').forEach(e=>{if(e.closest('.mw-chat
 document.querySelectorAll('main *').forEach(e=>{if(e.closest('.ptrack,.track,[data-shelf],.cf-strip,.pseg'))return;const b=e.getBoundingClientRect();if(b.width&&b.right>innerWidth+1)r.overflow.push(e.tagName+'.'+(e.className||'').toString().slice(0,40))});
 const bg=getComputedStyle(document.body).backgroundColor.match(/\d+/g).map(Number);r.light=bg.slice(0,3).every(v=>v>200);
 r.emoji=/\p{Extended_Pictographic}/u.test(document.body.innerText);
-const H=[...document.querySelectorAll('a')].find(a=>a.href==='https://webermanapps.github.io/a-o956qercs5ubd57y/');r.home=!!H&&!H.target;
+const H=[...document.querySelectorAll('a')].find(a=>a.href==='https://webermanapps.github.io/a-o956qercs5ubd57y/');r.home=!!H;
 r.footer=/Built by Machan/.test(document.body.innerText)&&![...document.querySelectorAll('a')].some(a=>/maxweberman\.com/i.test(a.href||''))&&[...document.querySelectorAll('button,a')].some(e=>/share/i.test(e.textContent+(e.getAttribute('aria-label')||'')));
 r.order=[...document.querySelectorAll('.mw-sections > section, footer')].map(e=>e.id||e.tagName).join('>');
 r.todo=document.querySelectorAll('[data-mw-slot="todo"]').length;
