@@ -52,7 +52,7 @@ SHARE0='''const doShare=async()=>{const url=location.href.split('#')[0],text=doc
  if(navigator.share){try{await navigator.share({title:text,text,url});return}catch(e){if(e.name==='AbortError')return}}
  if(/iPhone|iPad|Android/i.test(navigator.userAgent)){location.href='sms:?&body='+encodeURIComponent(text+' '+url);return}
  const b=document.getElementById('share');try{await navigator.clipboard.writeText(url);b.title='Copied'}catch(e){prompt('Copy link',url)}setTimeout(()=>b.title='Share',1800)};document.getElementById('share').onclick=doShare;document.getElementById('share2').onclick=doShare;
-const BUILT="2026-11-09T13:10:00+07:00";const setUpd=iso=>{const d=new Date(iso);document.getElementById('upd').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'Asia/Bangkok'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Bangkok'})+' ICT'};setUpd(BUILT);
+const BUILT="2026-11-09T13:45:00+07:00";const setUpd=iso=>{const d=new Date(iso);document.getElementById('upd').textContent='Updated '+d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'Asia/Bangkok'})+' · '+d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'Asia/Bangkok'})+' ICT'};setUpd(BUILT);
 const fmt=d=>new Date(d+'T12:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'});
 const usd=v=>v==null?'Waiting':'$'+Number(v).toLocaleString('en-US',{minimumFractionDigits:v%1?2:0,maximumFractionDigits:2});
 const star=e=>e?'<sup class="star" title="Estimated or waiting for records">*</sup>':'';

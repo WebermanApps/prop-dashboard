@@ -150,14 +150,24 @@ const statement=(f)=>{
   ${(f.extra||[]).map(x=>`<p class="fp"><b>${esc(x.label)}:</b> ${esc(x.value)} <span class="pill">${esc(x.note)}</span></p>`).join('')}
   ${(f.notes||[]).map(n=>`<p class="fp muted">${esc(n)}</p>`).join('')}
   <p class="legend">* Estimated, computed from estimated data, or waiting for records. Lawn invoices sit under Expenses but are not in Known Expenses until a monthly rate is set.</p>
-  <aside class="stmt-pop" id="stmt-pop" hidden><button type="button" class="stmt-pop-x" aria-label="Close">×</button><h4 id="stmt-pop-t"></h4><div id="stmt-pop-b"></div></aside>
   </section>`};
 
-const datesCard=f=>{
-  const ds=f.key_dates||[];
-  return `<section class="pcard" id="dates-card" aria-label="Key Dates"><header class="pcard-h"><h3>Key Dates</h3></header>
-  ${ds.length?`<ul class="check-list">`+ds.map(d=>{const left=daysLeft(d.date);const c=left==null?'':left<0?`${-left}d past`:left===0?'Today':`${left}d`;
-    return `<li><span class="att-s ${d.status==='missing'?'bad':d.status==='unknown'||d.status==='needs_check'?'warn':left!=null&&left<60?'warn':'ok'}">${c||(ST[d.status]||ST.unknown)[0]}</span><span><b>${esc(d.label)}</b>${d.date?' · '+ymd(d.date):''}<small>${esc(d.note||'')}</small></span></li>`}).join('')+`</ul>`:`<p class="muted">No key dates</p>`}
+const datesStrip=f=>{
+  const ds=(f.key_dates||[]).slice().sort((a,b)=>{
+    if(a.date&&b.date)return a.date<b.date?-1:a.date>b.date?1:0;
+    if(a.date&&!b.date)return -1;
+    if(!a.date&&b.date)return 1;
+    return 0});
+  const nodes=ds.map(d=>{
+    const left=daysLeft(d.date);
+    const untracked=!d.date||d.status==='unknown';
+    const tone=d.status==='missing'?'bad':untracked||d.status==='needs_check'||(left!=null&&left<60)?'warn':'ok';
+    const pill=left==null?((ST[d.status]||ST.unknown)[0]):left<0?`${-left}d past`:left===0?'Today':`${left}d`;
+    const dot=d.status==='missing'?'bad':untracked?'na':left!=null&&left<0?'warn':'';
+    const sub=d.date?`<small>${ymd(d.date)}</small>${d.note?`<small>${esc(d.note)}</small>`:''}`:`<small>${esc(d.note||'Not tracked')}</small>`;
+    return `<div class="tl-node"><div class="tl-dot${dot?' '+dot:''}"></div><span class="att-s ${tone}">${esc(pill)}</span><b>${esc(d.label)}</b>${sub}</div>`}).join('');
+  return `<section class="pcard timeline-card" id="dates-card" aria-label="Key Dates timeline"><header class="pcard-h"><h3>Key Dates</h3></header>
+  ${ds.length?`<div class="tl-scroller"><div class="tl" style="--tl-n:${ds.length}">${nodes}</div></div>`:`<p class="muted">No key dates</p>`}
   </section>`};
 
 const DST={on_file:['On File','ok'],missing:['Missing','bad'],needs_check:['Needs Check','warn'],na:['N/A','na']};
@@ -216,27 +226,36 @@ const receiptsCard=f=>`<section class="pcard" id="receipts-card" aria-label="Rec
 
 const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>';
  const M=months(f);
- return `<div class="pview"><aside class="stmt-pop" id="tax-pop" hidden><button type="button" class="stmt-pop-x" aria-label="Close">×</button><h4 id="tax-pop-t"></h4><div id="tax-pop-b"></div></aside>${statusRow(f)}${tiles(f,M)}${cf12(f)}${statement(f)}
- <div class="pgrid pgrid-2">${datesCard(f)}${docsCard(id||'',f)}${invoicesCard(f)}${receiptsCard(f)}</div>
+ return `<div class="pview"><aside class="stmt-pop" id="tax-pop" hidden><button type="button" class="stmt-pop-x" aria-label="Close">×</button><h4 id="tax-pop-t"></h4><div id="tax-pop-b"></div></aside>${statusRow(f)}${datesStrip(f)}${tiles(f,M)}${cf12(f)}${statement(f)}
+ <div class="pgrid pgrid-2">${docsCard(id||'',f)}${invoicesCard(f)}${receiptsCard(f)}</div>
  </div>`};
 
-/* Statement popover + jump links + doc hide */
+/* Jump links, taxes chip popover (unchanged), statement inline expand, doc hide */
 document.addEventListener('click',e=>{
   const jump=e.target.closest('[data-jump]');
   if(jump){e.preventDefault();const el=document.getElementById(jump.dataset.jump);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});return}
-  const row=e.target.closest('.stmt-row[data-det],.tax-chip[data-det]');
-  if(row){const isTax=row.classList.contains('tax-chip');
-    const pop=document.getElementById(isTax?'tax-pop':'stmt-pop');if(!pop)return;const d=JSON.parse(row.getAttribute('data-det'));
-    const tEl=document.getElementById(isTax?'tax-pop-t':'stmt-pop-t');const bEl=document.getElementById(isTax?'tax-pop-b':'stmt-pop-b');
-    if(tEl)tEl.textContent=d.t;if(bEl)bEl.innerHTML=d.h;pop.hidden=false;
-    if(!isTax){const card=row.closest('.stmt-card');if(card&&window.innerWidth>480){const rr=row.getBoundingClientRect(),cr=card.getBoundingClientRect();
-      let top=rr.bottom-cr.top+8;const max=Math.max(24,card.clientHeight-pop.offsetHeight-16);if(top>max)top=Math.max(24,rr.top-cr.top-pop.offsetHeight-8);pop.style.top=top+'px'}
-    else pop.style.top=''}
-    return}
-  if(e.target.closest('.stmt-pop-x')||(e.target.classList&&e.target.classList.contains('stmt-pop')&&(e.target.id==='stmt-pop'||e.target.id==='tax-pop'))){document.querySelectorAll('.stmt-pop').forEach(p=>p.hidden=true);return}
+  const tax=e.target.closest('.tax-chip[data-det]');
+  if(tax){const pop=document.getElementById('tax-pop');if(!pop)return;const d=JSON.parse(tax.getAttribute('data-det'));
+    const tEl=document.getElementById('tax-pop-t');const bEl=document.getElementById('tax-pop-b');
+    if(tEl)tEl.textContent=d.t;if(bEl)bEl.innerHTML=d.h;pop.hidden=false;return}
+  const row=e.target.closest('.stmt-row[data-det]');
+  if(row){const tbody=row.parentNode,was=row.classList.contains('on');
+    tbody.querySelectorAll('.stmt-inline').forEach(n=>n.remove());
+    tbody.querySelectorAll('.stmt-row.on').forEach(r=>r.classList.remove('on'));
+    if(was)return;
+    const d=JSON.parse(row.getAttribute('data-det'));
+    row.classList.add('on');
+    const tr=document.createElement('tr');tr.className='stmt-inline';
+    tr.innerHTML='<td colspan="3"><div class="inline-det"><b>'+esc(d.t)+'</b>'+d.h+'</div></td>';
+    row.after(tr);return}
+  if(e.target.closest('#tax-pop .stmt-pop-x')||e.target.id==='tax-pop'){const pop=document.getElementById('tax-pop');if(pop)pop.hidden=true;return}
   const o=e.target.closest('.pdx');if(!o)return;
-  let g=[];try{g=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(_){}g.push(o.dataset.k);try{localStorage.setItem('propDocHide',JSON.stringify(g))}catch(_){}o.closest('li').remove()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.stmt-pop').forEach(p=>p.hidden=true)}
+  let g=[];try{g=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(_){}g.push(o.dataset.k);try{localStorage.setItem('propDocHide',JSON.stringify(g))}catch(_){}
+  const gone=o.closest('li,.doc-row');if(gone)gone.remove()});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){const pop=document.getElementById('tax-pop');if(pop)pop.hidden=true;
+    document.querySelectorAll('.stmt-inline').forEach(n=>n.remove());
+    document.querySelectorAll('.stmt-row.on').forEach(r=>r.classList.remove('on'))}
   if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('stmt-row')){e.preventDefault();e.target.click()}});
 
 /* Standing-rule UI: every to-do list gets delete-one + delete-all (remembered). */
