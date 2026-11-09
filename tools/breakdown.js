@@ -168,11 +168,11 @@ const invoicesSec=f=>{
     return `<div class="inv-row"><div class="t"><b>${who}</b><span>${when}${i.due?' · due '+(i.due==='on receipt'?'on receipt':ymd(i.due)):''}${i.detail?' · '+esc(i.detail):''}</span>${i.note?`<small class="muted">${esc(i.note)}</small>`:''}</div><span class="inv-amt">${amt}</span><span class="att-s ${st[1]}">${st[0]}</span>${open}</div>`}).join('')+`</div>`});
   return fo+body+'</details>'};
 const invoicesCard=f=>`<section class="pcard" id="invoices-card" aria-label="Invoices">${invoicesSec(f)}</section>`;
-const RCP_ST={sent:['Sent','ok'],not_sent:['Not Sent','warn']};
+const RCP_ST={sent:['Sent','ok'],not_sent:['Not Sent','warn'],drafted:['Drafted','warn']};
 const receiptsSec=f=>{
   const rs=f.receipts||[];
-  const n=rs.length,ns=rs.filter(r=>r.status==='not_sent').length;
-  const fo=`<details class="docs-folder prcpt-fold"><summary>Receipts · ${n} receipt${n===1?'':'s'}, ${ns} not sent</summary>`;
+  const n=rs.length,ns=rs.filter(r=>r.status==='not_sent').length,nd=rs.filter(r=>r.status==='drafted').length;
+  const fo=`<details class="docs-folder prcpt-fold"><summary>Receipts · ${n} receipt${n===1?'':'s'}${nd?', '+nd+' drafted':''}${ns?', '+ns+' not sent':''}</summary>`;
   if(!n)return fo+'<p class="muted">No receipts yet</p></details>';
   const body=rs.map(r=>{
     const st=RCP_ST[r.status]||RCP_ST.not_sent;
