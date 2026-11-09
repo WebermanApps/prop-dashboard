@@ -87,3 +87,24 @@ ul.todo .tdx{margin-left:auto}
 .cf-strip .up em{color:#9a9a9a}
 .cf-strip em{font-size:10px;letter-spacing:0;text-align:center;line-height:1.1;max-width:100%;overflow:hidden}
 .cf-note{margin:6px 0 2px;font-size:.8rem}
+
+/* docs / invoices — UpKeep tech docs-folder pattern, scoped */
+.docs-folder{border:1px solid var(--bd);border-radius:12px;background:#fff;padding:4px 12px;margin:0}
+.docs-folder>summary{min-height:48px;display:flex;align-items:center;font-weight:600;cursor:pointer;list-style:none}
+.docs-folder>summary::-webkit-details-marker{display:none}
+.docs-folder>summary::after{content:"+";margin-left:auto;font-size:1.2rem;color:var(--lagoon)}
+.docs-folder[open]>summary::after{content:"\2212"}
+.doc-g{margin:4px 0 12px}.doc-g h4{margin:10px 0 4px;font:700 .85rem Khand,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--mut)}
+.doc-row,.inv-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--bd);width:100%}
+.doc-row .t,.inv-row .t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.doc-row .t b,.inv-row .t b{font-weight:600}.doc-row .t span,.inv-row .t span{font-size:.8rem;color:var(--mut)}
+.doc-ico{flex:none;width:36px;height:36px;border-radius:8px;background:var(--beige);border:1px solid var(--bd);display:inline-flex;align-items:center;justify-content:center;font:700 .65rem Khand,sans-serif;letter-spacing:.04em;color:var(--ink)}
+.doc-open{flex:none;font-weight:600;font-size:.85rem;color:var(--ink);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;padding:0 8px}
+.inv-amt{flex:none;font:700 1.05rem Khand,sans-serif;white-space:nowrap}
+.pgrid-2{grid-template-columns:1fr 1fr}
+.pgrid-2 #invoices-card{grid-column:1/-1}
+@media(max-width:900px){.pgrid-2{grid-template-columns:1fr}.pgrid-2 #invoices-card{grid-column:auto}}
+.status-chip{text-decoration:none;color:inherit;cursor:pointer}
+.status-chip small{display:inline;margin-left:4px}
+.pgrid-2 #receipts-card{grid-column:1/-1}
+@media(max-width:900px){.pgrid-2 #receipts-card{grid-column:auto}}

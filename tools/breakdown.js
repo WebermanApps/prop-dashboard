@@ -53,10 +53,15 @@ const statusRow=f=>{
   ];
   const covered=/rent on time|renters insurance|mortgage|landlord (policy|insurance)|lease (ends|current|end)/i;
   const extra=(f.attention||[]).filter(a=>a.status!=='ok'&&!covered.test(a.item));
+  const owedChips=(f.owed||[]).map(o=>{
+    const st=ST[o.status==='Awaiting first bill'||o.status==='Open'||o.status==='Billed'?'needs_check':(o.status==='Paid'?'ok':'needs_check')];
+    const amt=o.amount!=null?' · '+usd(o.amount):'';
+    return `<a class="status-chip ${st[1]} mw-hover" href="#invoices-card" data-jump="invoices-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(o.label)}${amt}</b><small>${esc(o.status)}${o.note?' · '+esc(o.note):''}</small></a>`});
+  const chips=[...extra.map(a=>{const st=ST[a.status]||ST.needs_check;return `<a class="status-chip ${st[1]} mw-hover" href="#docs-card" data-jump="docs-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(a.item)}</b>${a.note?`<small>${esc(a.note)}</small>`:''}</a>`}),...owedChips];
   return `<section class="pcard status-card" aria-label="Status Check"><header class="pcard-h"><h3>Status Check</h3><span class="muted">This month</span></header>
   <div class="status-row">`+items.map(([k,label,href])=>{const x=s[k]||{status:'unknown'};const st=ST[x.status]||ST.unknown;
     return `<a class="status-item ${st[1]} mw-hover" href="${href}" data-jump="${href.slice(1)}"><span class="st-mark ${st[1]}">${st[2]}</span><span class="st-body"><b>${label}</b><small>${esc(x.note||st[0])}${x.date?' · '+ymd(x.date):''}</small></span></a>`}).join('')+
-  `</div>`+(extra.length?`<div class="status-extra">`+extra.map(a=>{const st=ST[a.status]||ST.needs_check;return `<span class="status-chip ${st[1]}"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(a.item)}</b>${a.note?`<small>${esc(a.note)}</small>`:''}</span>`}).join('')+`</div>`:'')+`</section>`};
+  `</div>`+(chips.length?`<div class="status-extra">`+chips.join('')+`</div>`:'')+`</section>`};
 
 const tiles=(f,M)=>{
   const rec=M.filter(x=>x.rent!=null).pop(),ps=(f.rent_payments||[]).slice().sort((a,b)=>a.date<b.date?-1:1),lp=ps[ps.length-1];
@@ -119,18 +124,6 @@ const statement=(f)=>{
   <aside class="stmt-pop" id="stmt-pop" hidden><button type="button" class="stmt-pop-x" aria-label="Close">×</button><h4 id="stmt-pop-t"></h4><div id="stmt-pop-b"></div></aside>
   </section>`};
 
-const billsCard=f=>{
-  const bs=f.bills||[];
-  return `<section class="pcard" id="bills-card" aria-label="Bills Paid This Month"><header class="pcard-h"><h3>Bills Paid This Month</h3></header>
-  ${bs.length?`<ul class="check-list">`+bs.map(b=>{const st=ST[b.status]||ST.unknown;return `<li>${mark(b.status)}<span><b>${esc(b.label)}</b>${b.amount!=null?' · '+usd(b.amount):''}${b.due?' · due '+ymd(b.due):''}<small>${esc(b.note||st[0])}</small></span></li>`}).join('')+`</ul>`:`<p class="muted">No bills tracked</p>`}
-  </section>`};
-
-const owedCard=f=>{
-  const o=f.owed||[];
-  return `<section class="pcard" id="owed-card" aria-label="Owed To Me"><header class="pcard-h"><h3>Owed To Me</h3></header>
-  ${o.length?`<ul class="check-list">`+o.map(x=>`<li><span class="att-s warn">${esc(x.status)}</span><span><b>${esc(x.label)}</b>${x.amount!=null?' · '+usd(x.amount):''}<small>${esc(x.note||'')}</small></span></li>`).join('')+`</ul>`:`<p class="muted">Nothing owed right now</p>`}
-  </section>`};
-
 const datesCard=f=>{
   const ds=f.key_dates||[];
   return `<section class="pcard" id="dates-card" aria-label="Key Dates"><header class="pcard-h"><h3>Key Dates</h3></header>
@@ -139,20 +132,63 @@ const datesCard=f=>{
   </section>`};
 
 const DST={on_file:['On File','ok'],missing:['Missing','bad'],needs_check:['Needs Check','warn'],na:['N/A','na']};
+const DOC_GROUP=[["Lease","lease"],["Disclosures","lead|disclosure|registration"],["Insurance","insurance|policy"],["Checklists","checklist"],["Photos","photo"]];
+const docGroup=d=>{const s=(d.slot||'')+' '+(d.title||'');for(const [g,rx] of DOC_GROUP){if(new RegExp(rx,'i').test(s))return g}return 'Other'};
+const typeBadge=d=>{const s=(d.slot||d.title||'').toLowerCase();
+  if(/photo/.test(s))return 'IMG';if(/lease/.test(s))return 'PDF';if(/insurance|policy/.test(s))return 'INS';if(/checklist|disclosure|registration/.test(s))return 'DOC';return 'DOC'};
 const docsSec=(id,f)=>{const ds=f.docs||[];let gone=[];try{gone=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(e){}
  const rows=ds.map(d=>({d,k:id+':'+d.slot+':'+d.title})).filter(r=>!gone.includes(r.k));
  const nOn=ds.filter(d=>d.status==='on_file').length,nMis=ds.filter(d=>d.status==='missing').length;
- const fo=`<details class="fold pdocs-fold"><summary><span class="lt">Documents · ${nOn} on file · ${nMis} missing</span></summary>`;
+ const fo=`<details class="docs-folder pdocs-fold"><summary>Documents · ${nOn} on file · ${nMis} missing</summary>`;
  if(!rows.length)return fo+'<p class="muted">No documents yet</p></details>';
- return fo+'<ul class="op-list pdocs">'+rows.map(({d,k})=>{const s=DST[d.status]||DST.needs_check;
-  const t=d.link?`<a href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">${esc(d.title)}</a>`:d.file?`<a href="#" data-enc-file="${esc(d.file)}">${esc(d.title)}</a>`:`<span>${esc(d.title)}</span>`;
-  return `<li><span class="att-s ${s[1]}">${s[0]}</span><div class="op-lt"><small>${esc(d.slot)}</small>${t}${d.note?`<small>${esc(d.note)}</small>`:''}</div><button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" aria-label="Remove ${esc(d.title)}">×</button></li>`}).join('')+'</ul></details>'};
-const docsCard=(id,f)=>`<section class="pcard" id="docs-card" aria-label="Documents"><header class="pcard-h"><h3>Documents</h3></header>${docsSec(id,f)}</section>`;
+ const groups={};rows.forEach(r=>{const g=docGroup(r.d);(groups[g]=groups[g]||[]).push(r)});
+ const order=['Lease','Disclosures','Insurance','Checklists','Photos','Other'];
+ let body='';order.forEach(g=>{const list=groups[g];if(!list)return;body+=`<div class="doc-g"><h4>${g}</h4>`+list.map(({d,k})=>{
+  const st=DST[d.status]||DST.needs_check;
+  const open=d.link?`<a class="doc-open mw-hover" href="${esc(d.link)}" target="_blank" rel="noopener noreferrer">Open</a>`:d.file?`<a class="doc-open mw-hover" href="#" data-enc-file="${esc(d.file)}">Open</a>`:`<span class="muted">—</span>`;
+  const meta=d.status==='on_file'?(d.note||'On File'):(d.status==='missing'?'Missing':(d.note||st[0]));
+  return `<div class="doc-row"><span class="doc-ico">${typeBadge(d)}</span><div class="t"><b>${esc(d.title)}</b><span>${esc(d.slot)} · <span class="att-s ${st[1]}">${st[0]}</span>${meta&&meta!==st[0]?' · '+esc(meta):''}</span></div>${open}<button type="button" class="tdx mw-hover pdx" data-k="${esc(k)}" aria-label="Remove ${esc(d.title)}">×</button></div>`}).join('')+`</div>`});
+ return fo+body+'</details>'};
+const docsCard=(id,f)=>`<section class="pcard" id="docs-card" aria-label="Documents">${docsSec(id,f)}</section>`;
+
+const INV_ST={paid:['Paid','ok'],unpaid:['Unpaid','bad'],unknown:['Unknown','warn']};
+const INV_ORDER=['Repairs','Utilities','Lawn','Insurance','Other'];
+const invoicesSec=f=>{
+  const inv=f.invoices||[];
+  const n=inv.length,paid=inv.filter(i=>i.status==='paid').length;
+  const fo=`<details class="docs-folder pinv-fold"><summary>Invoices · ${n} invoice${n===1?'':'s'}, ${paid} confirmed paid</summary>`;
+  if(!n)return fo+'<p class="muted">No invoices yet</p></details>';
+  const groups={};inv.forEach(i=>{const g=i.group||'Other';(groups[g]=groups[g]||[]).push(i)});
+  let body='';INV_ORDER.forEach(g=>{const list=groups[g];if(!list)return;body+=`<div class="doc-g"><h4>${g}</h4>`+list.map(i=>{
+    const st=INV_ST[i.status]||INV_ST.unknown;
+    const open=i.file?`<a class="doc-open mw-hover" href="#" data-enc-file="${esc(i.file)}">Open</a>`:`<span class="muted">—</span>`;
+    const who=esc(i.vendor)+(i.number?' #'+esc(i.number):'');
+    const when=i.date?ymd(i.date):(i.recurring?'Recurring':'');
+    const amt=i.amount!=null?usd(i.amount):'—';
+    return `<div class="inv-row"><div class="t"><b>${who}</b><span>${when}${i.due?' · due '+(i.due==='on receipt'?'on receipt':ymd(i.due)):''}${i.detail?' · '+esc(i.detail):''}</span>${i.note?`<small class="muted">${esc(i.note)}</small>`:''}</div><span class="inv-amt">${amt}</span><span class="att-s ${st[1]}">${st[0]}</span>${open}</div>`}).join('')+`</div>`});
+  return fo+body+'</details>'};
+const invoicesCard=f=>`<section class="pcard" id="invoices-card" aria-label="Invoices">${invoicesSec(f)}</section>`;
+const RCP_ST={sent:['Sent','ok'],not_sent:['Not Sent','warn']};
+const receiptsSec=f=>{
+  const rs=f.receipts||[];
+  const n=rs.length,ns=rs.filter(r=>r.status==='not_sent').length;
+  const fo=`<details class="docs-folder prcpt-fold"><summary>Receipts · ${n} receipt${n===1?'':'s'}, ${ns} not sent</summary>`;
+  if(!n)return fo+'<p class="muted">No receipts yet</p></details>';
+  const body=rs.map(r=>{
+    const st=RCP_ST[r.status]||RCP_ST.not_sent;
+    const open=r.file?`<a class="doc-open mw-hover" href="#" data-enc-file="${esc(r.file)}">Open</a>`:`<span class="muted">—</span>`;
+    const amt=r.amount!=null?usd(r.amount):'—';
+    const when=r.date_received?('Received '+ymd(r.date_received)):'';
+    const sent=r.status==='sent'&&r.date_sent?(' · sent '+ymd(r.date_sent)):'';
+    return `<div class="inv-row"><span class="doc-ico">${esc(r.type||'RCP')}</span><div class="t"><b>${esc(r.title||r.period)}</b><span>${esc(r.period)} · ${esc(r.type||'')}${when?' · '+when:''}${r.detail?' · '+esc(r.detail):''}</span>${r.note?`<small class="muted">${esc(r.note)}</small>`:''}</div><span class="inv-amt">${amt}</span><span class="att-s ${st[1]}">${st[0]}${sent?esc(sent):''}</span>${open}</div>`}).join('');
+  return fo+body+'</details>'};
+const receiptsCard=f=>`<section class="pcard" id="receipts-card" aria-label="Receipts">${receiptsSec(f)}</section>`;
+
 
 const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>';
  const M=months(f);
  return `<div class="pview">${statusRow(f)}${tiles(f,M)}${cf12(f)}${statement(f)}
- <div class="pgrid">${billsCard(f)}${owedCard(f)}${datesCard(f)}${docsCard(id||'',f)}</div>
+ <div class="pgrid pgrid-2">${datesCard(f)}${docsCard(id||'',f)}${invoicesCard(f)}${receiptsCard(f)}</div>
  </div>`};
 
 /* Statement popover + jump links + doc hide */

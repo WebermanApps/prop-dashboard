@@ -125,13 +125,9 @@ def kit_sync(h,page):
     return h
 open(D+'/index.html','w').write(kit_sync(idx,'index'))
 for p in PROPS:
-    tl='<ul class="todo">'+''.join(todo_li(t,'Open') for t in p['todo'])+'</ul>'
-    dl='<details class="fold pdocs-fold docs-status-fold"><summary>Documents Status</summary><ul class="docs">'+''.join(f'<li><span class="{"ok" if ok else "no"}">{"On File" if ok else "Missing"}</span><span>{t}</span></li>' for ok,t in p['docs'])+'</ul></details>'
     pg=head(f"{p['name']} | Prop Command Center")+NAV("Prop",'<a class="mw-hover homelink" id="mwBack" href="./" style="display:inline-flex;align-items:center;min-height:44px">← Back</a>')+CCH(p['name'],f"{p['addr']} · {p['line']}")+f'''
 <div class="mw-sections">
-<section class="mw-section" id="fin-sec" aria-label="Financial Details"><h2>Financial Details</h2><div id="fin"><p class="muted">Loading numbers</p></div></section>
-<section class="mw-section" id="items-sec" aria-label="Open Items"><h2>Open Items</h2>{tl}</section>
-<section class="mw-section" id="docs-sec" aria-label="Documents Status">{dl}</section>
+<section class="mw-section" id="fin-sec" aria-label="Property"><div id="fin"><p class="muted">Loading</p></div></section>
 </div>
 <footer class="mw-footer">{FOOT_BAR}</footer>
 </main>
