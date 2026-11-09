@@ -75,7 +75,16 @@ const statusRow=f=>{
       else if(t.last_paid||due){tone='ok';mark='✓';label='Taxes Paid · next due '+(due?ymd(due):'unknown')}
     }
     const method=t.method&&t.method!=='unknown'?' · '+t.method:'';
-    return [`<a class="status-chip ${tone} mw-hover" href="#dates-card" data-jump="dates-card" title="${esc(t.note||label)}"><span class="st-mark ${tone}">${mark}</span><b>Taxes</b><small>${esc(label)}${esc(method)}</small></a>`];
+    const pays=(t.payments||[]).slice(0,2);
+    const body=pays.length?('<ul class="plain">'+pays.map(p=>{
+      const when=p.date?ymd(p.date):'';
+      const who=p.paid_by||p.via||'';
+      const bill=p.bill||'';
+      const amt=p.amount!=null?usd(p.amount):'';
+      return '<li>'+[when,who,bill,amt].filter(Boolean).map(esc).join(' · ')+'</li>';
+    }).join('')+'</ul>'):'<p class="muted">No tax payments recorded yet</p>';
+    const det=JSON.stringify({t:'Taxes',h:body+(t.note?'<p class="muted">'+esc(t.note)+'</p>':'')});
+    return [`<button type="button" class="status-chip ${tone} mw-hover tax-chip" data-det="${esc(det)}"><span class="st-mark ${tone}">${mark}</span><b>Taxes</b><small>${esc(label)}${esc(method)}</small></button>`];
   })();
   const chips=[...extra.map(a=>{const st=ST[a.status]||ST.needs_check;return `<a class="status-chip ${st[1]} mw-hover" href="#docs-card" data-jump="docs-card"><span class="st-mark ${st[1]}">${st[2]}</span><b>${esc(a.item)}</b>${a.note?`<small>${esc(a.note)}</small>`:''}</a>`}),...owedChips,...taxChips];
   return `<section class="pcard status-card" aria-label="Status Check"><header class="pcard-h"><h3>Status Check</h3><span class="muted">This month</span></header>
@@ -207,7 +216,7 @@ const receiptsCard=f=>`<section class="pcard" id="receipts-card" aria-label="Rec
 
 const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>';
  const M=months(f);
- return `<div class="pview">${statusRow(f)}${tiles(f,M)}${cf12(f)}${statement(f)}
+ return `<div class="pview"><aside class="stmt-pop" id="tax-pop" hidden><button type="button" class="stmt-pop-x" aria-label="Close">×</button><h4 id="tax-pop-t"></h4><div id="tax-pop-b"></div></aside>${statusRow(f)}${tiles(f,M)}${cf12(f)}${statement(f)}
  <div class="pgrid pgrid-2">${datesCard(f)}${docsCard(id||'',f)}${invoicesCard(f)}${receiptsCard(f)}</div>
  </div>`};
 
@@ -215,16 +224,16 @@ const breakdown=(f,id)=>{if(!f)return '<p class="muted">Waiting for records</p>'
 document.addEventListener('click',e=>{
   const jump=e.target.closest('[data-jump]');
   if(jump){e.preventDefault();const el=document.getElementById(jump.dataset.jump);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});return}
-  const row=e.target.closest('.stmt-row[data-det]');
+  const row=e.target.closest('.stmt-row[data-det],.tax-chip[data-det]');
   if(row){const pop=document.getElementById('stmt-pop');if(!pop)return;const d=JSON.parse(row.getAttribute('data-det'));
     document.getElementById('stmt-pop-t').textContent=d.t;document.getElementById('stmt-pop-b').innerHTML=d.h;pop.hidden=false;
     const card=row.closest('.stmt-card');if(card&&window.innerWidth>480){const rr=row.getBoundingClientRect(),cr=card.getBoundingClientRect();
       let top=rr.bottom-cr.top+8;const max=Math.max(24,card.clientHeight-pop.offsetHeight-16);if(top>max)top=Math.max(24,rr.top-cr.top-pop.offsetHeight-8);pop.style.top=top+'px'}
     else pop.style.top='';return}
-  if(e.target.closest('.stmt-pop-x')||e.target.id==='stmt-pop'&&e.target.classList.contains('stmt-pop')){const pop=document.getElementById('stmt-pop');if(pop)pop.hidden=true;return}
+  if(e.target.closest('.stmt-pop-x')||(e.target.classList&&e.target.classList.contains('stmt-pop')&&(e.target.id==='stmt-pop'||e.target.id==='tax-pop'))){document.querySelectorAll('.stmt-pop').forEach(p=>p.hidden=true);return}
   const o=e.target.closest('.pdx');if(!o)return;
   let g=[];try{g=JSON.parse(localStorage.getItem('propDocHide')||'[]')}catch(_){}g.push(o.dataset.k);try{localStorage.setItem('propDocHide',JSON.stringify(g))}catch(_){}o.closest('li').remove()});
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){const pop=document.getElementById('stmt-pop');if(pop)pop.hidden=true}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){document.querySelectorAll('.stmt-pop').forEach(p=>p.hidden=true)}
   if((e.key==='Enter'||e.key===' ')&&e.target.classList&&e.target.classList.contains('stmt-row')){e.preventDefault();e.target.click()}});
 
 /* Standing-rule UI: every to-do list gets delete-one + delete-all (remembered). */
